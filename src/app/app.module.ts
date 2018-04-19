@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { AccueilComponent } from './accueil/accueil.component';
-import { ProduitComponent } from './produit/produit.component';
+import { ProduitComponent } from './produit/page.produit.component';
 import {RouterModule, Routes} from "@angular/router";
 import {HttpModule} from "@angular/http";
 import {ProduitBusiness} from "../business/produit.business";

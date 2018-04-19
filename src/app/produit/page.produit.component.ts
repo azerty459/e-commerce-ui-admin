@@ -5,8 +5,8 @@ import {ProduitBusiness} from "../../business/produit.business";
 
 @Component({
   selector: 'app-produit',
-  templateUrl: './produit.component.html',
-  styleUrls: ['./produit.component.css']
+  templateUrl: './page.produit.component.html',
+  styleUrls: ['./page.produit.component.css']
 })
 export class ProduitComponent implements OnInit {
 
