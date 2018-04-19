@@ -9,6 +9,15 @@
   margin: 0px;
 }
 
+.sidebar ul li a {
+  color: white;
+  padding: 8px 35px 8px 15px;
+  display: block;
+  font-size: 15px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
 /*
   Panel gauche
 */
@@ -21,9 +30,38 @@
   Général
  */
 
-html, body, app-root{
+html, app-root, body{
   margin:0;
   height:100%;
+}
+
+body {
+  margin:0;
+  min-height: 100%;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.container-fluid {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-right: 0;
+   margin-left: 0;
+}
+
+.contenu {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
+main {
+  overflow: auto;
 }
 
 .form-inline {
@@ -36,64 +74,6 @@ html, body, app-root{
 
 .text-align-right {
   text-align: right;
-}
-
-.flex-column {
-  display: flex;
-  flex-direction: column;
-}
-
-.flex-row {
-  display: flex;
-  flex-direction: row;
-}
-
-.flex-self-right {
-  align-self: flex-end;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.flex {
-  flex: 1;
-}
-
-.flex2 {
-  flex: 2;
-}
-
-.flex3 {
-  flex: 3;
-}
-
-.flex4 {
-  flex: 4;
-}
-
-.flex5 {
-  flex: 5;
-}
-
-.flex6 {
-  flex: 6;
-}
-
-.flex7 {
-  flex: 7;
-}
-
-.flex8 {
-  flex: 8;
-}
-
-.flex9 {
-  flex: 9;
-}
-
-.flex10 {
-  flex: 10;
 }
 
 .margin {
