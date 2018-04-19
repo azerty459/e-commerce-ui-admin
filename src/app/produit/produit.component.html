@@ -39,57 +39,54 @@
               <th></th>
             </tr>
             </thead>
-            <tbody *ngIf="nombreDeProduit > 0;else pasDeProduit">
-            <tr *ngFor="let produit of produits | async; let i = index">
-              <td><input type="text" class="form-control" value="{{produit.ref}}" aria-describedby="basic-addon1"></td>
-              <td><input type="text" class="form-control" value="{{produit.nom}}" aria-describedby="basic-addon1"
-                         #nomModifierInput></td>
-              <td><input type="text" class="form-control" value="{{produit.description}}"
-                         aria-describedby="basic-addon1" #descriptionModifierInput></td>
-              <td><input type="text" class="form-control" value="{{produit.prixHT}}" aria-describedby="basic-addon1"
-                         #prixHtModifierInput></td>
-              <td>
-                <button type="button" class="btn btn-warning"
-                        (click)="modifier(produit.ref, nomModifierInput.value, descriptionModifierInput.value, prixHtModifierInput.value)">
-                  Sauvegarder
-                </button>
-              </td>
-              <td>
-                <button type="button" class="btn btn-danger" (click)="supprimer(produit.ref)">Supprimer</button>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="text" class="form-control" aria-describedby="basic-addon1" #refAjoutInput></td>
-              <td><input type="text" class="form-control" aria-describedby="basic-addon1" #nomAjoutInput></td>
-              <td><input type="text" class="form-control" aria-describedby="basic-addon1" #descriptionAjoutInput></td>
-              <td><input type="text" class="form-control" aria-describedby="basic-addon1" #prixHtAjoutInput></td>
-              <td>
-                <button type="button" class="btn btn-success"
-                        (click)="ajouter(refAjoutInput.value, nomAjoutInput.value, descriptionAjoutInput.value, prixHtAjoutInput.value)">
-                  Ajouter
-                </button>
-              </td>
-            </tr>
-            </tbody>
+            <tbody>
+            <ng-container *ngIf="nombreDeProduit > 0;else pasDeProduit">
+              <tr *ngFor="let produit of produits | async; let i = index">
+                <td><input type="text" class="form-control" value="{{produit.ref}}" aria-describedby="basic-addon1">
+                </td>
+                <td><input type="text" class="form-control" value="{{produit.nom}}" aria-describedby="basic-addon1"
+                           #nomModifierInput></td>
+                <td><input type="text" class="form-control" value="{{produit.description}}"
+                           aria-describedby="basic-addon1" #descriptionModifierInput></td>
+                <td><input type="text" class="form-control" value="{{produit.prixHT}}" aria-describedby="basic-addon1"
+                           #prixHtModifierInput></td>
+                <td>
+                  <button type="button" class="btn btn-warning"
+                          (click)="modifier(produit.ref, nomModifierInput.value, descriptionModifierInput.value, prixHtModifierInput.value)">
+                    Sauvegarder
+                  </button>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-danger" (click)="supprimer(produit.ref)">Supprimer</button>
+                </td>
+              </tr>
+            </ng-container>
+
             <ng-template #pasDeProduit>
-              <tbody>
               <tr>
                 <td colspan="4">Pas de produits à afficher</td>
               </tr>
-              <tr>
-                <td><input type="text" class="form-control" aria-describedby="basic-addon1" #refAjoutInput></td>
-                <td><input type="text" class="form-control" aria-describedby="basic-addon1" #nomAjoutInput></td>
-                <td><input type="text" class="form-control" aria-describedby="basic-addon1" #descriptionAjoutInput></td>
-                <td><input type="text" class="form-control" aria-describedby="basic-addon1" #prixHtAjoutInput></td>
-                <td>
-                  <button type="button" class="btn btn-success"
-                          (click)="ajouter(refAjoutInput.value, nomAjoutInput.value, descriptionAjoutInput.value, prixHtAjoutInput.value)">
-                    Ajouter
-                  </button>
-                </td>
-              </tr>
-              </tbody>
             </ng-template>
+
+            <tr>
+              <td><input type="text" class="form-control" aria-describedby="basic-addon1" [(ngModel)]="ajoutRef"></td>
+              <td><input type="text" class="form-control" aria-describedby="basic-addon1" [(ngModel)]="ajoutNom"></td>
+              <td><input type="text" class="form-control" aria-describedby="basic-addon1"
+                         [(ngModel)]="ajoutDescription"></td>
+              <td><input type="text" class="form-control" aria-describedby="basic-addon1" [(ngModel)]="ajoutPrixHT">
+              </td>
+              <td>
+
+                <button type="button" class="btn btn-success"
+                        (click)="ajouter()">
+                  Ajouter
+                </button>
+              </td>
+              <td></td>
+            </tr>
+
+            </tbody>
+
           </table>
         </div>
       </div>

@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { FormsModule } from '@angular/forms';
+
 import { AppComponent } from './app.component';
 import { AccueilComponent } from './accueil/accueil.component';
 import { ProduitComponent } from './produit/produit.component';
@@ -10,7 +12,6 @@ import {ProduitBusiness} from "../business/produit.business";
 
 import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {AlertModule, CollapseModule} from 'ngx-bootstrap';
-import {FormsModule} from "@angular/forms";
 
 const appRoutes: Routes = [
   {

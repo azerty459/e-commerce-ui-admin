@@ -13,6 +13,11 @@ export class ProduitComponent implements OnInit {
   public produits: Observable<Produit[]>;
   public nombreDeProduit: number;
 
+  public ajoutRef: String;
+  public ajoutNom: String;
+  public ajoutDescription: String;
+  public ajoutPrixHT: number;
+
   constructor(
     private produitBusiness: ProduitBusiness
   ) {}
@@ -22,8 +27,9 @@ export class ProduitComponent implements OnInit {
     this.produits.subscribe(value => this.nombreDeProduit = value.length);
   }
 
-  ajouter(ref: String, nom: String, description: String, prixHT: number) {
-    this.produitBusiness.addProduit(ref, nom, description, prixHT).subscribe(() => this.rafraichirAjout());
+  ajouter() {
+    console.log("AjoutRef: "+this.ajoutRef);
+    this.produitBusiness.addProduit(this.ajoutRef, this.ajoutNom, this.ajoutDescription, this.ajoutPrixHT).subscribe(() => this.rafraichirAjout());
   }
 
   modifier(ref: String, nom: String, description: String, prixHT: number) {
@@ -37,6 +43,10 @@ export class ProduitComponent implements OnInit {
 
   rafraichirAjout(){
     this.rafraichirListeProduit();
+    this.ajoutRef="";
+    this.ajoutNom="";
+    this.ajoutDescription="";
+    this.ajoutPrixHT=null;
   }
 
   rafraichirListeProduit(){
