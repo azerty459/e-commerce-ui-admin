@@ -1,1 +1,124 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+/*
+  Nav bar
+ */
+
+.navbar {
+  margin: 0px;
+}
+
+/*
+  Panel gauche
+*/
+
+.left-panel {
+  background: #272c33;
+}
+
+/*
+  Général
+ */
+
+html, body, app-root{
+  margin:0;
+  height:100%;
+}
+
+.form-inline {
+  display: inline-block;
+}
+
+.text-align-left {
+  text-align: left;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-self-right {
+  align-self: flex-end;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.flex {
+  flex: 1;
+}
+
+.flex2 {
+  flex: 2;
+}
+
+.flex3 {
+  flex: 3;
+}
+
+.flex4 {
+  flex: 4;
+}
+
+.flex5 {
+  flex: 5;
+}
+
+.flex6 {
+  flex: 6;
+}
+
+.flex7 {
+  flex: 7;
+}
+
+.flex8 {
+  flex: 8;
+}
+
+.flex9 {
+  flex: 9;
+}
+
+.flex10 {
+  flex: 10;
+}
+
+.margin {
+  margin: 1%;
+}
+
+.espace {
+  margin-right: 10px;
+}
+
+.sidebar {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sidebar {
+  bottom: 0;
+  left: 0;
+  padding: 20px;
+  border-right: 1px solid #eee;
+  background-color: #272c33;
+}
+
+
+
+
+
+
