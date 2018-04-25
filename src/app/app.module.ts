@@ -8,10 +8,10 @@ import { AccueilComponent } from './accueil/accueil.component';
 import { ProduitComponent } from './produit/page.produit.component';
 import {RouterModule, Routes} from "@angular/router";
 import {HttpModule} from "@angular/http";
-import {ProduitBusiness} from "../business/produit.business";
 
 import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {AlertModule, CollapseModule} from 'ngx-bootstrap';
+import {ProduitBusiness} from "../../e-commerce-ui-common/business/produit.business";
 
 const appRoutes: Routes = [
   {
