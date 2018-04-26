@@ -12,8 +12,13 @@ import {HttpModule} from "@angular/http";
 import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {AlertModule, CollapseModule} from 'ngx-bootstrap';
 import {ProduitBusiness} from "../../e-commerce-ui-common/business/produit.business";
+import { DetailProduitComponent } from './detail-produit/detail-produit.component';
 
 const appRoutes: Routes = [
+  {
+    path: 'admin/produit/detail/:id',
+    component: 'DetailProduitComponent'
+  },
   {
     path: 'admin/produit',
     redirectTo: 'admin/produit/1',
@@ -40,6 +45,7 @@ const appRoutes: Routes = [
     AppComponent,
     AccueilComponent,
     ProduitComponent,
+    DetailProduitComponent,
   ],
   imports: [
     BrowserModule,
