@@ -6,19 +6,16 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { AccueilComponent } from './accueil/accueil.component';
 import { ProduitComponent } from './produit/page.produit.component';
-import {RouterModule, Routes} from "@angular/router";
-import {HttpModule} from "@angular/http";
+import {RouterModule, Routes} from '@angular/router';
+import {HttpModule} from '@angular/http';
 
 import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {AlertModule, CollapseModule} from 'ngx-bootstrap';
-import {ProduitBusiness} from "../../e-commerce-ui-common/business/produit.business";
+import {ProduitBusiness} from '../../e-commerce-ui-common/business/produit.business';
 import { DetailProduitComponent } from './detail-produit/detail-produit.component';
 
 const appRoutes: Routes = [
-  {
-    path: 'admin/produit/detail/:id',
-    component: 'DetailProduitComponent'
-  },
+
   {
     path: 'admin/produit',
     redirectTo: 'admin/produit/1',
@@ -36,6 +33,11 @@ const appRoutes: Routes = [
   { path: '',
     redirectTo: '/admin',
     pathMatch: 'full',
+  },
+  {
+    path: 'admin/produit/:page/detail/:id',
+    component: DetailProduitComponent,
+    data: { title: 'Détail produit' }
   }
   // { path: '**', component: PageNotFoundComponent }
 ];

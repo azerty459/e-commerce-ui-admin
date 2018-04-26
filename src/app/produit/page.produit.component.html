@@ -42,19 +42,12 @@
             <tbody>
             <ng-container *ngIf="nombreDeProduit > 0;else pasDeProduit">
               <tr *ngFor="let produit of produits | async; let i = index">
-                <td><input type="text" class="form-control" value="{{produit.ref}}" aria-describedby="basic-addon1">
-                </td>
-                <td><input type="text" class="form-control" value="{{produit.nom}}" aria-describedby="basic-addon1"
-                           #nomModifierInput></td>
-                <td><input type="text" class="form-control" value="{{produit.description}}"
-                           aria-describedby="basic-addon1" #descriptionModifierInput></td>
-                <td><input type="text" class="form-control" value="{{produit.prixHT}}" aria-describedby="basic-addon1"
-                           #prixHtModifierInput></td>
+                <td><p>{{produit.ref}}</p></td>
+                <td><p>{{produit.nom}}</p></td>
+                <td><p>{{produit.description}}"</p></td>
+                <td><p>{{produit.prixHT}}</p></td>
                 <td>
-                  <button type="button" class="btn btn-warning"
-                          (click)="modifier(produit.ref, nomModifierInput.value, descriptionModifierInput.value, prixHtModifierInput.value)">
-                    Sauvegarder
-                  </button>
+                  <a [routerLink]="['detail/', produit.ref]"><button type="button" class="btn btn-warning">Modifier</button></a>
                 </td>
                 <td>
                   <button type="button" class="btn btn-danger" (click)="supprimer(produit.ref)">Supprimer</button>
