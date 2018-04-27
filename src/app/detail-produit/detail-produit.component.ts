@@ -15,6 +15,8 @@ export class DetailProduitComponent implements OnInit {
 
   p: Produit;
 
+  message: string;
+
   constructor(
     private route: ActivatedRoute,
     private produitBusiness: ProduitBusiness,
@@ -41,7 +43,10 @@ export class DetailProduitComponent implements OnInit {
     console.log(this.p);
   }
 
-
+  // FONCTION EN DOUBLE (à part le message, mais en fait non)
+  supprimer(ref: String) {
+    this.produitBusiness.deleteProduit(ref).subscribe(() => this.message = "Le produit a été supprimé.");
+  }
 
   goBack(): void {
     this.location.back();
