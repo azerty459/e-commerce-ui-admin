@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+
+import {Produit} from '../../../e-commerce-ui-common/models/Produit';
+import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.business';
+
 
 @Component({
   selector: 'app-detail-produit',
@@ -7,9 +13,38 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DetailProduitComponent implements OnInit {
 
-  constructor() { }
+  p: Produit;
+
+  constructor(
+    private route: ActivatedRoute,
+    private produitBusiness: ProduitBusiness,
+    private location: Location
+  ) {}
 
   ngOnInit() {
+    this.getProduit();
+  }
+
+  // getProduit(): void {
+  //   const refProduit = this.route.snapshot.paramMap.get('id');
+  //   this.produitBusiness.getProduitByRef(refProduit).subscribe(produit => { this.p = produit[0]; console.log(produit[0]); console.log(this.p); });
+  //   console.log(this.p);
+  // }
+
+  getProduit(): void {
+    const refProduit = this.route.snapshot.paramMap.get('id');
+    this.produitBusiness.getProduitByRef(refProduit).subscribe(produit => {
+      this.p = produit[0];
+      console.log(this.p);
+    });
+
+    console.log(this.p);
+  }
+
+
+
+  goBack(): void {
+    this.location.back();
   }
 
 }

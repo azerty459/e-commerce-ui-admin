@@ -3,7 +3,7 @@
 <div class="row">
   <div class="margin card">
     <div class="card-header">
-      <strong>Informations</strong>
+      <strong>Filtres</strong>
     </div>
     <div class="card-body">
     </div>
@@ -13,17 +13,8 @@
 <div class="row">
   <div class="margin card">
     <div class="card-header">
-      <strong>Filtre</strong>
-    </div>
-    <div class="card-body">
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="margin card">
-    <div class="card-header">
-      <strong>Produits total: {{nombreDeProduit}}</strong>
+      <strong>Nombre total de produits:: {{nombreDeProduit}}</strong>
+      <button class="btn btn-success">Ajouter un produit</button>
     </div>
     <div class="card-body">
       <div class="card-body">
@@ -47,7 +38,8 @@
                 <td><p>{{produit.description}}"</p></td>
                 <td><p>{{produit.prixHT}}</p></td>
                 <td>
-                  <a [routerLink]="['detail/', produit.ref]"><button type="button" class="btn btn-warning">Modifier</button></a>
+                  <!--<a [routerLink]="['detail/', produit.ref]"><button type="button" class="btn btn-warning">Modifier</button></a>-->
+                  <a routerLink="/detail/{{produit.ref}}"><button type="button" class="btn btn-warning">Modifier</button></a>
                 </td>
                 <td>
                   <button type="button" class="btn btn-danger" (click)="supprimer(produit.ref)">Supprimer</button>
@@ -61,6 +53,7 @@
               </tr>
             </ng-template>
 
+            <!-- A SUPPRIMER
             <tr>
               <td><input type="text" class="form-control" aria-describedby="basic-addon1" [(ngModel)]="ajoutRef"></td>
               <td><input type="text" class="form-control" aria-describedby="basic-addon1" [(ngModel)]="ajoutNom"></td>
@@ -70,19 +63,24 @@
               </td>
               <td>
 
-                <button type="button" class="btn btn-success"
+                <button class="btn btn-success"
                         (click)="ajouter()">
                   Ajouter
                 </button>
               </td>
               <td></td>
             </tr>
+            -->
 
             </tbody>
 
           </table>
         </div>
       </div>
+    </div>
+    <div class="card-header">
+      <strong>Nombre total de produits:: {{nombreDeProduit}}</strong>
+      <button class="btn btn-success">Ajouter un produit</button>
     </div>
   </div>
 </div>

@@ -35,7 +35,7 @@ const appRoutes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'admin/produit/:page/detail/:id',
+    path: 'detail/:id',
     component: DetailProduitComponent,
     data: { title: 'Détail produit' }
   }
