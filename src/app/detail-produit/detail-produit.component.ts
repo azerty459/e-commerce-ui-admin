@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.business';
+import {ProduitComponent} from '../produit/page.produit.component';
 
 
 @Component({
@@ -17,6 +18,8 @@ export class DetailProduitComponent implements OnInit {
 
   message: string;
 
+  ajout: boolean;
+
   constructor(
     private route: ActivatedRoute,
     private produitBusiness: ProduitBusiness,
@@ -27,25 +30,36 @@ export class DetailProduitComponent implements OnInit {
     this.getProduit();
   }
 
-  // getProduit(): void {
-  //   const refProduit = this.route.snapshot.paramMap.get('id');
-  //   this.produitBusiness.getProduitByRef(refProduit).subscribe(produit => { this.p = produit[0]; console.log(produit[0]); console.log(this.p); });
-  //   console.log(this.p);
-  // }
-
   getProduit(): void {
     const refProduit = this.route.snapshot.paramMap.get('id');
-    this.produitBusiness.getProduitByRef(refProduit).subscribe(produit => {
-      this.p = produit[0];
-      console.log(this.p);
-    });
 
-    console.log(this.p);
+    if(refProduit === 'nouveau') {
+      this.ajout = true;
+      this.p = new Produit(null,null,null,null)
+    } else {
+      this.ajout = false;
+      this.produitBusiness.getProduitByRef(refProduit).subscribe(produit => {
+        this.p = produit[0];
+        console.log(this.p);
+      });
+    }
+
+    console.log(this.p); // UNDEFINED
+    // console.log(this.ajout);
   }
 
-  // FONCTION EN DOUBLE (à part le message, mais en fait non)
   supprimer(ref: String) {
-    this.produitBusiness.deleteProduit(ref).subscribe(() => this.message = "Le produit a été supprimé.");
+    if(confirm('Êtes-vous certain(e) de vouloir supprimer ce produit?')) {
+      this.produitBusiness.deleteProduit(ref).subscribe(() => this.message = "Le produit a été supprimé.");
+    }
+  }
+
+  modifier() {
+    this.produitBusiness.updateProduit(this.p.ref, this.p.nom, this.p.description, this.p.prixHT).subscribe(() => this.message = "Le produit a été mis à jour");
+  }
+
+  ajouter() {
+    this.produitBusiness.addProduit(this.p.ref, this.p.nom, this.p.description, this.p.prixHT).subscribe(() => this.message = "Le produit a été ajouté.");
   }
 
   goBack(): void {

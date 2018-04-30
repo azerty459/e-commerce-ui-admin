@@ -27,18 +27,15 @@ export class ProduitComponent implements OnInit {
     this.produits.subscribe(value => this.nombreDeProduit = value.length);
   }
 
-  ajouter() {
-    console.log("AjoutRef: "+this.ajoutRef);
-    this.produitBusiness.addProduit(this.ajoutRef, this.ajoutNom, this.ajoutDescription, this.ajoutPrixHT).subscribe(() => this.rafraichirAjout());
-  }
-
-  modifier(ref: String, nom: String, description: String, prixHT: number) {
-    this.produitBusiness.updateProduit(ref, nom, description, prixHT).subscribe(() => this.rafraichirListeProduit());
-  }
+  // supprimer(ref: String) {
+  //   this.produitBusiness.deleteProduit(ref).subscribe(() => this.rafraichirListeProduit());
+  //   this.rafraichirListeProduit();
+  // }
 
   supprimer(ref: String) {
-    this.produitBusiness.deleteProduit(ref).subscribe(() => this.rafraichirListeProduit());
-    this.rafraichirListeProduit();
+    if(confirm('Êtes-vous certain(e) de vouloir supprimer ce produit?')) {
+      this.produitBusiness.deleteProduit(ref).subscribe(() => this.rafraichirListeProduit());
+    }
   }
 
   rafraichirAjout(){

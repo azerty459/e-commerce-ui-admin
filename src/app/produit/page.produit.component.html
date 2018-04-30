@@ -14,7 +14,7 @@
   <div class="margin card">
     <div class="card-header">
       <strong>Nombre total de produits:: {{nombreDeProduit}}</strong>
-      <button class="btn btn-success">Ajouter un produit</button>
+      <a routerLink="/detail/nouveau"><button class="btn btn-success">Ajouter un produit</button></a>
     </div>
     <div class="card-body">
       <div class="card-body">
@@ -35,7 +35,7 @@
               <tr *ngFor="let produit of produits | async; let i = index">
                 <td><p>{{produit.ref}}</p></td>
                 <td><p>{{produit.nom}}</p></td>
-                <td><p>{{produit.description}}"</p></td>
+                <td><p>{{produit.description}}</p></td>
                 <td><p>{{produit.prixHT}}</p></td>
                 <td>
                   <!--<a [routerLink]="['detail/', produit.ref]"><button type="button" class="btn btn-warning">Modifier</button></a>-->
@@ -53,25 +53,6 @@
               </tr>
             </ng-template>
 
-            <!-- A SUPPRIMER
-            <tr>
-              <td><input type="text" class="form-control" aria-describedby="basic-addon1" [(ngModel)]="ajoutRef"></td>
-              <td><input type="text" class="form-control" aria-describedby="basic-addon1" [(ngModel)]="ajoutNom"></td>
-              <td><input type="text" class="form-control" aria-describedby="basic-addon1"
-                         [(ngModel)]="ajoutDescription"></td>
-              <td><input type="text" class="form-control" aria-describedby="basic-addon1" [(ngModel)]="ajoutPrixHT">
-              </td>
-              <td>
-
-                <button class="btn btn-success"
-                        (click)="ajouter()">
-                  Ajouter
-                </button>
-              </td>
-              <td></td>
-            </tr>
-            -->
-
             </tbody>
 
           </table>
@@ -80,7 +61,7 @@
     </div>
     <div class="card-header">
       <strong>Nombre total de produits:: {{nombreDeProduit}}</strong>
-      <button class="btn btn-success">Ajouter un produit</button>
+      <a routerLink="/detail/nouveau"><button class="btn btn-success">Ajouter un produit</button></a>
     </div>
   </div>
 </div>
