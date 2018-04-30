@@ -27,11 +27,6 @@ export class ProduitComponent implements OnInit {
     this.produits.subscribe(value => this.nombreDeProduit = value.length);
   }
 
-  // supprimer(ref: String) {
-  //   this.produitBusiness.deleteProduit(ref).subscribe(() => this.rafraichirListeProduit());
-  //   this.rafraichirListeProduit();
-  // }
-
   supprimer(ref: String) {
     if(confirm('Êtes-vous certain(e) de vouloir supprimer ce produit?')) {
       this.produitBusiness.deleteProduit(ref).subscribe(() => this.rafraichirListeProduit());
