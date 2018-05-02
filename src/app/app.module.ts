@@ -13,6 +13,9 @@ import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {AlertModule, CollapseModule} from 'ngx-bootstrap';
 import {ProduitBusiness} from '../../e-commerce-ui-common/business/produit.business';
 import { DetailProduitComponent } from './detail-produit/detail-produit.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { CategorieBusinessService } from '../../e-commerce-ui-common/business/categorie-business.service';
+import {HttpClientModule} from '@angular/common/http';
 
 const appRoutes: Routes = [
 
@@ -38,6 +41,11 @@ const appRoutes: Routes = [
     path: 'detail/:id',
     component: DetailProduitComponent,
     data: { title: 'Détail produit' }
+  },
+  {
+    path: 'admin/categories',
+    component: CategoriesComponent,
+    data: { title: 'Gestion des catégories' }
   }
   // { path: '**', component: PageNotFoundComponent }
 ];
@@ -48,11 +56,13 @@ const appRoutes: Routes = [
     AccueilComponent,
     ProduitComponent,
     DetailProduitComponent,
+    CategoriesComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule, // Utilisation du module http
+    HttpClientModule,
     CollapseModule.forRoot(), // Pour ngx bootstrap
     BsDropdownModule.forRoot(), // Pour ngx bootstrap
     RouterModule.forRoot( // Pour le module routing
@@ -60,7 +70,7 @@ const appRoutes: Routes = [
       { enableTracing: false } // <-- debugging purposes only
     ),
   ],
-  providers: [ProduitBusiness],
+  providers: [ProduitBusiness, CategorieBusinessService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
