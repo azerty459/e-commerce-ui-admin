@@ -14,8 +14,8 @@
 <div class="row">
   <div class="margin card">
     <div class="card-header">
-      <strong>Nombre total de catégories:{{nombreDeCategories}}</strong>
-      <a routerLink="/detail/nouveau"><button class="btn btn-success">Ajouter une catégorie</button></a>
+      <p> </p>
+      <a [routerLink]="['./detailcategorie', 'nouveauparent']"><button class="btn btn-success">Ajouter une catégorie parent</button></a>
     </div>
     <div class="card-body">
       <div class="card-body">
@@ -24,29 +24,21 @@
             <thead>
             <tr>
               <th>Nom</th>
-              <th>Borne gauche</th>
-              <th>Borne droite</th>
-              <th>Niveau</th>
+              <th></th>
+
+
             </tr>
             </thead>
             <tbody>
             <ng-container *ngIf="categories; else pasDeCategorie">
               <tr *ngFor="let c of categories | async; let i = index">
-
                 <td><p>{{c.nomCat}}</p></td>
-                <!--<td><p>{{cat.nomCat}}</p></td>-->
-                <!--<td><p>{{cat.borneGauche}}</p></td>-->
-                <!--<td><p>{{cat.borneDroit}}</p></td>-->
-                <!--<td><p>{{cat.level}}</p></td>-->
-                <!--<td>-->
-                  <!--&lt;!&ndash;<a [routerLink]="['detail/', produit.ref]"><button type="button" class="btn btn-warning">Modifier</button></a>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<a routerLink="/detail/{{produit.ref}}"><button type="button" class="btn btn-warning">Modifier</button></a>&ndash;&gt;-->
-                <!--</td>-->
-                <!--<td>-->
-                  <!--<button type="button" class="btn btn-danger" (click)="supprimer(produit.ref)">Supprimer</button>-->
-                <!--</td>-->
+                <td>
+                  <a [routerLink]="['./detailcategorie/nouvelenfant', c.nomCat ]"><button type="button" class="btn btn-primary">Ajouter une catégorie enfant</button></a>
+                  <a routerLink="#"><button type="button" class="btn btn-warning">Modifier</button></a>
+                  <button type="button" class="btn btn-danger" (click)="supprimer(c.ref)">Supprimer</button>
+                </td>
               </tr>
-
             </ng-container>
 
             <ng-template #pasDeCategorie>
@@ -62,8 +54,8 @@
       </div>
     </div>
     <div class="card-header">
-      <strong>Nombre total de catégories:: {{nombreDeCategories}}</strong>
-      <a routerLink="/detail/nouveau"><button class="btn btn-success">Ajouter une catégorie</button></a>
+      <p> </p>
+      <a routerLink="/detail/nouveau"><button class="btn btn-success">Ajouter une catégorie parent</button></a>
     </div>
   </div>
 </div>

@@ -11,8 +11,6 @@ import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
 })
 export class CategoriesComponent implements OnInit {
 
-  public nombreDeCategories: number;
-
   public categories: Observable<Categorie[]>;
 
   constructor(private categorieBusiness: CategorieBusinessService) {
@@ -21,17 +19,10 @@ export class CategoriesComponent implements OnInit {
 
   ngOnInit() {
     // Lancement de la récupération des catégories
-    this.categories = this.categorieBusiness.getAllCategories();
-
-    // On mappe l'objet résultat (Observable contenant un tableau de Categorie)
-    this.categories.map(value => {
-      // Pour chaque categorie non nulle
-      if(value != null) {
-        const categoriesList = value['categories'];
-        this.nombreDeCategories = categoriesList.length;
-      }
-    });
+    this.categories = this.categorieBusiness.getAllCategories(); // this.categories = liste d'objets Categorie
   }
+
+
 
 
 

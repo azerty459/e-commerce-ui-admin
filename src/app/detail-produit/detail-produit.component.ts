@@ -31,6 +31,7 @@ export class DetailProduitComponent implements OnInit {
   }
 
   getProduit(): void {
+
     const refProduit = this.route.snapshot.paramMap.get('id');
 
     if(refProduit === 'nouveau') {

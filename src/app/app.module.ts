@@ -16,6 +16,7 @@ import { DetailProduitComponent } from './detail-produit/detail-produit.componen
 import { CategoriesComponent } from './categories/categories.component';
 import { CategorieBusinessService } from '../../e-commerce-ui-common/business/categorie-business.service';
 import {HttpClientModule} from '@angular/common/http';
+import { DetailCategorieComponent } from './detail-categorie/detail-categorie.component';
 
 const appRoutes: Routes = [
 
@@ -46,6 +47,11 @@ const appRoutes: Routes = [
     path: 'admin/categories',
     component: CategoriesComponent,
     data: { title: 'Gestion des catégories' }
+  },
+  {
+    path: 'admin/categories/detailcategorie',
+    component: DetailCategorieComponent,
+    data: { title: 'Détail catégorie' }
   }
   // { path: '**', component: PageNotFoundComponent }
 ];
@@ -57,6 +63,7 @@ const appRoutes: Routes = [
     ProduitComponent,
     DetailProduitComponent,
     CategoriesComponent,
+    DetailCategorieComponent,
   ],
   imports: [
     BrowserModule,
