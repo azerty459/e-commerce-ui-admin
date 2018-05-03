@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Observable} from "rxjs/Observable";
-import {ProduitBusiness} from "../../../e-commerce-ui-common/business/produit.business";
-import {Produit} from "../../../e-commerce-ui-common/models/Produit";
+import { Observable } from 'rxjs/Observable';
+import { ProduitBusiness } from '../../../e-commerce-ui-common/business/produit.business';
+import { Produit } from '../../../e-commerce-ui-common/models/Produit';
 
 @Component({
   selector: 'app-produit',
@@ -28,20 +28,20 @@ export class ProduitComponent implements OnInit {
   }
 
   supprimer(ref: String) {
-    if(confirm('Êtes-vous certain(e) de vouloir supprimer ce produit?')) {
+    if (confirm('Êtes-vous certain(e) de vouloir supprimer ce produit?')) {
       this.produitBusiness.deleteProduit(ref).subscribe(() => this.rafraichirListeProduit());
     }
   }
 
-  rafraichirAjout(){
+  rafraichirAjout() {
     this.rafraichirListeProduit();
-    this.ajoutRef="";
-    this.ajoutNom="";
-    this.ajoutDescription="";
-    this.ajoutPrixHT=null;
+    this.ajoutRef = '';
+    this.ajoutNom = '';
+    this.ajoutDescription = '';
+    this.ajoutPrixHT = null;
   }
 
-  rafraichirListeProduit(){
+  rafraichirListeProduit() {
     this.produits = this.produitBusiness.getProduit();
     this.produits.subscribe(value => this.nombreDeProduit = value.length);
   }
