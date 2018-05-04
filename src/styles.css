@@ -140,5 +140,8 @@ Styles pour les pages de listes de produits et de catégories
   padding: 1.25rem;
 }
 
-
+#test {
+  display: flex;
+  justify-content: space-between;
+}
 

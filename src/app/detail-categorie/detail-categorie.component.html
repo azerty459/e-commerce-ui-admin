@@ -3,9 +3,10 @@
 
 
 <label for="nomCategorieParente">Nom de la catégorie parente</label>
-<input type="text" id="nomCategorieParente" [(ngModel)]="nomcategorieParente" class="form-control form-control-lg" name="nomParent">
+<input type="text" id="nomCategorieParente" [(ngModel)]="nomcategorieParente" class="form-control form-control-lg" name="nomParent" [attr.disabled]=true>
 
 <label for="nomCategorie">Nom de la nouvelle catégorie</label>
 <input type="text" id="nomCategorie" [(ngModel)]="nomNouvelleCategorie" class="form-control form-control-lg" name="nomcat">
 
-<button type="submit" class="btn btn-success" (click)="ajouter()">Ajouter la catégorie</button>
+<button *ngIf="!enfant" type="submit" class="btn btn-success" (click)="ajouterParent()">Ajouter la catégorie parent</button>
+<button *ngIf="enfant" type="submit" class="btn btn-success" (click)="ajouterEnfant(nomcategorieParente)">Ajouter la catégorie enfant</button>

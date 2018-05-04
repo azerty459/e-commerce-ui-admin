@@ -13,6 +13,8 @@ export class CategoriesComponent implements OnInit {
 
   public categories: Observable<Categorie[]>;
 
+  public message: string;
+
   constructor(private categorieBusiness: CategorieBusinessService) {
 
   }
@@ -20,9 +22,15 @@ export class CategoriesComponent implements OnInit {
   ngOnInit() {
     // Lancement de la récupération des catégories
     this.categories = this.categorieBusiness.getAllCategories(); // this.categories = liste d'objets Categorie
+    this.message = '';
   }
 
-
+  supprimer(nomCat: string): void {
+    this.categorieBusiness.supprimerCategorie(nomCat).subscribe(() => {
+      this.ngOnInit();
+      this.message = 'La catégorie a été supprimée';
+    });
+  }
 
 
 

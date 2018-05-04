@@ -49,9 +49,19 @@ const appRoutes: Routes = [
     data: { title: 'Gestion des catégories' }
   },
   {
-    path: 'admin/categories/detailcategorie',
+    path: 'admin/categories/detailcategorie/modif/:id',
     component: DetailCategorieComponent,
-    data: { title: 'Détail catégorie' }
+    data: { title: 'Détail de catégorie'}
+  },
+  {
+    path: 'admin/categories/detailcategorie/nouveauparent', // Ajout d'une catégorie parent
+    component: DetailCategorieComponent,
+    data: { title: 'Ajout de catégorie parent' }
+  },
+  {
+    path: 'admin/categories/detailcategorie/nouvelenfant/:id', // Ajout d'une catégorie enfant
+    component: DetailCategorieComponent,
+    data: { title: 'Ajout de catégorie enfant'}
   }
   // { path: '**', component: PageNotFoundComponent }
 ];

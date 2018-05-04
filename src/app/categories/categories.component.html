@@ -1,5 +1,7 @@
 <h1>Gestion des catégories de produits</h1>
 
+<p id="message">{{message}}</p>
+
 <div class="row">
   <div class="margin card">
     <div class="card-header">
@@ -24,20 +26,20 @@
             <thead>
             <tr>
               <th>Nom</th>
-              <th></th>
+
 
 
             </tr>
             </thead>
             <tbody>
             <ng-container *ngIf="categories; else pasDeCategorie">
-              <tr *ngFor="let c of categories | async; let i = index">
+              <tr id="test" *ngFor="let c of categories | async; let i = index">
                 <td><p>{{c.nomCat}}</p></td>
-                <td>
-                  <a [routerLink]="['./detailcategorie/nouvelenfant', c.nomCat ]"><button type="button" class="btn btn-primary">Ajouter une catégorie enfant</button></a>
-                  <a routerLink="#"><button type="button" class="btn btn-warning">Modifier</button></a>
-                  <button type="button" class="btn btn-danger" (click)="supprimer(c.ref)">Supprimer</button>
-                </td>
+                <div id="buttons-right-aligned">
+                  <a [routerLink]="['./detailcategorie','nouvelenfant', c.nomCat ]"><button type="button" class="btn btn-success">Ajouter une catégorie enfant</button></a>
+                  <a [routerLink]="['./detailcategorie', 'modif', c.nomCat]"><button type="button" class="btn btn-warning">Modifier</button></a>
+                  <button type="button" class="btn btn-danger" (click)="supprimer(c.nomCat)">Supprimer</button>
+                </div>
               </tr>
             </ng-container>
 
