@@ -27,8 +27,6 @@
             <tr>
               <th>Nom</th>
 
-
-
             </tr>
             </thead>
             <tbody>
@@ -36,7 +34,7 @@
               <tr id="test" *ngFor="let c of categories | async; let i = index">
                 <td><p>{{c.nomCat}}</p></td>
                 <div id="buttons-right-aligned">
-                  <a [routerLink]="['./detailcategorie','nouvelenfant', c.nomCat ]"><button type="button" class="btn btn-success">Ajouter une catégorie enfant</button></a>
+                  <a [routerLink]="['./detailcategorie','nouvelenfant', c.nomCat ]"><button type="button" class="btn btn-success">Ajouter une sous-catégorie</button></a>
                   <a [routerLink]="['./detailcategorie', 'modif', c.nomCat]"><button type="button" class="btn btn-warning">Modifier</button></a>
                   <button type="button" class="btn btn-danger" (click)="supprimer(c.nomCat)">Supprimer</button>
                 </div>

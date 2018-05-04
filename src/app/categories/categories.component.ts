@@ -26,13 +26,11 @@ export class CategoriesComponent implements OnInit {
   }
 
   supprimer(nomCat: string): void {
-    this.categorieBusiness.supprimerCategorie(nomCat).subscribe(() => {
-      this.ngOnInit();
-      this.message = 'La catégorie a été supprimée';
-    });
+    if (confirm('Êtes-vous certain(e) de vouloir supprimer cette catégorie?')) {
+      this.categorieBusiness.supprimerCategorie(nomCat).subscribe(() => {
+        this.ngOnInit();
+        this.message = 'La catégorie a été supprimée';
+      });
+    }
   }
-
-
-
-
 }

@@ -2,11 +2,25 @@
 
 
 
-<label for="nomCategorieParente">Nom de la catégorie parente</label>
+<label for="nomCategorieParente">Nom de la catégorie:</label>
 <input type="text" id="nomCategorieParente" [(ngModel)]="nomcategorieParente" class="form-control form-control-lg" name="nomParent" [attr.disabled]=true>
 
-<label for="nomCategorie">Nom de la nouvelle catégorie</label>
+<!--<div *ngIf="true">-->
+  <!--<p>Les sous-catégories actuelles de {{nomcategorieParente}}:</p>-->
+  <!--<ul>-->
+    <!--<li *ngFor="let sousCat of sousCategories" | async>{{sousCat}}</li>-->
+  <!--</ul>-->
+<!--</div>-->
+
+
+
+
+<label for="nomCategorie">Ajouter une sous catégorie à {{nomcategorieParente}}:</label>
 <input type="text" id="nomCategorie" [(ngModel)]="nomNouvelleCategorie" class="form-control form-control-lg" name="nomcat">
 
+
 <button *ngIf="!enfant" type="submit" class="btn btn-success" (click)="ajouterParent()">Ajouter la catégorie parent</button>
-<button *ngIf="enfant" type="submit" class="btn btn-success" (click)="ajouterEnfant(nomcategorieParente)">Ajouter la catégorie enfant</button>
+<button *ngIf="enfant" type="submit" class="btn btn-success" (click)="ajouterEnfant(nomcategorieParente)">Ajouter la sous-catégorie</button>
+
+
+
