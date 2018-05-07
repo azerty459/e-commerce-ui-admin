@@ -9,7 +9,7 @@ build_dev:
   stage: build
   script: 
     - npm install
-    - npm run build
+    - npm run build-dev
   artifacts:
     paths:
       - dist/
@@ -21,7 +21,7 @@ build_master:
   stage: build
   script: 
     - npm install
-    - npm run build
+    - npm run build-prod
   artifacts:
     paths:
       - dist/
