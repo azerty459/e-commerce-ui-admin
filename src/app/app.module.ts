@@ -16,6 +16,9 @@ import { DetailProduitComponent } from './detail-produit/detail-produit.componen
 import { CategoriesComponent } from './categories/categories.component';
 import { CategorieBusinessService } from '../../e-commerce-ui-common/business/categorie-business.service';
 import {HttpClientModule} from '@angular/common/http';
+//Modal bootstrap
+import { ModalModule } from 'ngx-modialog';
+import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 
 const appRoutes: Routes = [
 
@@ -61,6 +64,8 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    ModalModule.forRoot(),// Modal boostrap
+    BootstrapModalModule,// Modal boostrap
     HttpModule, // Utilisation du module http
     HttpClientModule,
     CollapseModule.forRoot(), // Pour ngx bootstrap
