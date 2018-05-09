@@ -1,6 +1,6 @@
 <h1>Gestion des catégories</h1>
 
-<p id="message">{{message}}</p>
+<p id="message" [class.error]="isError" [class.success]="!isError">{{message}}</p>
 
 <!-- Ajouter une catégorie enfant à une catégorie existante -->
 <div *ngIf="enfant">

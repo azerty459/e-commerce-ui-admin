@@ -49,6 +49,11 @@ export class DetailCategorieComponent implements OnInit {
    */
   sousCatPresentes: boolean;
 
+  /**
+   * Indique s'il y a eu une erreur lors des modifications des catégories.
+   */
+  isError: boolean;
+
 
 
   constructor(
@@ -58,6 +63,7 @@ export class DetailCategorieComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.isError = false;
     this.getCategorie();
   }
 
@@ -99,12 +105,27 @@ export class DetailCategorieComponent implements OnInit {
   }
 
   ajouterParent(): void {
-    this.categorieBusiness.ajouterCategorieParent(this.nomNouvelleCategorie).subscribe(() => this.message = 'La catégorie parent a été ajoutée.');
+    // Vérifier que ce qui a été entré n'est pas vide.
+    if(this.nomNouvelleCategorie.length === 0) {
+      this.message = "Veuillez renseigner le nom de la catégorie à ajouter";
+      this.isError = true;
+    } else {
+      this.isError = false;
+      this.categorieBusiness.ajouterCategorieParent(this.nomNouvelleCategorie).subscribe(() => this.message = 'La catégorie parent a été ajoutée.');
+    }
+
   }
 
   ajouterEnfant(nomPere: string): void {
-    this.categorieBusiness.ajouterCategorieEnfant(this.nomNouvelleCategorie, nomPere).subscribe(
-      () => this.message = 'La catégorie enfant a été ajoutée.');
+    // Vérifier que ce qui a été entré n'est pas vide.
+    if(this.nomNouvelleCategorie.length === 0) {
+      this.message = "Veuillez renseigner le nom de la catégorie à ajouter";
+      this.isError = true;
+    } else {
+      this.isError = false;
+      this.categorieBusiness.ajouterCategorieEnfant(this.nomNouvelleCategorie, nomPere).subscribe(
+        () => this.message = 'La catégorie enfant a été ajoutée.');
+    }
   }
 
 
