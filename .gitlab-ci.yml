@@ -1,0 +1,51 @@
+image: node:latest
+  
+stages:
+  - build
+  - tests
+  - deploiement
+  
+build_dev:
+  stage: build
+  script: 
+    - npm install
+    - npm run build-dev
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1h
+  only:
+    - dev
+
+build_master:
+  stage: build
+  script: 
+    - npm install
+    - npm run build-prod
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1h
+  only:
+    - master
+    
+tests:
+  stage: tests
+  script: 
+  - echo 'test'
+  only:
+  - branches
+  
+deploiement_dev:
+  stage: deploiement
+  script: 
+    - echo 'Deploiement sur dev'
+  only:
+    - dev
+
+deploiement_master:
+  stage: deploiement
+  script: 
+    - echo 'Deploiement sur dev'
+  only:
+    - master
