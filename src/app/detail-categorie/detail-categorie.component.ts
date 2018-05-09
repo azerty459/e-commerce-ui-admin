@@ -5,6 +5,7 @@ import {CategorieBusinessService} from '../../../e-commerce-ui-common/business/c
 import {CategoriesComponent} from '../categories/categories.component';
 import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
 import {Observable} from 'rxjs/Observable';
+import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-detail-categorie',
@@ -34,9 +35,21 @@ export class DetailCategorieComponent implements OnInit {
   enfant: boolean;
 
   /**
-   * Liste des noms des sous-catégories de la catégorie en cours sur la page de détail.
+   * Liste des noms des sous-catégories de la catégorie en cours sur la page de détail (Observable)
    */
   sousCategories: Observable<Categorie[]>;
+
+  /**
+   * Liste des noms de sous catégories (Tableau de Catégories)
+   */
+  listSousCategories: Categorie[];
+
+  /**
+   * Indique s'il y a des sous-catégories pour une catégorie donnée.
+   */
+  sousCatPresentes: boolean;
+
+
 
   constructor(
     private route: ActivatedRoute,
@@ -70,17 +83,19 @@ export class DetailCategorieComponent implements OnInit {
 
       // Aller chercher les sous-catégories de la catégorie examinée dans la page de détail
       this.sousCategories = this.categorieBusiness.sousCategories(this.nomcategorieParente);
-      // console.log(this.sousCategories);
 
-      const test = this.sousCategories.subscribe( val => {
-        console.log(val);
+      // Récupérer une liste de Categorie
+      this.sousCategories.subscribe( categories => {
+        this.listSousCategories = categories as Categorie[];
+
+        // Vérifier qu'il y a bien des sous-catégories à afficher
+        if(this.listSousCategories.length !== 0) {
+          this.sousCatPresentes = true;
+        } else {
+          this.sousCatPresentes = false;
+        }
       });
-
-
-
     }
-
-
   }
 
   ajouterParent(): void {

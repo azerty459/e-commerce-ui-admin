@@ -1,26 +1,41 @@
+<h1>Gestion des catégories</h1>
+
+<p id="message">{{message}}</p>
+
+<!-- Ajouter une catégorie enfant à une catégorie existante -->
+<div *ngIf="enfant">
+  <label for="nomCategorieParente">Nom de la catégorie:</label>
+  <input type="text" id="nomCategorieParente" [(ngModel)]="nomcategorieParente" class="form-control form-control-lg" name="nomParent" [attr.disabled]=true>
+
+  <label for="ulsouscat">Les sous-catégories de {{nomcategorieParente}}:</label>
+
+  <ul id="ulsouscat" *ngIf="sousCatPresentes;else pas_de_sous_categories">
+    <li *ngFor="let souscat of listSousCategories">{{souscat.nomCat}}</li>
+  </ul>
+
+  <ng-template #pas_de_sous_categories><p>Pas de sous-catégories</p></ng-template>
+
+  <label for="nomCategorie">Ajouter une sous catégorie à {{nomcategorieParente}}:</label>
+  <input type="text" id="nomCategorie" [(ngModel)]="nomNouvelleCategorie" class="form-control form-control-lg" name="nomcat">
+  <button *ngIf="enfant" type="submit" class="btn btn-success" (click)="ajouterEnfant(nomcategorieParente)">Ajouter la sous-catégorie</button>
+
+</div>
+
+<!-- Ajouter une catégorie parent -->
+<div *ngIf="!enfant">
+  <label for="nomCategorie">Ajouter une catégorie:</label>
+  <input type="text" id="nomCategorie" [(ngModel)]="nomNouvelleCategorie" class="form-control form-control-lg" name="nomcat">
+  <button *ngIf="!enfant" type="submit" class="btn btn-success" (click)="ajouterParent()">Ajouter la catégorie parent</button>
+</div>
 
 
 
 
-<label for="nomCategorieParente">Nom de la catégorie:</label>
-<input type="text" id="nomCategorieParente" [(ngModel)]="nomcategorieParente" class="form-control form-control-lg" name="nomParent" [attr.disabled]=true>
-
-<!--<div *ngIf="true">-->
-  <!--<p>Les sous-catégories actuelles de {{nomcategorieParente}}:</p>-->
-  <!--<ul>-->
-    <!--<li *ngFor="let sousCat of sousCategories" | async>{{sousCat}}</li>-->
-  <!--</ul>-->
-<!--</div>-->
 
 
 
 
-<label for="nomCategorie">Ajouter une sous catégorie à {{nomcategorieParente}}:</label>
-<input type="text" id="nomCategorie" [(ngModel)]="nomNouvelleCategorie" class="form-control form-control-lg" name="nomcat">
 
-
-<button *ngIf="!enfant" type="submit" class="btn btn-success" (click)="ajouterParent()">Ajouter la catégorie parent</button>
-<button *ngIf="enfant" type="submit" class="btn btn-success" (click)="ajouterEnfant(nomcategorieParente)">Ajouter la sous-catégorie</button>
 
 
 
