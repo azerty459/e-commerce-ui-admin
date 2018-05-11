@@ -4,6 +4,7 @@ import { ProduitBusiness } from '../../../e-commerce-ui-common/business/produit.
 import { Produit } from '../../../e-commerce-ui-common/models/Produit';
 import { Overlay } from 'ngx-modialog';
 import { Modal } from 'ngx-modialog/plugins/bootstrap';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-produit',
@@ -22,7 +23,8 @@ export class ProduitComponent implements OnInit {
 
   constructor(
     private modal: Modal,
-    private produitBusiness: ProduitBusiness
+    private produitBusiness: ProduitBusiness,
+    private _router: Router
   ) {}
 
   ngOnInit() {
@@ -61,5 +63,13 @@ export class ProduitComponent implements OnInit {
   rafraichirListeProduit() {
     this.produits = this.produitBusiness.getProduit();
     this.produits.subscribe(value => this.nombreDeProduit = value.length);
+  }
+
+  updateRedirection(ref: String){
+    this._router.navigate(['/admin/produit/detail', ref]);
+  }
+
+  addRedirection(){
+    this._router.navigate(['/admin/produit/detail', "nouveau"]);
   }
 }
