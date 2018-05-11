@@ -2,3 +2,29 @@
   font-weight: bold;
   color: green;
 }
+.boutonRetour{
+  font-size: 2.5rem;
+}
+.demo-chip-list {
+  width: 100%;
+}
+#toolbar .backArrow{
+  cursor:pointer;
+  padding: 5px;
+  margin-bottom: 20px;
+  padding-left: 0;
+}
+#mainContainer{
+  margin-top: 10px;
+  padding-top: 10px;
+}
+.mat-expansion-panel-header-description .material-icons{
+  margin-left: auto;
+}
+.mat-expansion-panel-header-description .mat-panel-title{
+  margin: auto;
+}
+.descriptionPanel{
+  margin: auto;
+}
+

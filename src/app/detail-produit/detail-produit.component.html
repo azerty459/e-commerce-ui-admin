@@ -1,37 +1,84 @@
-<h1>Modification du produit</h1>
+<h1 *ngIf="ajout">Ajout d'un produit</h1>
+<h1 *ngIf="!ajout">Modification d'un produit</h1>
 
-<p id="message">{{message}}</p>
 
-<div *ngIf="p">
+<div id="mainContainer">
+  <div class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>
+  <div id="toolbar">
+    <i class="material-icons backArrow" matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip" (click)="goBack()">arrow_back</i>
+    <button type="button" class="btn btn-danger pull-right" matTooltip="Supprimer ce produit" [matTooltipPosition]="positionBeforeTooltip"  *ngIf="! ajout" (click)="supprimer(produit)">
+      <i class="material-icons " >delete</i>
+    </button>
+  </div>
 
-  <form>
-    <div class="form-group">
-      <label for="referenceProduit">Référence</label>
-      <input id="referenceProduit" type="text" [(ngModel)]="p.ref" name="reference" class="form-control form-control-lg" [attr.disabled]="! ajout ? 'disabled' : null">
-    </div>
+  <div *ngIf="produit">
+    <mat-accordion>
+      <mat-expansion-panel hideToggle="true" [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Details
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="descriptionPanel">Modifier les details du produit</div>
+            <mat-icon>details</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <form>
+          <div class="form-group">
+            <label for="referenceProduit">Référence</label>
+            <input id="referenceProduit" type="text" [(ngModel)]="produit.ref" name="reference" class="form-control form-control-lg" [attr.disabled]="! ajout ? 'disabled' : null">
+          </div>
 
-    <div class="form-group">
-      <label for="nomProduit">Nom</label>
-      <input id="nomProduit" type="text" [(ngModel)]="p.nom" name="nom" class="form-control form-control-lg">
-    </div>
+          <div class="form-group">
+            <label for="nomProduit">Nom</label>
+            <input id="nomProduit" type="text" [(ngModel)]="produit.nom" name="nom" class="form-control form-control-lg">
+          </div>
 
-    <div class="form-group">
-      <label for="descProduit">Description</label>
-      <input id="descProduit" type="text" [(ngModel)]="p.description" name="description" class="form-control form-control-lg">
-    </div>
+          <div class="form-group">
+            <label for="descProduit">Description</label>
+            <input id="descProduit" type="text" [(ngModel)]="produit.description" name="description" class="form-control form-control-lg">
+          </div>
 
-    <div class="form-group">
-      <label for="prixProduit">Prix HT</label>
-      <input id="prixProduit" type="text" [(ngModel)]="p.prixHT" name="prix" class="form-control form-control-lg">
-    </div>
+          <div class="form-group">
+            <label for="prixProduit">Prix HT</label>
+            <input id="prixProduit" type="text" [(ngModel)]="produit.prixHT" name="prix" class="form-control form-control-lg">
+          </div>
+          <!--<button type="button" class="btn btn-primary" (click)="goBack()">Retour à la liste</button>-->
+          <!--<button type="button" class="btn btn-danger" *ngIf="! ajout" (click)="supprimer(produit.ref)">Supprimer le produit</button>-->
 
-    <button type="button" class="btn btn-primary" (click)="goBack()">Retour à la liste</button>
-    <button type="button" class="btn btn-danger" *ngIf="! ajout" (click)="supprimer(p.ref)">Supprimer le produit</button>
+          <button type="submit" class="btn btn-success" *ngIf="! ajout" (click)="modifier()">Sauvegarder les modifications</button>
+          <button type="submit" class="btn btn-success" *ngIf="ajout" (click)="ajouter()">Ajouter le produit</button>
 
-    <button type="submit" class="btn btn-success" *ngIf="! ajout" (click)="modifier()">Sauvegarder les modifications</button>
-    <button type="submit" class="btn btn-success" *ngIf="ajout" (click)="ajouter()">Ajouter le produit</button>
+        </form>
+      </mat-expansion-panel>
+      <mat-expansion-panel hideToggle="true" disabled="{{disabledAjoutCategorie}}">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Categories
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="descriptionPanel">Modifier les categories du produit</div>
+            <mat-icon>details</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-form-field class="demo-chip-list">
+          <mat-chip-list #chipList>
+            <mat-chip *ngFor="let categorie of produit.arrayCategorie" [selectable]="selectable"
+                      [removable]="removable" (remove)="remove(categorie)">
+              {{categorie.nomCat}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur"
+              (matChipInputTokenEnd)="add($event)" />
+          </mat-chip-list>
+        </mat-form-field>
+      </mat-expansion-panel>
+    </mat-accordion>
 
-  </form>
+  </div>
 
 </div>
 

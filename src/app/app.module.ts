@@ -17,6 +17,16 @@ import { CategoriesComponent } from './categories/categories.component';
 import { CategorieBusinessService } from '../../e-commerce-ui-common/business/categorie-business.service';
 import {HttpClientModule} from '@angular/common/http';
 import { DetailCategorieComponent } from './detail-categorie/detail-categorie.component';
+// angular material
+import {MatChipsModule,MatIconModule,MatFormFieldModule} from "@angular/material";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+//Tool tip angular material
+import {MatTooltipModule} from '@angular/material/tooltip';
+//Modal bootstrap
+import { ModalModule } from 'ngx-modialog';
+import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
+// Angular material expansion
+import {MatExpansionModule} from '@angular/material/expansion';
 
 const appRoutes: Routes = [
 
@@ -39,7 +49,7 @@ const appRoutes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'detail/:id',
+    path: 'admin/produit/detail/:id',
     component: DetailProduitComponent,
     data: { title: 'Détail produit' }
   },
@@ -77,9 +87,17 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
+    MatChipsModule, // angular material chips
+    MatIconModule, // utilisation des icons de angular material
+    BrowserAnimationsModule,// utilisation des animations de angular material
+    MatFormFieldModule,//utilisation des formulaires de angular material
     FormsModule,
+    ModalModule.forRoot(),// Modal boostrap
+    BootstrapModalModule,// Modal boostrap
     HttpModule, // Utilisation du module http
     HttpClientModule,
+    MatExpansionModule, // angular material expans
+    MatTooltipModule,//Tool tip angular material
     CollapseModule.forRoot(), // Pour ngx bootstrap
     BsDropdownModule.forRoot(), // Pour ngx bootstrap
     RouterModule.forRoot( // Pour le module routing
