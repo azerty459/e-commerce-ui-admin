@@ -2,31 +2,48 @@
 
 <p id="message">{{message}}</p>
 
-<div *ngIf="p">
+<i class="material-icons">arrow_back</i>
+<div *ngIf="produit">
 
   <form>
     <div class="form-group">
       <label for="referenceProduit">Référence</label>
-      <input id="referenceProduit" type="text" [(ngModel)]="p.ref" name="reference" class="form-control form-control-lg" [attr.disabled]="! ajout ? 'disabled' : null">
+      <input id="referenceProduit" type="text" [(ngModel)]="produit.ref" name="reference" class="form-control form-control-lg" [attr.disabled]="! ajout ? 'disabled' : null">
     </div>
 
     <div class="form-group">
       <label for="nomProduit">Nom</label>
-      <input id="nomProduit" type="text" [(ngModel)]="p.nom" name="nom" class="form-control form-control-lg">
+      <input id="nomProduit" type="text" [(ngModel)]="produit.nom" name="nom" class="form-control form-control-lg">
     </div>
 
     <div class="form-group">
       <label for="descProduit">Description</label>
-      <input id="descProduit" type="text" [(ngModel)]="p.description" name="description" class="form-control form-control-lg">
+      <input id="descProduit" type="text" [(ngModel)]="produit.description" name="description" class="form-control form-control-lg">
     </div>
 
     <div class="form-group">
       <label for="prixProduit">Prix HT</label>
-      <input id="prixProduit" type="text" [(ngModel)]="p.prixHT" name="prix" class="form-control form-control-lg">
+      <input id="prixProduit" type="text" [(ngModel)]="produit.prixHT" name="prix" class="form-control form-control-lg">
     </div>
-
+    <div class="form-group">
+      <label for="prixProduit">Categories</label>
+      <mat-form-field class="demo-chip-list">
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let categorie of produit.arrayCategorie" [selectable]="selectable"
+                    [removable]="removable" (remove)="remove(categorie)">
+            {{categorie.nomCat}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="add($event)" />
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
     <button type="button" class="btn btn-primary" (click)="goBack()">Retour à la liste</button>
-    <button type="button" class="btn btn-danger" *ngIf="! ajout" (click)="supprimer(p.ref)">Supprimer le produit</button>
+    <button type="button" class="btn btn-danger" *ngIf="! ajout" (click)="supprimer(produit.ref)">Supprimer le produit</button>
 
     <button type="submit" class="btn btn-success" *ngIf="! ajout" (click)="modifier()">Sauvegarder les modifications</button>
     <button type="submit" class="btn btn-success" *ngIf="ajout" (click)="ajouter()">Ajouter le produit</button>

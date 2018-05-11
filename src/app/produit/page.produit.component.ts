@@ -30,29 +30,24 @@ export class ProduitComponent implements OnInit {
     this.produits.subscribe(value => this.nombreDeProduit = value.length);
   }
 
-  supprimer(ref: String) {
-    // if (confirm('Êtes-vous certain(e) de vouloir supprimer ce produit?')) {
-    //   this.produitBusiness.deleteProduit(ref).subscribe(() => this.rafraichirListeProduit());
-    // }
-    const dialogRef = this.modal.alert()
+  supprimer(produit:Produit) {
+    const dialogRef = this.modal.confirm()
       .size('lg')
-      .showClose(true)
-      .title('A simple Alert style modal window')
-      .body(`
-            <h4>Alert is a classic (title/body/footer) 1 button modal window that 
-            does not block.</h4>
-            <b>Configuration:</b>
-            <ul>
-                <li>Non blocking (click anywhere outside to dismiss)</li>
-                <li>Size large</li>
-                <li>Dismissed with default keyboard key (ESC)</li>
-                <li>Close wth button click</li>
-                <li>HTML content</li>
-            </ul>`)
+      .isBlocking(true)
+      .showClose(false)
+      .keyboard(27)
+      .title('Attention vous allez supprimer un produit ! ')
+      .body('<p>Référence: '+produit.ref+'</p>' +
+        '<p>Nom: '+produit.nom+'</p>' +
+        '<p>Description: '+produit.description+'</p>' +
+        '<p>Prix HT: '+produit.prixHT+'</p>')
+      .okBtn('Supprimer')
+      .okBtnClass('btn btn-danger')
+      .cancelBtn('Annuler')
       .open();
-
     dialogRef.result
-      .then( result => alert(`The result is: ${result}`) );
+      .then(() => this.produitBusiness.deleteProduit(produit.ref).subscribe(() => this.rafraichirListeProduit())  )
+      .catch(() => null); // Pour éviter l'erreur de promise dans console.log
   }
 
   rafraichirAjout() {

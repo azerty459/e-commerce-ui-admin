@@ -16,10 +16,13 @@ import { DetailProduitComponent } from './detail-produit/detail-produit.componen
 import { CategoriesComponent } from './categories/categories.component';
 import { CategorieBusinessService } from '../../e-commerce-ui-common/business/categorie-business.service';
 import {HttpClientModule} from '@angular/common/http';
+// angular material
+import {MatChipsModule,MatIconModule,MatFormFieldModule} from "@angular/material";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 //Modal bootstrap
 import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
-
 const appRoutes: Routes = [
 
   {
@@ -63,6 +66,10 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
+    MatChipsModule, // angular material chips
+    MatIconModule, // utilisation des icons de angular material
+    BrowserAnimationsModule,// utilisation des animations de angular material
+    MatFormFieldModule,//utilisation des formulaires de angular material
     FormsModule,
     ModalModule.forRoot(),// Modal boostrap
     BootstrapModalModule,// Modal boostrap
