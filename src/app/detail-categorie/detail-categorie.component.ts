@@ -111,7 +111,9 @@ export class DetailCategorieComponent implements OnInit {
       this.isError = true;
     } else {
       this.isError = false;
-      this.categorieBusiness.ajouterCategorieParent(this.nomNouvelleCategorie).subscribe(() => this.message = 'La catégorie parent a été ajoutée.');
+      this.categorieBusiness.ajouterCategorieParent(this.nomNouvelleCategorie).subscribe(() => {
+          this.message = 'La catégorie parent a été ajoutée.';
+        });
     }
 
   }
@@ -124,7 +126,20 @@ export class DetailCategorieComponent implements OnInit {
     } else {
       this.isError = false;
       this.categorieBusiness.ajouterCategorieEnfant(this.nomNouvelleCategorie, nomPere).subscribe(
-        () => this.message = 'La catégorie enfant a été ajoutée.');
+        () => {
+          this.message = 'La catégorie enfant a été ajoutée.';
+          // Mettre à jour la liste des sous-catégories
+          this.sousCategories = this.categorieBusiness.sousCategories(this.nomcategorieParente);
+          this.sousCategories.subscribe( categories => {
+            this.listSousCategories = categories as Categorie[];
+            // Vérifier qu'il y a bien des sous-catégories à afficher
+            if(this.listSousCategories.length !== 0) {
+              this.sousCatPresentes = true;
+            } else {
+              this.sousCatPresentes = false;
+            }
+          });
+        });
     }
   }
 
