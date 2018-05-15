@@ -38,14 +38,11 @@ export class ProduitComponent implements OnInit {
       .isBlocking(true)
       .showClose(false)
       .keyboard(27)
-      .title('Attention vous allez supprimer un produit ! ')
-      .body('<p>Référence: '+produit.ref+'</p>' +
-        '<p>Nom: '+produit.nom+'</p>' +
-        '<p>Description: '+produit.description+'</p>' +
-        '<p>Prix HT: '+produit.prixHT+'</p>')
-      .okBtn('Supprimer')
+      .title('Suppresion de '+produit.nom+' - '+produit.ref)
+      .body('Comfirmez vous la supression de '+produit.nom+' - '+produit.ref+'?')
+      .okBtn('Comfirmer la suppression')
       .okBtnClass('btn btn-danger')
-      .cancelBtn('Annuler')
+      .cancelBtn('Annuler la supression')
       .open();
     dialogRef.result
       .then(() => this.produitBusiness.deleteProduit(produit.ref).subscribe(() => this.rafraichirListeProduit())  )
