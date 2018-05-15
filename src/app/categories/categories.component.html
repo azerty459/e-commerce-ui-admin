@@ -1,0 +1,62 @@
+<h1>Gestion des catégories de produits</h1>
+
+<p id="message">{{message}}</p>
+
+<div class="row">
+  <div class="margin card">
+    <div class="card-header">
+      <strong>Filtres</strong>
+    </div>
+    <div class="card-body">
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="margin card">
+    <div class="card-header">
+      <p> </p>
+      <a [routerLink]="['./detailcategorie', 'nouveauparent']"><button class="btn btn-success">Ajouter une catégorie parent</button></a>
+    </div>
+    <div class="card-body">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+              <th>Nom</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <ng-container *ngIf="categories; else pasDeCategorie">
+              <tr id="test" *ngFor="let c of categories | async; let i = index">
+                <td><p>{{c.nomCat}}</p></td>
+                <div id="buttons-right-aligned">
+                  <!--<a [routerLink]="['./detailcategorie','nouvelenfant', c.nomCat ]"><button type="button" class="btn btn-success">Ajouter une sous-catégorie</button></a>-->
+                  <a [routerLink]="['./detailcategorie', 'modif', c.nomCat]"><button type="button" class="btn btn-warning">Modifier</button></a>
+                  <button type="button" class="btn btn-danger" (click)="supprimer(c.nomCat)">Supprimer</button>
+                </div>
+              </tr>
+            </ng-container>
+
+            <ng-template #pasDeCategorie>
+              <tr>
+                <td colspan="4">Pas de catégories à afficher</td>
+              </tr>
+            </ng-template>
+
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="card-header">
+      <p> </p>
+      <a [routerLink]="['./detailcategorie', 'nouveauparent']"><button class="btn btn-success">Ajouter une catégorie parent</button></a>
+    </div>
+  </div>
+</div>
+

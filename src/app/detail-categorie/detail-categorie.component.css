@@ -1,0 +1,19 @@
+label {
+  padding-top: 1em;
+}
+
+button {
+  margin-top: 1em;
+}
+
+#message {
+  font-weight: bold;
+}
+
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
+}
