@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/Observable';
 
 import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
 
+
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.component.html',

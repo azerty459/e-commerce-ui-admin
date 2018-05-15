@@ -32,13 +32,19 @@
             <tbody>
             <ng-container *ngIf="categories; else pasDeCategorie">
               <tr id="test" *ngFor="let c of categories | async; let i = index">
-                <td><p>{{c.nomCat}}</p></td>
+
+                <td>
+                  <p><span *ngFor="let i of ' '.repeat(c.level - 1).split('')">> </span>{{c.nomCat}}</p>
+                </td>
+
                 <div id="buttons-right-aligned">
-                  <!--<a [routerLink]="['./detailcategorie','nouvelenfant', c.nomCat ]"><button type="button" class="btn btn-success">Ajouter une sous-catégorie</button></a>-->
+
                   <a [routerLink]="['./detailcategorie', 'modif', c.nomCat]"><button type="button" class="btn btn-warning">Modifier</button></a>
                   <button type="button" class="btn btn-danger" (click)="supprimer(c.nomCat)">Supprimer</button>
                 </div>
+
               </tr>
+
             </ng-container>
 
             <ng-template #pasDeCategorie>
