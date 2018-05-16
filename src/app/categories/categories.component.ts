@@ -21,8 +21,8 @@ export class CategoriesComponent implements OnInit {
   }
 
   ngOnInit() {
-    // Lancement de la récupération des catégories
-    this.categories = this.categorieBusiness.getAllCategories(); // this.categories = liste d'objets Categorie
+    // Lancement de la récupération des catégories / NB: this.categories = liste d'objets Categorie
+    this.categories = this.categorieBusiness.getAllCategories();
     this.message = '';
   }
 

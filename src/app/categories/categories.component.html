@@ -34,7 +34,7 @@
               <tr id="test" *ngFor="let c of categories | async; let i = index">
 
                 <td>
-                  <p><span *ngFor="let i of ' '.repeat(c.level - 1).split('')">> </span>{{c.nomCat}}</p>
+                  <p><span *ngFor="let i of ' '.repeat(c.level - 1).split('')">> </span>{{c.nomCat}} <span *ngIf="c.chemin !== ''">({{c.chemin}})</span></p>
                 </td>
 
                 <div id="buttons-right-aligned">
