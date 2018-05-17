@@ -110,7 +110,7 @@ export class DetailProduitComponent implements OnInit {
     let nomCat = event.value;
 
     if ((nomCat || '').trim()) {
-      let categorie = new Categorie(null, nomCat);
+      let categorie = new Categorie(null, nomCat, null, null);
       this.produitBusiness.addCategorieProduit(this.produit, categorie).subscribe(value => this.produit.arrayCategorie = value.arrayCategorie);
     }
 

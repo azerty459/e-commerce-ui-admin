@@ -95,7 +95,7 @@ export class DetailCategorieComponent implements OnInit {
         this.listSousCategories = categories as Categorie[];
 
         // Vérifier qu'il y a bien des sous-catégories à afficher
-        if(this.listSousCategories.length !== 0) {
+        if(this.listSousCategories && this.listSousCategories.length !== 0) {
           this.sousCatPresentes = true;
         } else {
           this.sousCatPresentes = false;
@@ -133,7 +133,7 @@ export class DetailCategorieComponent implements OnInit {
           this.sousCategories.subscribe( categories => {
             this.listSousCategories = categories as Categorie[];
             // Vérifier qu'il y a bien des sous-catégories à afficher
-            if(this.listSousCategories.length !== 0) {
+            if(this.listSousCategories && this.listSousCategories.length !== 0) {
               this.sousCatPresentes = true;
             } else {
               this.sousCatPresentes = false;
