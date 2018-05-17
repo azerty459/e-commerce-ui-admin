@@ -17,7 +17,7 @@
   <div class="margin card">
     <div class="card-header">
       <p> </p>
-      <a [routerLink]="['./detailcategorie', 'nouveauparent']"><button class="btn btn-success">Ajouter une catégorie parent</button></a>
+      <a [routerLink]="['./detail', 'ajouter']"><button class="btn btn-success">Ajouter une catégorie parent</button></a>
     </div>
     <div class="card-body">
       <div class="card-body">
@@ -39,7 +39,7 @@
 
                 <div id="buttons-right-aligned">
 
-                  <a [routerLink]="['./detailcategorie', 'modif', c.nomCat]"><button type="button" class="btn btn-warning">Modifier</button></a>
+                  <a [routerLink]="['./detail', c.nomCat]"><button type="button" class="btn btn-warning">Modifier</button></a>
                   <button type="button" class="btn btn-danger" (click)="supprimer(c.nomCat)">Supprimer</button>
                 </div>
 
@@ -61,7 +61,7 @@
     </div>
     <div class="card-header">
       <p> </p>
-      <a [routerLink]="['./detailcategorie', 'nouveauparent']"><button class="btn btn-success">Ajouter une catégorie parent</button></a>
+      <a [routerLink]="['./detail', 'ajouter']"><button class="btn btn-success">Ajouter une catégorie parent</button></a>
     </div>
   </div>
 </div>

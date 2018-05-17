@@ -31,6 +31,11 @@ import {MatExpansionModule} from '@angular/material/expansion';
 const appRoutes: Routes = [
 
   {
+    path: 'admin',
+    component: AccueilComponent,
+    data: { title: 'Admin - Accueil' }
+  },
+  {
     path: 'admin/produit',
     redirectTo: 'admin/produit/1',
   },
@@ -38,15 +43,6 @@ const appRoutes: Routes = [
     path: 'admin/produit/:page',
     component: ProduitComponent,
     data: { title: 'Admin - Produits' }
-  },
-  {
-    path: 'admin',
-    component: AccueilComponent,
-    data: { title: 'Admin - Accueil' }
-  },
-  { path: '',
-    redirectTo: '/admin',
-    pathMatch: 'full',
   },
   {
     path: 'admin/produit/detail/:id',
@@ -59,19 +55,23 @@ const appRoutes: Routes = [
     data: { title: 'Gestion des catégories' }
   },
   {
-    path: 'admin/categories/detailcategorie/modif/:id',
+    path: 'admin/categories/detail/:id',
     component: DetailCategorieComponent,
     data: { title: 'Détail de catégorie'}
   },
   {
-    path: 'admin/categories/detailcategorie/nouveauparent', // Ajout d'une catégorie parent
+    path: 'admin/categories/detail', // Ajout d'une catégorie parent
     component: DetailCategorieComponent,
-    data: { title: 'Ajout de catégorie parent' }
+    data: { title: 'Ajout du catégorie' }
   },
   {
     path: 'admin/categories/detailcategorie/nouvelenfant/:id', // Ajout d'une catégorie enfant
     component: DetailCategorieComponent,
     data: { title: 'Ajout de catégorie enfant'}
+  },
+  { path: '',
+    redirectTo: '/admin',
+    pathMatch: 'full',
   }
   // { path: '**', component: PageNotFoundComponent }
 ];

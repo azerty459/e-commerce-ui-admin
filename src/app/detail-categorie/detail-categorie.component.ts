@@ -76,7 +76,7 @@ export class DetailCategorieComponent implements OnInit {
     this.nomNouvelleCategorie = '';
 
     // Ajout du nom de la catégorie parent si on ajoute une catégorie enfant.
-    if(url === 'admin/categories/detailcategorie/nouveauparent') {
+    if(url === 'admin/categories/ajouter') {
       // On ajoute une catégorie parent
       this.nomcategorieParente = 'Aucune';
       this.enfant = false;
