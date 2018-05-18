@@ -68,12 +68,30 @@ main {
   display: inline-block;
 }
 
+.centrer-block {
+  display: flex;
+  justify-content: center;
+}
+
+.centrer-block > b {
+  margin-top: 2px;
+  margin-right: 5px;
+}
+
 .text-align-left {
   text-align: left;
 }
 
 .text-align-right {
   text-align: right;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.margin-none {
+  margin: 0 !important;
 }
 
 .margin {

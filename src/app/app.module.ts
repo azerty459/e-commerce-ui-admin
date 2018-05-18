@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { AccueilComponent } from './accueil/accueil.component';
@@ -18,7 +18,10 @@ import { CategorieBusinessService } from '../../e-commerce-ui-common/business/ca
 import {HttpClientModule} from '@angular/common/http';
 import { DetailCategorieComponent } from './detail-categorie/detail-categorie.component';
 // angular material
-import {MatChipsModule,MatIconModule,MatFormFieldModule} from "@angular/material";
+import {
+  MatChipsModule, MatIconModule, MatFormFieldModule, MatAutocompleteModule, MatInputModule,
+  MatRadioModule
+} from "@angular/material";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Tool tip angular material
 import {MatTooltipModule} from '@angular/material/tooltip';
@@ -55,19 +58,14 @@ const appRoutes: Routes = [
     data: { title: 'Gestion des catégories' }
   },
   {
-    path: 'admin/categories/detail/:id',
-    component: DetailCategorieComponent,
-    data: { title: 'Détail de catégorie'}
-  },
-  {
-    path: 'admin/categories/detail', // Ajout d'une catégorie parent
+    path: 'admin/categories/detail/ajouter',
     component: DetailCategorieComponent,
     data: { title: 'Ajout du catégorie' }
   },
   {
-    path: 'admin/categories/detailcategorie/nouvelenfant/:id', // Ajout d'une catégorie enfant
+    path: 'admin/categories/detail/:id',
     component: DetailCategorieComponent,
-    data: { title: 'Ajout de catégorie enfant'}
+    data: { title: 'Détail de catégorie'}
   },
   { path: '',
     redirectTo: '/admin',
@@ -91,7 +89,11 @@ const appRoutes: Routes = [
     MatIconModule, // utilisation des icons de angular material
     BrowserAnimationsModule,// utilisation des animations de angular material
     MatFormFieldModule,//utilisation des formulaires de angular material
+    MatAutocompleteModule, // Utilisation des auto complete de angular material
+    MatInputModule, // Utilisation des input d'angular material
+    MatRadioModule, // Utilisation des radio button
     FormsModule,
+    ReactiveFormsModule,
     ModalModule.forRoot(),// Modal boostrap
     BootstrapModalModule,// Modal boostrap
     HttpModule, // Utilisation du module http

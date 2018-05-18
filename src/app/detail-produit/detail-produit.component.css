@@ -27,4 +27,6 @@
 .descriptionPanel{
   margin: auto;
 }
-
+.mat-input-wrapper {
+  width: 100%;
+}
