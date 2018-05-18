@@ -20,14 +20,19 @@ export class DetailCategorieComponent implements OnInit {
   nomNouvelleCategorie: string;
 
   /**
-   * Nom de la catégorie parente d'une catégorie
+   * Nom de la catégorie
    */
-  nomcategorieParente: string;
+  nomCategorie: string;
 
   /**
    * Message à afficher après une action
    */
   message: string;
+
+  /**
+   * Parent direct de la catégorie
+   */
+  parent: string;
 
   /**
    * Indique si on ajoute une catégorie enfant d'une autre catégorie
@@ -75,20 +80,20 @@ export class DetailCategorieComponent implements OnInit {
     const url = this.route.snapshot.routeConfig.path;
     this.nomNouvelleCategorie = '';
 
-    // Ajout du nom de la catégorie parent si on ajoute une catégorie enfant.
+    // Ajout du nom de la catégorie si on ajoute une catégorie enfant.
     if(url === 'admin/categories/ajouter') {
       // On ajoute une catégorie parent
-      this.nomcategorieParente = 'Aucune';
+      this.nomCategorie = 'Aucune';
       this.enfant = false;
     }
     else {
-      // cas où on ajoute une catégorie enfant à une catégorie père de référence 'id'
+      // cas où on ajoute une catégorie enfant à une catégorie de référence 'id'
       const refCategorie = this.route.snapshot.paramMap.get('id');
-      this.nomcategorieParente = refCategorie;
+      this.nomCategorie = refCategorie;
       this.enfant = true;
 
       // Aller chercher les sous-catégories de la catégorie examinée dans la page de détail
-      this.sousCategories = this.categorieBusiness.sousCategories(this.nomcategorieParente);
+      this.sousCategories = this.categorieBusiness.sousCategories(this.nomCategorie);
 
       // Récupérer une liste de Categorie
       this.sousCategories.subscribe( categories => {
@@ -129,7 +134,7 @@ export class DetailCategorieComponent implements OnInit {
         () => {
           this.message = 'La catégorie enfant a été ajoutée.';
           // Mettre à jour la liste des sous-catégories
-          this.sousCategories = this.categorieBusiness.sousCategories(this.nomcategorieParente);
+          this.sousCategories = this.categorieBusiness.sousCategories(this.nomCategorie);
           this.sousCategories.subscribe( categories => {
             this.listSousCategories = categories as Categorie[];
             // Vérifier qu'il y a bien des sous-catégories à afficher

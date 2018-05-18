@@ -1,23 +1,41 @@
 <h1>Gestion des catégories</h1>
 
+<div class="container">
+
+
+
+
 <p id="message" [class.error]="isError" [class.success]="!isError">{{message}}</p>
 
 <!-- Ajouter une catégorie enfant à une catégorie existante -->
 <div *ngIf="enfant">
-  <label for="nomCategorieParente">Nom de la catégorie:</label>
-  <input type="text" id="nomCategorieParente" [(ngModel)]="nomcategorieParente" class="form-control form-control-lg" name="nomParent" [attr.disabled]=true>
+  <div class="row">
+    <label for="nomCat" class="col-sm-3">Nom de la catégorie</label>
+    <input type="text" id="nomCat" [(ngModel)]="nomCategorie" class="col-sm-9" name="nomCategorie">
+  </div>
 
-  <label for="ulsouscat">Les sous-catégories de {{nomcategorieParente}}:</label>
+  <div class="row">
+    <label for="catParent" class="col-sm-3">Catégorie parente:</label>
+    <input type="text" id="catParent" [(ngModel)]="parent" class="col-sm-9" name="nomParent">
+  </div>
 
-  <ul id="ulsouscat" *ngIf="sousCatPresentes;else pas_de_sous_categories">
-    <li *ngFor="let souscat of listSousCategories">{{souscat.nomCat}}</li>
-  </ul>
+  <div class="row">
+    <label for="ulsouscat" class="col-sm-3">Les sous-catégories de {{nomCategorie}}</label>
+    <div class="row">
+      <ul id="ulsouscat" *ngIf="sousCatPresentes;else pas_de_sous_categories">
+        <li *ngFor="let souscat of listSousCategories">{{souscat.nomCat}}</li>
+      </ul>
+    </div>
+  </div>
 
-  <ng-template #pas_de_sous_categories><p>Pas de sous-catégories</p></ng-template>
+  <div class="row">
+    <ng-template #pas_de_sous_categories><p>Pas de sous-catégories</p></ng-template>
 
-  <label for="nomCategorie">Ajouter une sous catégorie à {{nomcategorieParente}}:</label>
-  <input type="text" id="nomCategorie" [(ngModel)]="nomNouvelleCategorie" class="form-control form-control-lg" name="nomcat">
-  <button *ngIf="enfant" type="submit" class="btn btn-success" (click)="ajouterEnfant(nomcategorieParente)">Ajouter la sous-catégorie</button>
+    <label for="nomCategorie" class="col-sm-3">Ajouter une sous-catégorie à {{nomCategorie}}:</label>
+    <input type="text" id="nomCategorie" [(ngModel)]="nomNouvelleCategorie" class="col-sm-9" name="nomcat">
+    <button *ngIf="enfant" type="submit" class="btn btn-success" (click)="ajouterEnfant(nomCategorie)">Ajouter une nouvelle sous-catégorie</button>
+  </div>
+
 
 </div>
 
@@ -32,7 +50,7 @@
 
 
 
-
+</div>
 
 
 
