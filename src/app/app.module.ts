@@ -27,7 +27,11 @@ import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 // Angular material expansion
 import {MatExpansionModule} from '@angular/material/expansion';
-
+import {UploadImgComponent} from "./utilitaires/upload-img/upload-img.component";
+//Teradata covalent library
+import { CovalentFileModule } from '@covalent/core/file';
+//Angular card
+import {MatCardModule} from '@angular/material/card';
 const appRoutes: Routes = [
 
   {
@@ -84,9 +88,13 @@ const appRoutes: Routes = [
     DetailProduitComponent,
     CategoriesComponent,
     DetailCategorieComponent,
+    UploadImgComponent
   ],
   imports: [
     BrowserModule,
+    //Teradata covalent library
+    CovalentFileModule,
+    MatCardModule,
     MatChipsModule, // angular material chips
     MatIconModule, // utilisation des icons de angular material
     BrowserAnimationsModule,// utilisation des animations de angular material
@@ -105,7 +113,7 @@ const appRoutes: Routes = [
       { enableTracing: false } // <-- debugging purposes only
     ),
   ],
-  providers: [ProduitBusiness, CategorieBusinessService],
+  providers: [ProduitBusiness, CategorieBusinessService, UploadImgComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

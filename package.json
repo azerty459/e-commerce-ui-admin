@@ -29,7 +29,8 @@
     "ngx-bootstrap": "^2.0.5",
     "ngx-modialog": "^5.0.0",
     "rxjs": "^5.5.10",
-    "zone.js": "^0.8.19"
+    "zone.js": "^0.8.19",
+    "@covalent/core": "latest"
   },
   "devDependencies": {
     "@angular/cli": "~1.7.3",

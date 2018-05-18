@@ -27,4 +27,25 @@
 .descriptionPanel{
   margin: auto;
 }
+.photoCard{
+  max-width: 30%;
+  min-width: 200px;
+  margin: 10px;
+}
+.rowPhoto{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.rowUpload{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+img{
+  padding: 5px;
+}
+app-upload-img{
+  margin-bottom: 10px;
+}
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
@@ -8,6 +8,7 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material';
 import {Categorie} from "../../../e-commerce-ui-common/models/Categorie";
 import {Modal} from "ngx-modialog/plugins/bootstrap";
+import {UploadImgComponent} from "../utilitaires/upload-img/upload-img.component";
 
 @Component({
   selector: 'app-detail-produit',
@@ -15,32 +16,28 @@ import {Modal} from "ngx-modialog/plugins/bootstrap";
   styleUrls: ['./detail-produit.component.css']
 })
 export class DetailProduitComponent implements OnInit {
-  visible: boolean = true;
+  @ViewChild('photo') photo;
   selectable: boolean = true;
   removable: boolean = true;
   addOnBlur: boolean = true;
   positionBeforeTooltip = 'before';
-  positionBelowTooltip = 'below';
   positionAfterTooltip = 'after';
-
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA];
-
   message: string;
   ajout: boolean;
   cacherAlert: boolean = true;
-
   public observableProduit: Observable<Produit>;
   public produit: Produit;
-
   public disabledAjoutCategorie: boolean;
 
   constructor(
+    private uploadImg: UploadImgComponent,
     private modal: Modal,
     private route: ActivatedRoute,
     private produitBusiness: ProduitBusiness,
     private location: Location
-  ) {}
+) {}
 
   ngOnInit() {
     this.getProduit();
@@ -60,11 +57,8 @@ export class DetailProduitComponent implements OnInit {
       this.observableProduit.subscribe(
         value => this.produit = value
       )
-
     }
 
-    console.log(this.produit); // UNDEFINED
-    // console.log(this.ajout);
   }
 
   supprimer(produit:Produit) {
@@ -127,8 +121,6 @@ export class DetailProduitComponent implements OnInit {
       this.produitBusiness.deleteCategorieProduit(this.produit,categorie).subscribe();
     }
   }
-
-
 
 }
 
