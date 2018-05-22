@@ -5,6 +5,7 @@ import 'rxjs/add/operator/mergeMap';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import {PreviousRouteBusiness} from "../../e-commerce-ui-common/business/previous-route.business";
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ import { Title } from '@angular/platform-browser';
 export class AppComponent implements OnInit {
 
   constructor(
+    private previousRouteBusiness: PreviousRouteBusiness,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private titleService: Title

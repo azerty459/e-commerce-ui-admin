@@ -5,7 +5,7 @@
 <div id="mainContainer">
   <div class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>
   <div id="toolbar">
-    <i class="material-icons backArrow" matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip" (click)="goBack()">arrow_back</i>
+    <app-retour [urlPrecedenteAttendue]="urlPrecedenteAttendue" matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip"></app-retour>
     <button type="button" class="btn btn-danger pull-right" matTooltip="Supprimer ce produit" [matTooltipPosition]="positionBeforeTooltip"  *ngIf="! ajout" (click)="supprimer(produit)">
       <i class="material-icons " >delete</i>
     </button>
@@ -16,7 +16,7 @@
       <mat-expansion-panel [expanded]="true">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            Details
+              Details
           </mat-panel-title>
           <mat-panel-description>
             <div class="descriptionPanel">Modifier les details du produit</div>

@@ -9,6 +9,7 @@ import {MatChipInputEvent} from '@angular/material';
 import {Categorie} from "../../../e-commerce-ui-common/models/Categorie";
 import {Modal} from "ngx-modialog/plugins/bootstrap";
 import {UploadImgComponent} from "../utilitaires/upload-img/upload-img.component";
+import {PreviousRouteBusiness} from "../../../e-commerce-ui-common/business/previous-route.business";
 
 @Component({
   selector: 'app-detail-produit',
@@ -20,6 +21,7 @@ export class DetailProduitComponent implements OnInit {
   selectable: boolean = true;
   removable: boolean = true;
   addOnBlur: boolean = true;
+  urlPrecedenteAttendue ="/admin/produit";
   positionBeforeTooltip = 'before';
   positionAfterTooltip = 'after';
   // Enter, comma
@@ -34,6 +36,7 @@ export class DetailProduitComponent implements OnInit {
   constructor(
     private uploadImg: UploadImgComponent,
     private modal: Modal,
+    private previousRouteBusiness : PreviousRouteBusiness,
     private route: ActivatedRoute,
     private produitBusiness: ProduitBusiness,
     private location: Location
@@ -93,10 +96,6 @@ export class DetailProduitComponent implements OnInit {
         this.message = "Votre produit a été correctement ajouté";
         this.disabledAjoutCategorie = false;
       });
-  }
-
-  goBack(): void {
-    this.location.back();
   }
 
   add(event: MatChipInputEvent): void {

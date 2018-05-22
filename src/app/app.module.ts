@@ -2,17 +2,21 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-
+//business retour
+import { PreviousRouteBusiness } from '../../e-commerce-ui-common/business/previous-route.business';
 import { AppComponent } from './app.component';
 import { AccueilComponent } from './accueil/accueil.component';
 import { ProduitComponent } from './produit/page.produit.component';
 import {RouterModule, Routes} from '@angular/router';
 import {HttpModule} from '@angular/http';
-
 import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {AlertModule, CollapseModule} from 'ngx-bootstrap';
 import {ProduitBusiness} from '../../e-commerce-ui-common/business/produit.business';
 import { DetailProduitComponent } from './detail-produit/detail-produit.component';
+import {
+  RetourComponent
+
+} from '../../e-commerce-ui-common/utilitaires/retour/retour.component'
 import { CategoriesComponent } from './categories/categories.component';
 import { CategorieBusinessService } from '../../e-commerce-ui-common/business/categorie-business.service';
 import {HttpClientModule} from '@angular/common/http';
@@ -88,7 +92,8 @@ const appRoutes: Routes = [
     DetailProduitComponent,
     CategoriesComponent,
     DetailCategorieComponent,
-    UploadImgComponent
+    UploadImgComponent,
+    RetourComponent,
   ],
   imports: [
     BrowserModule,
@@ -113,7 +118,9 @@ const appRoutes: Routes = [
       { enableTracing: false } // <-- debugging purposes only
     ),
   ],
-  providers: [ProduitBusiness, CategorieBusinessService, UploadImgComponent],
+  providers: [ProduitBusiness, CategorieBusinessService, UploadImgComponent, PreviousRouteBusiness],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+    constructor(){}
+}

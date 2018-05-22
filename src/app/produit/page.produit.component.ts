@@ -6,6 +6,7 @@ import { Overlay } from 'ngx-modialog';
 import { Modal } from 'ngx-modialog/plugins/bootstrap';
 import {Router} from "@angular/router";
 
+
 @Component({
   selector: 'app-produit',
   templateUrl: './page.produit.component.html',
