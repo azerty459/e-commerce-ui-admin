@@ -3,27 +3,29 @@
 <div class="container">
 
 
-
-
 <p id="message" [class.error]="isError" [class.success]="!isError">{{message}}</p>
 
 <!-- Ajouter une catégorie enfant à une catégorie existante -->
-<div *ngIf="enfant">
+<div id="form" *ngIf="enfant">
   <div class="row">
-    <label for="nomCat" class="col-sm-3">Nom de la catégorie</label>
-    <input type="text" id="nomCat" [(ngModel)]="nomCategorie" class="col-sm-9" name="nomCategorie">
+    <label for="nomCat" class="col-sm-3 col-lg-3">Nom de la catégorie</label>
+    <input type="text" id="nomCat" [(ngModel)]="nomCategorie" class="col-sm-9 col-lg-9" name="nomCategorie">
   </div>
 
   <div class="row">
     <label for="catParent" class="col-sm-3">Catégorie parente:</label>
-    <input type="text" id="catParent" [(ngModel)]="parent" class="col-sm-9" name="nomParent">
+    <select id="catParent" (click)="alerteChangementDeParent()" class="col-sm-3">
+      <option>Aucune</option>
+      <option *ngFor="let cat of parentsPotentiels" [ngValue]="cat" [selected]="parentObj.nom === cat.nomCat">{{cat.nomCat}}</option>
+    </select>
+    <p class="col-sm-3" id="alerte">{{alerte}}</p>
   </div>
 
   <div class="row">
     <label for="ulsouscat" class="col-sm-3">Les sous-catégories de {{nomCategorie}}</label>
-    <div class="row">
-      <ul id="ulsouscat" *ngIf="sousCatPresentes;else pas_de_sous_categories">
-        <li *ngFor="let souscat of listSousCategories">{{souscat.nomCat}}</li>
+    <div>
+      <ul id="ulsouscat" class="col-sm-9" *ngIf="sousCatPresentes;else pas_de_sous_categories">
+        <li *ngFor="let souscat of listSousCategories">{{souscat.nom}}</li>
       </ul>
     </div>
   </div>

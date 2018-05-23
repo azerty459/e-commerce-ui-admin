@@ -2,10 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, UrlSegment} from '@angular/router';
 import {Location} from '@angular/common';
 import {CategorieBusinessService} from '../../../e-commerce-ui-common/business/categorie-business.service';
-import {CategoriesComponent} from '../categories/categories.component';
 import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
 import {Observable} from 'rxjs/Observable';
-import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-detail-categorie',
@@ -30,7 +28,12 @@ export class DetailCategorieComponent implements OnInit {
   message: string;
 
   /**
-   * Parent direct de la catégorie
+   * Parent direct de la catégorie (sous forme d'objet)
+   */
+  parentObj: Categorie;
+
+  /**
+   * Nom de la catégorie parente directement.
    */
   parent: string;
 
@@ -40,9 +43,9 @@ export class DetailCategorieComponent implements OnInit {
   enfant: boolean;
 
   /**
-   * Liste des noms des sous-catégories de la catégorie en cours sur la page de détail (Observable)
+   * Liste des sous-catégories de la catégorie en cours sur la page de détail (Observable)
    */
-  sousCategories: Observable<Categorie[]>;
+   sousCategories: Observable<Categorie[]>;
 
   /**
    * Liste des noms de sous catégories (Tableau de Catégories)
@@ -59,6 +62,20 @@ export class DetailCategorieComponent implements OnInit {
    */
   isError: boolean;
 
+  /**
+   * Liste de toutes les catégories
+   */
+  allCategories: Categorie[];
+
+  /**
+   * Parents potentiels d'une catégorie
+   */
+  parentsPotentiels: Categorie[];
+
+  /**
+   * Message affiché en cas de changement de parent d'une catégorie
+   */
+  alerte: string;
 
 
   constructor(
@@ -69,6 +86,7 @@ export class DetailCategorieComponent implements OnInit {
 
   ngOnInit() {
     this.isError = false;
+    this.alerte = '';
     this.getCategorie();
   }
 
@@ -81,38 +99,69 @@ export class DetailCategorieComponent implements OnInit {
     this.nomNouvelleCategorie = '';
 
     // Ajout du nom de la catégorie si on ajoute une catégorie enfant.
-    if(url === 'admin/categories/ajouter') {
+    if (url === 'admin/categories/ajouter') {
       // On ajoute une catégorie parent
       this.nomCategorie = 'Aucune';
       this.enfant = false;
-    }
-    else {
+
+    } else {
+
       // cas où on ajoute une catégorie enfant à une catégorie de référence 'id'
       const refCategorie = this.route.snapshot.paramMap.get('id');
       this.nomCategorie = refCategorie;
       this.enfant = true;
 
       // Aller chercher les sous-catégories de la catégorie examinée dans la page de détail
-      this.sousCategories = this.categorieBusiness.sousCategories(this.nomCategorie);
+      const details = this.categorieBusiness.getDetails(this.nomCategorie);
 
-      // Récupérer une liste de Categorie
-      this.sousCategories.subscribe( categories => {
-        this.listSousCategories = categories as Categorie[];
+      // Récupérer le détail de la catégorie parente et des sous-catégories.
+      details.subscribe( categories => {
 
-        // Vérifier qu'il y a bien des sous-catégories à afficher
-        if(this.listSousCategories && this.listSousCategories.length !== 0) {
+        this.parentObj = categories['parent'];
+        this.parent = this.parentObj['nom'];
+        this.listSousCategories = categories['sousCategories'];
+
+        // Vérification qu'il y a des sous-catégories
+        if (this.listSousCategories[0]) {
           this.sousCatPresentes = true;
         } else {
           this.sousCatPresentes = false;
         }
+
+        // Récupérer toutes les catégories pour la liste déroulante des catégories parentes.
+        this.parentsPotentiels = [];
+        this.categorieBusiness.getAllCategories().subscribe(
+          (cat) => {
+            this.allCategories = cat as Categorie[];
+
+            // TODO: enlever aussi les sous-categories des sous-catégories
+            // Enlever les sous-catégories de la catégorie dont on examine les détails de la liste des catégories
+            // (on ne peut pas les proposer comme parents potentiels)
+            const idsDejaAjoutees = [];
+            this.allCategories.forEach(c1 => {
+              let estAAjouter = true;
+              this.listSousCategories.forEach(c2 => {
+                if (c1.sontIdentiques(c2)) {
+                  estAAjouter = false;
+                }
+              });
+              // On évite de rajouter des catégories en doublon et la catégorie de départ elle-même
+              if (estAAjouter && idsDejaAjoutees.indexOf(c1.id) < 0 && c1.nomCat !== this.nomCategorie) {
+                idsDejaAjoutees.push(c1.id);
+                this.parentsPotentiels.push(c1);
+              }
+            });
+          }
+        );
       });
     }
   }
 
+
   ajouterParent(): void {
     // Vérifier que ce qui a été entré n'est pas vide.
-    if(this.nomNouvelleCategorie.length === 0) {
-      this.message = "Veuillez renseigner le nom de la catégorie à ajouter";
+    if (this.nomNouvelleCategorie.length === 0) {
+      this.message = 'Veuillez renseigner le nom de la catégorie à ajouter';
       this.isError = true;
     } else {
       this.isError = false;
@@ -124,30 +173,54 @@ export class DetailCategorieComponent implements OnInit {
   }
 
   ajouterEnfant(nomPere: string): void {
+
     // Vérifier que ce qui a été entré n'est pas vide.
-    if(this.nomNouvelleCategorie.length === 0) {
-      this.message = "Veuillez renseigner le nom de la catégorie à ajouter";
+    if (this.nomNouvelleCategorie.length === 0) {
+      this.message = 'Veuillez renseigner le nom de la catégorie à ajouter';
       this.isError = true;
+
     } else {
+
       this.isError = false;
       this.categorieBusiness.ajouterCategorieEnfant(this.nomNouvelleCategorie, nomPere).subscribe(
         () => {
           this.message = 'La catégorie enfant a été ajoutée.';
+          this.getCategorie();
+
           // Mettre à jour la liste des sous-catégories
-          this.sousCategories = this.categorieBusiness.sousCategories(this.nomCategorie);
+          this.sousCategories = this.categorieBusiness.getDetails(this.nomCategorie);
           this.sousCategories.subscribe( categories => {
             this.listSousCategories = categories as Categorie[];
+
+            // Conversion de listSousCategories en tableau pour itérer dessus dans le HTML
+            const array = [];
+            for (const i in this.listSousCategories) {
+              if (this.listSousCategories.hasOwnProperty(i)) {
+                array.push(this.listSousCategories[i]);
+              }
+            }
+            this.listSousCategories = array;
+
             // Vérifier qu'il y a bien des sous-catégories à afficher
-            if(this.listSousCategories && this.listSousCategories.length !== 0) {
+            if (this.listSousCategories && this.listSousCategories.length !== 0) {
               this.sousCatPresentes = true;
             } else {
               this.sousCatPresentes = false;
             }
           });
         });
+
     }
   }
 
+  /**
+   * Alerte l'utilisateur sur les risques liés au changement de parent d'une catégorie.
+   */
+  alerteChangementDeParent(): void {
+
+    this.alerte = "Message d'alerte."
+
+  }
 
 
   goBack(): void {

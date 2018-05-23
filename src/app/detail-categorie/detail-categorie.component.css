@@ -1,6 +1,6 @@
-label {
-  padding-top: 1em;
-}
+/*label {*/
+  /*padding-top: 1em;*/
+/*}*/
 
 button {
   margin-top: 1em;
@@ -10,7 +10,7 @@ button {
   font-weight: bold;
 }
 
-.error {
+.error, #alerte {
   color: red;
 }
 
@@ -20,4 +20,12 @@ button {
 
 li {
   list-style-type: none;
+}
+
+#form {
+  margin-right: 10%;
+}
+
+.row {
+  padding-top: 1em;
 }
