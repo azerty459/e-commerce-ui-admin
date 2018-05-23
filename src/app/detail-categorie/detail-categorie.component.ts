@@ -8,6 +8,7 @@ import {Observable} from 'rxjs/Observable';
 import {startWith} from 'rxjs/operators/startWith';
 import {map} from 'rxjs/operators/map';
 import {Component} from "@angular/core";
+import {ErreurComponent} from "../erreur/erreur.component";
 
 @Component({
   selector: 'app-detail-categorie',
@@ -20,11 +21,6 @@ export class DetailCategorieComponent implements OnInit {
    * Nom de la nouvelle catégorie en cas de création.
    */
   public nomNouvelleCategorie: string;
-
-  /**
-   * Nom de la catégorie parente d'une catégorie
-   */
-  public nomcategorieParente: string;
 
   /**
    * Message à afficher après une action
@@ -92,6 +88,12 @@ export class DetailCategorieComponent implements OnInit {
    */
   public formGroupQuestion: FormGroup;
 
+  /**
+   * Categorie
+   */
+  public categorie: Categorie;
+
+
   constructor(private route: ActivatedRoute,
               private categorieBusiness: CategorieBusinessService,
               private location: Location,
@@ -123,32 +125,37 @@ export class DetailCategorieComponent implements OnInit {
       this.categoriesObservable.subscribe(
         categories => {
           this.categories = categories as Categorie[];
-          if(this.categories != undefined){
+          if (this.categories != undefined) {
             // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
             this.categoriesObservable = this.choixCategorieFormControl.valueChanges.pipe(
               startWith(''),
               map(val => this.categories.filter(categorie => categorie.nomCat.toLowerCase().indexOf(val.toLowerCase()) === 0))
             );
           }
-        })
+        });
     } else {
       // cas où on ajoute une catégorie enfant à une catégorie père de référence 'id'
-      const refCategorie = this.route.snapshot.paramMap.get('id');
-      this.nomcategorieParente = refCategorie;
-      this.enfant = true;
+      const idCategorie = this.route.snapshot.paramMap.get('id');
+      this.categorieBusiness.getCategorieByID(idCategorie).subscribe(value => {
+        if (value.valueOf() instanceof Categorie) {
+          this.categorie = value;
+          this.enfant = true;
+          // Aller chercher les sous-catégories de la catégorie examinée dans la page de détail
+          this.sousCategories = this.categorieBusiness.sousCategories(this.categorie.nomCat);
 
-      // Aller chercher les sous-catégories de la catégorie examinée dans la page de détail
-      this.sousCategories = this.categorieBusiness.sousCategories(this.nomcategorieParente);
+          // Récupérer une liste de Categorie
+          this.sousCategories.subscribe(categories => {
+            this.listSousCategories = categories as Categorie[];
 
-      // Récupérer une liste de Categorie
-      this.sousCategories.subscribe(categories => {
-        this.listSousCategories = categories as Categorie[];
-
-        // Vérifier qu'il y a bien des sous-catégories à afficher
-        if (this.listSousCategories && this.listSousCategories.length !== 0) {
-          this.sousCatPresentes = true;
+            // Vérifier qu'il y a bien des sous-catégories à afficher
+            if (this.listSousCategories && this.listSousCategories.length !== 0) {
+              this.sousCatPresentes = true;
+            } else {
+              this.sousCatPresentes = false;
+            }
+          });
         } else {
-          this.sousCatPresentes = false;
+          this._router.navigate(['page-404'], { skipLocationChange: true });
         }
       });
     }
@@ -157,25 +164,30 @@ export class DetailCategorieComponent implements OnInit {
   /**
    * Permet d'ajouter une catégorie en fonction du cas
    */
-  ajouterCategorie(){
-    if(this.cacherChoixParent){
+  ajouterCategorie() {
+    if (this.cacherChoixParent) {
       this.ajouterParent();
-    }else{
+    } else {
       if (this.nomNouvelleCategorie.length === 0) {
         this.message = "Veuillez renseigner le nom de la catégorie à ajouter";
         this.isError = true;
       } else {
         this.isError = false;
-        this.categorieBusiness.ajouterCategorieEnfant(this.nomNouvelleCategorie, this.inputChoixParent).subscribe(
-          (value) => {
-            console.log(value.valueOf());
-            // si la value instancie un objet categorie, on fait une redirection sinon on affiche le message erreur
-            if(value.valueOf() instanceof Categorie){
-              this._router.navigate(['/admin/categories/detail', this.nomNouvelleCategorie]);
-            }else{
-              this.message = value;
-            }
-          });
+
+        this.categories.forEach(categorie => {
+          if(categorie.nomCat == this.inputChoixParent){
+            this.categorieBusiness.ajouterCategorieEnfant(this.nomNouvelleCategorie, categorie.id).subscribe(
+              (value) => {
+                // si la value instancie un objet categorie, on fait une redirection sinon on affiche le message erreur
+                if (value.valueOf() instanceof Categorie) {
+                  console.log(value);
+                  this._router.navigate(['/admin/categories/detail', value.id]);
+                } else {
+                  this.message = value;
+                }
+              });
+          }
+        });
       }
     }
   }
@@ -187,24 +199,24 @@ export class DetailCategorieComponent implements OnInit {
       this.isError = true;
     } else {
       this.isError = false;
-      this.categorieBusiness.ajouterCategorieParent(this.nomNouvelleCategorie).subscribe(() => {
-        this._router.navigate(['/admin/categories/detail', this.nomNouvelleCategorie]);
+      this.categorieBusiness.ajouterCategorieParent(this.nomNouvelleCategorie).subscribe(value => {
+        this._router.navigate(['/admin/categories/detail', value.id]);
       });
     }
   }
 
-  ajouterEnfant(nomPere: string): void {
+  ajouterEnfant(idPere: number): void {
     // Vérifier que ce qui a été entré n'est pas vide.
     if (this.nomNouvelleCategorie.length === 0) {
       this.message = "Veuillez renseigner le nom de la catégorie à ajouter";
       this.isError = true;
     } else {
       this.isError = false;
-      this.categorieBusiness.ajouterCategorieEnfant(this.nomNouvelleCategorie, nomPere).subscribe(
-        () => {
-          this.message = 'La catégorie enfant a été ajoutée au père: '+nomPere;
+      this.categorieBusiness.ajouterCategorieEnfant(this.nomNouvelleCategorie, idPere).subscribe(
+        categorie => {
+          this.message = 'La catégorie enfant a été ajoutée au père: ' + categorie.nomCat;
           // Mettre à jour la liste des sous-catégories
-          this.sousCategories = this.categorieBusiness.sousCategories(this.nomcategorieParente);
+          this.sousCategories = this.categorieBusiness.sousCategories(this.categorie.nomCat);
           this.sousCategories.subscribe(categories => {
             this.listSousCategories = categories as Categorie[];
             // Vérifier qu'il y a bien des sous-catégories à afficher

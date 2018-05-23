@@ -1,76 +1,68 @@
-<h1>Gestion des catégories</h1>
 
-<p id="message" [class.error]="isError" [class.success]="!isError">{{message}}</p>
-<div id="toolbar">
-  <i class="material-icons backArrow" matTooltip="Revenir en arrière" [matTooltipPosition]="positionApresTooltip"
-     (click)="goBack()">arrow_back</i>
-  <button type="button" class="btn btn-success margin-none pull-right centrer-block"
-          matTooltip="Ajouter cette catégorie" [matTooltipPosition]="positionAvantTooltip" *ngIf="! ajout"
-          (click)="ajouterCategorie()">
-    <b>Sauvegarder la categorie</b><i class="material-icons">save</i>
-  </button>
-</div>
+  <h1>Gestion des catégories</h1>
 
-<!-- Ajouter une catégorie enfant à une catégorie existante -->
-<div *ngIf="enfant">
-  <label for="nomCategorieParente">Nom de la catégorie:</label>
-  <input type="text" id="nomCategorieParente" [(ngModel)]="nomcategorieParente" class="form-control form-control-lg"
-         name="nomParent" [attr.disabled]=true>
+  <p id="message" [class.error]="isError" [class.success]="!isError">{{message}}</p>
+  <div id="toolbar">
+    <i class="material-icons backArrow" matTooltip="Revenir en arrière" [matTooltipPosition]="positionApresTooltip"
+       (click)="goBack()">arrow_back</i>
+    <button *ngIf="enfant; else PasEnfant" type="button" class="btn btn-success margin-none pull-right centrer-block"
+            matTooltip="Ajouter la sous-catégorie" [matTooltipPosition]="positionAvantTooltip"
+            (click)="ajouterEnfant(categorie.id)">
+      <b>Ajouter la sous-catégorie</b><i class="material-icons">save</i>
+    </button>
+    <ng-template #PasEnfant>
+      <button type="button" class="btn btn-success margin-none pull-right centrer-block"
+              matTooltip="Ajouter cette catégorie" [matTooltipPosition]="positionAvantTooltip"
+              (click)="ajouterCategorie()">
+        <b>Sauvegarder la categorie</b><i class="material-icons">save</i>
+      </button>
+    </ng-template>
+  </div>
 
-  <label for="ulsouscat">Les sous-catégories de {{nomcategorieParente}}:</label>
+  <!-- Ajouter une catégorie enfant à une catégorie existante -->
+  <div *ngIf="enfant">
+    <label for="nomCategorieParente">Nom de la catégorie:</label>
+    <input type="text" id="nomCategorieParente" [(ngModel)]="categorie.nomCat" class="form-control form-control-lg"
+           name="nomParent">
 
-  <ul id="ulsouscat" *ngIf="sousCatPresentes;else pas_de_sous_categories">
-    <li *ngFor="let souscat of listSousCategories">{{souscat.nomCat}}</li>
-  </ul>
+    <label for="ulsouscat">Les sous-catégories de {{categorie.nomCat}}:</label>
 
-  <ng-template #pas_de_sous_categories><p>Pas de sous-catégories</p></ng-template>
+    <ul id="ulsouscat" *ngIf="sousCatPresentes;else pas_de_sous_categories">
+      <li *ngFor="let souscat of listSousCategories">{{souscat.nomCat}}</li>
+    </ul>
 
-  <label for="sousCategorie">Ajouter une sous catégorie à {{nomcategorieParente}}:</label>
-  <input type="text" id="sousCategorie" [(ngModel)]="nomNouvelleCategorie" class="form-control form-control-lg"
-         name="nomcat">
-  <button *ngIf="enfant" type="submit" class="btn btn-success" (click)="ajouterEnfant(nomcategorieParente)">Ajouter la
-    sous-catégorie
-  </button>
+    <ng-template #pas_de_sous_categories><p>Pas de sous-catégories</p></ng-template>
 
-</div>
+    <label for="sousCategorie">Ajouter une sous catégorie à {{categorie.nomCat}}:</label>
+    <input type="text" id="sousCategorie" [(ngModel)]="nomNouvelleCategorie" class="form-control form-control-lg"
+           name="nomcat">
+  </div>
 
-<!-- Ajouter une catégorie parent -->
-<div *ngIf="!enfant">
-  <label for="nomCategorie">Ajouter une catégorie:</label>
-  <input type="text" id="nomCategorie" [(ngModel)]="nomNouvelleCategorie" class="form-control form-control-lg"
-         name="nomcat">
-  <div *ngIf="this.categories != undefined">
-    <section class="example-section" [formGroup]="formGroupQuestion">
-      <label class="example-margin">Voulez-vous ajouter un parent à cette catégorie ?</label>
-      <mat-radio-group [(ngModel)]="cacherChoixParent" formControlName="choix">
-        <mat-radio-button class="example-margin">Oui</mat-radio-button>
-        <mat-radio-button class="example-margin" value="true" checked>Non</mat-radio-button>
-      </mat-radio-group>
-    </section>
-    <div [hidden]="cacherChoixParent">
-      <form class="example-form">
-        <mat-form-field class="example-full-width">
-          <input [(ngModel)]="inputChoixParent" type="text" placeholder="Choisissez un parent" aria-label="Number"
-                 matInput [formControl]="choixCategorieFormControl" [matAutocomplete]="auto">
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            <mat-option *ngFor="let categorie of categoriesObservable | async" [value]="categorie.nomCat">
-              {{ categorie.nomCat }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </form>
+  <!-- Ajouter une catégorie parent -->
+  <div *ngIf="!enfant">
+    <label for="nomCategorie">Ajouter une catégorie:</label>
+    <input type="text" id="nomCategorie" [(ngModel)]="nomNouvelleCategorie" class="form-control form-control-lg"
+           name="nomcat">
+    <div *ngIf="this.categories != undefined">
+      <section class="example-section" [formGroup]="formGroupQuestion">
+        <label class="example-margin">Voulez-vous ajouter un parent à cette catégorie ?</label>
+        <mat-radio-group [(ngModel)]="cacherChoixParent" formControlName="choix">
+          <mat-radio-button class="example-margin">Oui</mat-radio-button>
+          <mat-radio-button class="example-margin" value="true" checked>Non</mat-radio-button>
+        </mat-radio-group>
+      </section>
+      <div [hidden]="cacherChoixParent">
+        <form class="example-form">
+          <mat-form-field class="example-full-width">
+            <input [(ngModel)]="inputChoixParent" type="text" placeholder="Choisissez un parent" aria-label="Number"
+                   matInput [formControl]="choixCategorieFormControl" [matAutocomplete]="auto">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+              <mat-option *ngFor="let categorie of categoriesObservable | async" [value]="categorie.nomCat">
+                {{ categorie.nomCat }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </form>
+      </div>
     </div>
   </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-

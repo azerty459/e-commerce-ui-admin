@@ -1,7 +1,6 @@
 <h1 *ngIf="ajout">Ajout d'un produit</h1>
 <h1 *ngIf="!ajout">Modification d'un produit</h1>
 
-
 <div id="mainContainer">
   <div class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>
   <div id="toolbar">
@@ -64,7 +63,7 @@
         <mat-form-field class="demo-chip-list">
           <mat-chip-list #chipList>
             <mat-chip *ngFor="let categorie of produit.arrayCategorie" [selectable]="selectable"
-                      [removable]="removable" (remove)="remove(categorie)">
+                      [removable]="removable" (remove)="supprimerCategorie(categorie)">
               {{categorie.nomCat}}
               <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
             </mat-chip>
@@ -72,7 +71,7 @@
               [matChipInputFor]="chipList"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               [matChipInputAddOnBlur]="addOnBlur"
-              (matChipInputTokenEnd)="add($event)" />
+              (matChipInputTokenEnd)="ajouterCategorie($event)" />
           </mat-chip-list>
         </mat-form-field>
       </mat-expansion-panel>

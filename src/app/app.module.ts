@@ -10,7 +10,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {HttpModule} from '@angular/http';
 
 import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
-import {AlertModule, CollapseModule} from 'ngx-bootstrap';
+import {CollapseModule} from 'ngx-bootstrap';
 import {ProduitBusiness} from '../../e-commerce-ui-common/business/produit.business';
 import { DetailProduitComponent } from './detail-produit/detail-produit.component';
 import { CategoriesComponent } from './categories/categories.component';
@@ -30,6 +30,7 @@ import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 // Angular material expansion
 import {MatExpansionModule} from '@angular/material/expansion';
+import { ErreurComponent } from './erreur/erreur.component';
 
 const appRoutes: Routes = [
 
@@ -37,10 +38,6 @@ const appRoutes: Routes = [
     path: 'admin',
     component: AccueilComponent,
     data: { title: 'Admin - Accueil' }
-  },
-  {
-    path: 'admin/produit',
-    redirectTo: 'admin/produit/1',
   },
   {
     path: 'admin/produit/:page',
@@ -60,16 +57,26 @@ const appRoutes: Routes = [
   {
     path: 'admin/categories/detail/ajouter',
     component: DetailCategorieComponent,
-    data: { title: 'Ajout du catégorie' }
+    data: { title: 'Ajout catégorie' }
   },
   {
     path: 'admin/categories/detail/:id',
     component: DetailCategorieComponent,
-    data: { title: 'Détail de catégorie'}
+    data: { title: 'Détail catégorie'}
   },
-  { path: '',
+  {
+    path: 'page-404',
+    component: ErreurComponent
+  },
+  {
+    path: '',
     redirectTo: '/admin',
     pathMatch: 'full',
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    component: ErreurComponent
   }
   // { path: '**', component: PageNotFoundComponent }
 ];
@@ -82,6 +89,7 @@ const appRoutes: Routes = [
     DetailProduitComponent,
     CategoriesComponent,
     DetailCategorieComponent,
+    ErreurComponent,
   ],
   imports: [
     BrowserModule,
