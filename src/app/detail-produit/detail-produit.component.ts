@@ -50,8 +50,9 @@ export class DetailProduitComponent implements OnInit {
   }
 
   getProduit(): void {
-    const refProduit = this.route.snapshot.paramMap.get('id');
-    if(refProduit === 'nouveau') {
+    const url = this.route.snapshot.routeConfig.path;
+
+    if (url === 'admin/produit/detail/ajouter') {
       this.ajout = true;
       this.produitModifie = new Produit(null,null,null,null, []);
       this.produit = new Produit(null,null,null,null, []);
@@ -59,6 +60,7 @@ export class DetailProduitComponent implements OnInit {
     } else {
       this.ajout = false;
       this.disabledAjoutCategorie = false;
+      const refProduit = this.route.snapshot.paramMap.get('id');
       this.observableProduit = this.produitBusiness.getProduitByRef(refProduit);
       this.observableProduit.subscribe(
         value => {
@@ -67,6 +69,7 @@ export class DetailProduitComponent implements OnInit {
         }
       )
     }
+    console.log(this.ajout);
   }
 
   supprimer(produit:Produit) {
@@ -96,7 +99,7 @@ export class DetailProduitComponent implements OnInit {
   }
 
   ajouter() {
-    this.produitBusiness.addProduit(this.produitModifie.ref, this.produitModifie.nom, this.produitModifie.description, this.produitModifie.prixHT)
+    this.produitBusiness.addProduit(this.produitModifie)
       .subscribe(() => {
         this.cacherAlert = false;
         this.message = "Votre produit a été correctement ajouté";

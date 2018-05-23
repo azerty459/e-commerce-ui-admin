@@ -1,4 +1,5 @@
-<h1>Gestion de la catégorie {{categorie?.nomCat}} - id {{categorie?.id}}</h1>
+<h1 *ngIf="!enfant">Ajout d'une categorie</h1>
+<h1 *ngIf="enfant">Gestion de la catégorie {{categorie?.nomCat}} - id {{categorie?.id}}</h1>
 
 <p id="message" [class.error]="isError" [class.success]="!isError">{{message}}</p>
 <div id="toolbar">

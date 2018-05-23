@@ -1,6 +1,4 @@
 <h1 *ngIf="ajout">Ajout d'un produit</h1>
-<h1 *ngIf="!ajout">Modification d'un produit</h1>
-
 <h1 *ngIf="!ajout">{{produit?.nom}} - {{produit?.ref}}</h1>
 <div id="mainContainer">
   <div class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>

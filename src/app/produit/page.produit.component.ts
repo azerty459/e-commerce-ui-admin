@@ -68,6 +68,6 @@ export class ProduitComponent implements OnInit {
   }
 
   addRedirection(){
-    this._router.navigate(['/admin/produit/detail', "nouveau"]);
+    this._router.navigate(['/admin/produit/detail', "ajouter"]);
   }
 }

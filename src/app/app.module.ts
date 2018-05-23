@@ -2,27 +2,24 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import {FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { FormsModule } from '@angular/forms';
-//business retour
-import { PreviousRouteBusiness } from '../../e-commerce-ui-common/business/previous-route.business';
 import { AppComponent } from './app.component';
+import { RouterModule, Routes } from '@angular/router';
+import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import { CollapseModule } from 'ngx-bootstrap';
+
+import { PreviousRouteBusiness } from '../../e-commerce-ui-common/business/previous-route.business';
+import { ProduitBusiness } from '../../e-commerce-ui-common/business/produit.business';
+import { CategorieBusinessService } from '../../e-commerce-ui-common/business/categorie-business.service';
+
 import { AccueilComponent } from './accueil/accueil.component';
 import { ProduitComponent } from './produit/page.produit.component';
-import {RouterModule, Routes} from '@angular/router';
-import {HttpModule} from '@angular/http';
-import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
-import {CollapseModule} from 'ngx-bootstrap';
-import {ProduitBusiness} from '../../e-commerce-ui-common/business/produit.business';
-import { DetailProduitComponent } from './detail-produit/detail-produit.component';
-import {
-  RetourComponent
-
-} from '../../e-commerce-ui-common/utilitaires/retour/retour.component'
+import { RetourComponent } from '../../e-commerce-ui-common/utilitaires/retour/retour.component';
 import { CategoriesComponent } from './categories/categories.component';
-import { CategorieBusinessService } from '../../e-commerce-ui-common/business/categorie-business.service';
-import {HttpClientModule} from '@angular/common/http';
 import { DetailCategorieComponent } from './detail-categorie/detail-categorie.component';
+import { ErreurComponent } from './erreur/erreur.component';
+import { DetailProduitComponent } from './detail-produit/detail-produit.component';
+
+import {HttpClientModule} from '@angular/common/http';
 // angular material
 import {
   MatChipsModule, MatIconModule, MatFormFieldModule, MatAutocompleteModule, MatInputModule,
@@ -41,7 +38,6 @@ import {UploadImgComponent} from "./utilitaires/upload-img/upload-img.component"
 import { CovalentFileModule } from '@covalent/core/file';
 //Angular card
 import {MatCardModule} from '@angular/material/card';
-import { ErreurComponent } from './erreur/erreur.component';
 
 const appRoutes: Routes = [
 
@@ -50,10 +46,16 @@ const appRoutes: Routes = [
     component: AccueilComponent,
     data: { title: 'Admin - Accueil' }
   },
+  // produit
   {
     path: 'admin/produit/:page',
     component: ProduitComponent,
     data: { title: 'Admin - Produits' }
+  },
+  {
+    path: 'admin/produit/detail/ajouter',
+    component: DetailProduitComponent,
+    data: { title: 'Détail produit' }
   },
   {
     path: 'admin/produit/detail/:id',
@@ -61,7 +63,12 @@ const appRoutes: Routes = [
     data: { title: 'Détail produit' }
   },
   {
-    path: 'admin/categories',
+    path: 'admin/produit',
+    redirectTo: 'admin/produit/1'
+  },
+  // categorie
+  {
+    path: 'admin/categories/:page',
     component: CategoriesComponent,
     data: { title: 'Gestion des catégories' }
   },
@@ -75,6 +82,11 @@ const appRoutes: Routes = [
     component: DetailCategorieComponent,
     data: { title: 'Détail catégorie'}
   },
+  {
+    path: 'admin/categories',
+    redirectTo: 'admin/categories/1'
+  },
+
   {
     path: 'page-404',
     component: ErreurComponent
@@ -120,8 +132,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     ModalModule.forRoot(),// Modal boostrap
     BootstrapModalModule,// Modal boostrap
-    HttpModule, // Utilisation du module http
-    HttpClientModule,
+    HttpClientModule, // Utilisation du module http
     MatExpansionModule, // angular material expans
     MatTooltipModule,//Tool tip angular material
     CollapseModule.forRoot(), // Pour ngx bootstrap
