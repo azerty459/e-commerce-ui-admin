@@ -42,7 +42,8 @@ export class DetailProduitComponent implements OnInit {
     private route: ActivatedRoute,
     private produitBusiness: ProduitBusiness,
     private categorieBusiness: CategorieBusinessService,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -52,7 +53,7 @@ export class DetailProduitComponent implements OnInit {
   getProduit(): void {
     const url = this.route.snapshot.routeConfig.path;
 
-    if (url === 'admin/produit/detail/ajouter') {
+    if (url === 'admin/produit/ajouter') {
       this.ajout = true;
       this.produitModifie = new Produit(null,null,null,null, []);
       this.produit = new Produit(null,null,null,null, []);
@@ -64,8 +65,12 @@ export class DetailProduitComponent implements OnInit {
       this.observableProduit = this.produitBusiness.getProduitByRef(refProduit);
       this.observableProduit.subscribe(
         value => {
-          this.produit = value;
-          this.produitModifie = JSON.parse(JSON.stringify(value));
+          if (value.valueOf() instanceof Produit) {
+            this.produit = value;
+            this.produitModifie = JSON.parse(JSON.stringify(value));
+          } else {
+            this.router.navigate(['page-404'], {skipLocationChange: true});
+          }
         }
       )
     }
@@ -100,22 +105,28 @@ export class DetailProduitComponent implements OnInit {
 
   ajouter() {
     this.produitBusiness.addProduit(this.produitModifie)
-      .subscribe(() => {
-        this.cacherAlert = false;
-        this.message = "Votre produit a été correctement ajouté";
-        this.disabledAjoutCategorie = false;
+      .subscribe((value) => {
+        if (value.valueOf() instanceof Produit) {
+          this.cacherAlert = false;
+          this.message = "Votre produit a été correctement ajouté";
+          this.disabledAjoutCategorie = false;
+          this.ajout = false;
+          this.observableProduit = this.produitBusiness.getProduitByRef(this.produitModifie.ref);
+          this.disabledAjoutCategorie = false;
+          this.observableProduit.subscribe(
+            value => {
+              this.produit = value;
+              this.produitModifie = JSON.parse(JSON.stringify(value));
+            }
+          )
+        } else {
+          this.cacherAlert = false;
+          this.message = "Votre produit ne peut être ajouté, vous devez renseigner la référence, le nom et le prix HT.";
+        }
       },()=>{
         console.log("erreur subscribe ajouter");
       },()=>{
-        this.ajout = false;
-        this.observableProduit = this.produitBusiness.getProduitByRef(this.produitModifie.ref);
-        this.disabledAjoutCategorie = false;
-        this.observableProduit.subscribe(
-          value => {
-            this.produit = value;
-            this.produitModifie = JSON.parse(JSON.stringify(value));
-          }
-        )
+        //TODO Ne fonctionne pas car il y a une valeur retourner dans le subscribe
       });
   }
 

@@ -14,7 +14,7 @@
   <div class="margin card">
     <div class="card-header">
       <strong>Nombre total de produits: {{nombreDeProduit}}</strong>
-      <button class="btn btn-success" (click)="addRedirection()">Ajouter un produit</button>
+      <a [routerLink]="['/admin/produit/ajouter']"><button class="btn btn-success">Ajouter un produit</button></a>
     </div>
     <div class="card-body">
       <div class="card-body">
@@ -38,7 +38,7 @@
                 <td><p>{{produit.description}}</p></td>
                 <td><p>{{produit.prixHT}}</p></td>
                 <td>
-                  <button type="button" class="btn btn-warning" (click)="updateRedirection(produit.ref)">Modifier</button>
+                  <a [routerLink]="['/admin/produit/detail', produit.ref]"><button type="button" class="btn btn-warning">Modifier</button></a>
                 </td>
                 <td>
                   <button type="button" class="btn btn-danger" (click)="supprimer(produit)">Supprimer</button>
@@ -60,7 +60,7 @@
     </div>
     <div class="card-header">
       <strong>Nombre total de produits: {{nombreDeProduit}}</strong>
-      <button class="btn btn-success" (click)="addRedirection()">Ajouter un produit</button>
+      <a [routerLink]="['/admin/produit/ajouter']"><button class="btn btn-success">Ajouter un produit</button></a>
     </div>
   </div>
 </div>

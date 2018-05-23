@@ -5,9 +5,9 @@ import {CategorieBusinessService} from '../../../e-commerce-ui-common/business/c
 import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
+import {startWith} from 'rxjs/operators/startWith';
+import {map} from 'rxjs/operators/map';
 import {Component} from "@angular/core";
-import {ErreurComponent} from "../erreur/erreur.component";
-import {map, startWith} from "rxjs/operators";
 
 @Component({
   selector: 'app-detail-categorie',
@@ -78,9 +78,9 @@ export class DetailCategorieComponent implements OnInit {
   public categories: Categorie[];
 
   /**
-   * Boolean permettant de cacher la lsite déroulante
+   * Boolean permettant de cacher la la liste déroulante
    */
-  public cacherChoixParent: boolean;
+  public cacherChoixParent: boolean = true;
 
   /**
    * Stockage du choix de la liste déroulante
@@ -123,7 +123,7 @@ export class DetailCategorieComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private categorieBusiness: CategorieBusinessService,
               private location: Location,
-              private _router: Router,
+              private router: Router,
               private fb: FormBuilder) {
   }
 
@@ -134,7 +134,7 @@ export class DetailCategorieComponent implements OnInit {
     // Permets de checker sur non le radio bouton par défaut
     this.formGroupQuestion = this.fb.group({
       choix: ['true']
-    });
+    })
   }
 
   /**
@@ -145,7 +145,7 @@ export class DetailCategorieComponent implements OnInit {
     const url = this.route.snapshot.routeConfig.path;
 
     // Ajout du nom de la catégorie si on ajoute une catégorie enfant.
-    if (url === 'admin/categories/detail/ajouter') {
+    if (url === 'admin/categorie/ajouter') {
       // On ajoute une catégorie parent
       this.enfant = false;
       this.categoriesObservable = this.categorieBusiness.getAllCategories();
@@ -214,7 +214,7 @@ export class DetailCategorieComponent implements OnInit {
             );
           });
         } else {
-          this._router.navigate(['page-404'], {skipLocationChange: true});
+          this.router.navigate(['page-404'], {skipLocationChange: true});
         }
       });
     }
@@ -239,7 +239,7 @@ export class DetailCategorieComponent implements OnInit {
                 // si la value instancie un objet categorie, on fait une redirection sinon on affiche le message erreur
                 if (value.valueOf() instanceof Categorie) {
                   console.log(value);
-                  this._router.navigate(['/admin/categories/detail', value.id]);
+                  this.router.navigate(['/admin/categorie/detail', value.id]);
                 } else {
                   this.message = value;
                 }
@@ -258,7 +258,7 @@ export class DetailCategorieComponent implements OnInit {
     } else {
       this.isError = false;
       this.categorieBusiness.ajouterCategorieParent(this.nomNouvelleCategorie).subscribe(value => {
-        this._router.navigate(['/admin/categories/detail', value.id]);
+        this.router.navigate(['/admin/categorie/detail', value.id]);
       });
     }
   }
@@ -313,6 +313,6 @@ export class DetailCategorieComponent implements OnInit {
   }
 
   goBack(): void {
-    this._router.navigate(['/admin/categories']);
+    this.router.navigate(['/admin/categorie']);
   }
 }

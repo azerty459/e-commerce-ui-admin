@@ -48,14 +48,14 @@ const appRoutes: Routes = [
   },
   // produit
   {
+    path: 'admin/produit/ajouter',
+    component: DetailProduitComponent,
+    data: { title: 'Détail produit' }
+  },
+  {
     path: 'admin/produit/:page',
     component: ProduitComponent,
     data: { title: 'Admin - Produits' }
-  },
-  {
-    path: 'admin/produit/detail/ajouter',
-    component: DetailProduitComponent,
-    data: { title: 'Détail produit' }
   },
   {
     path: 'admin/produit/detail/:id',
@@ -68,23 +68,23 @@ const appRoutes: Routes = [
   },
   // categorie
   {
-    path: 'admin/categories/:page',
-    component: CategoriesComponent,
-    data: { title: 'Gestion des catégories' }
-  },
-  {
-    path: 'admin/categories/detail/ajouter',
+    path: 'admin/categorie/ajouter',
     component: DetailCategorieComponent,
     data: { title: 'Ajout catégorie' }
   },
   {
-    path: 'admin/categories/detail/:id',
+    path: 'admin/categorie/:page',
+    component: CategoriesComponent,
+    data: { title: 'Gestion des catégories' }
+  },
+  {
+    path: 'admin/categorie/detail/:id',
     component: DetailCategorieComponent,
     data: { title: 'Détail catégorie'}
   },
   {
-    path: 'admin/categories',
-    redirectTo: 'admin/categories/1'
+    path: 'admin/categorie',
+    redirectTo: 'admin/categorie/1'
   },
 
   {

@@ -48,7 +48,6 @@
 
   <div class="row">
     <ng-template #pas_de_sous_categories><p>Pas de sous-catégories</p></ng-template>
-
     <label for="sousCategorie" class="col-sm-3">Ajouter une sous-catégorie à {{categorie.nomCat}}:</label>
     <input type="text" id="sousCategorie" [(ngModel)]="nomNouvelleCategorie" class="col-sm-9" name="nomcat">
     <button *ngIf="enfant" type="submit" class="btn btn-success" (click)="ajouterEnfant(categorie.id)">Ajouter une
@@ -66,8 +65,9 @@
          name="nomcat">
   <div *ngIf="this.categories != undefined">
     <section class="example-section" [formGroup]="formGroupQuestion">
-      <label class="example-margin">Voulez-vous ajouter un parent à cette catégorie ?</label>
-      <mat-radio-group [(ngModel)]="cacherChoixParent" formControlName="choix">
+      <br>
+      <label for="enfant" class="example-margin">Voulez-vous ajouter un parent à cette catégorie ?</label>
+      <mat-radio-group id="enfant" [(ngModel)]="cacherChoixParent" formControlName="choix">
         <mat-radio-button class="example-margin">Oui</mat-radio-button>
         <mat-radio-button class="example-margin" value="true" checked>Non</mat-radio-button>
       </mat-radio-group>

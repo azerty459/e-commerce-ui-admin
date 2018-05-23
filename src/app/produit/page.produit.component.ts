@@ -62,12 +62,4 @@ export class ProduitComponent implements OnInit {
     this.produits = this.produitBusiness.getProduit();
     this.produits.subscribe(value => this.nombreDeProduit = value.length);
   }
-
-  updateRedirection(ref: String){
-    this._router.navigate(['/admin/produit/detail', ref]);
-  }
-
-  addRedirection(){
-    this._router.navigate(['/admin/produit/detail', "ajouter"]);
-  }
 }
