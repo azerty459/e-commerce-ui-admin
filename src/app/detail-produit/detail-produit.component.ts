@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Location } from '@angular/common';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.business';
@@ -50,7 +50,8 @@ export class DetailProduitComponent implements OnInit {
     const refProduit = this.route.snapshot.paramMap.get('id');
     if(refProduit === 'nouveau') {
       this.ajout = true;
-      this.produit = new Produit(null,null,null,null, null);
+      this.produitModifie = new Produit(null,null,null,null, []);
+      this.produit = new Produit(null,null,null,null, []);
       this.disabledAjoutCategorie = true;
     } else {
       this.ajout = false;
@@ -59,7 +60,7 @@ export class DetailProduitComponent implements OnInit {
       this.observableProduit.subscribe(
         value => {
           this.produit = value;
-          this.produitModifie = JSON.parse(JSON.stringify(this.produit));
+          this.produitModifie = JSON.parse(JSON.stringify(value));
         }
       )
     }
@@ -98,6 +99,18 @@ export class DetailProduitComponent implements OnInit {
         this.cacherAlert = false;
         this.message = "Votre produit a été correctement ajouté";
         this.disabledAjoutCategorie = false;
+      },()=>{
+        console.log("erreur subscribe ajouter");
+      },()=>{
+        this.ajout = false;
+        this.observableProduit = this.produitBusiness.getProduitByRef(this.produitModifie.ref);
+        this.disabledAjoutCategorie = false;
+        this.observableProduit.subscribe(
+          value => {
+            this.produit = value;
+            this.produitModifie = JSON.parse(JSON.stringify(value));
+          }
+        )
       });
   }
 
