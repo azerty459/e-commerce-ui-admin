@@ -7,6 +7,7 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
 import {Component} from "@angular/core";
 import {ErreurComponent} from "../erreur/erreur.component";
+import {map, startWith} from "rxjs/operators";
 
 @Component({
   selector: 'app-detail-categorie',
@@ -19,11 +20,6 @@ export class DetailCategorieComponent implements OnInit {
    * Nom de la nouvelle catégorie en cas de création.
    */
   nomNouvelleCategorie: string;
-
-  /**
-   * Nom de la catégorie
-   */
-  nomCategorie: string;
 
   /**
    * Message à afficher après une action
@@ -121,6 +117,8 @@ export class DetailCategorieComponent implements OnInit {
    */
   public categorie: Categorie;
 
+  public categorieModifiable: Categorie;
+
 
   constructor(private route: ActivatedRoute,
               private categorieBusiness: CategorieBusinessService,
@@ -145,63 +143,79 @@ export class DetailCategorieComponent implements OnInit {
   getCategorie(): void {
 
     const url = this.route.snapshot.routeConfig.path;
-    this.nomNouvelleCategorie = '';
 
     // Ajout du nom de la catégorie si on ajoute une catégorie enfant.
-    if (url === 'admin/categories/ajouter') {
+    if (url === 'admin/categories/detail/ajouter') {
       // On ajoute une catégorie parent
-      this.nomCategorie = 'Aucune';
       this.enfant = false;
-
+      this.categoriesObservable = this.categorieBusiness.getAllCategories();
+      this.categoriesObservable.subscribe(
+        categories => {
+          this.categories = categories as Categorie[];
+          if (this.categories != undefined) {
+            // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
+            this.categoriesObservable = this.choixCategorieFormControl.valueChanges.pipe(
+              startWith(''),
+              map(val => this.categories.filter(categorie => categorie.nomCat.toLowerCase().indexOf(val.toLowerCase()) === 0))
+            );
+          }
+        });
     } else {
 
       // cas où on ajoute une catégorie enfant à une catégorie de référence 'id'
-      const refCategorie = this.route.snapshot.paramMap.get('id');
-      this.nomCategorie = refCategorie;
-      this.enfant = true;
+      const idCategorie = this.route.snapshot.paramMap.get('id');
+      this.categorieBusiness.getCategorieByID(idCategorie).subscribe(value => {
+        if (value.valueOf() instanceof Categorie) {
+          this.categorie = value;
+          this.categorieModifiable = JSON.parse(JSON.stringify(this.categorie));
+          this.enfant = true;
 
-      // Aller chercher les sous-catégories de la catégorie examinée dans la page de détail
-      const details = this.categorieBusiness.getDetails(this.nomCategorie);
+          // Aller chercher les sous-catégories de la catégorie examinée dans la page de détail
+          const details = this.categorieBusiness.getDetails(this.categorie.nomCat);
 
-      // Récupérer le détail de la catégorie parente et des sous-catégories.
-      details.subscribe( categories => {
+          // Récupérer le détail de la catégorie parente et des sous-catégories.
+          details.subscribe(categories => {
 
-        this.parentObj = categories['parent'];
-        this.parent = this.parentObj['nom'];
-        this.listSousCategories = categories['sousCategories'];
+            this.parentObj = categories['parent'];
+            this.parent = this.parentObj['nom'];
+            this.listSousCategories = categories['sousCategories'];
 
-        // Vérification qu'il y a des sous-catégories
-        if (this.listSousCategories[0]) {
-          this.sousCatPresentes = true;
-        } else {
-          this._router.navigate(['page-404'], { skipLocationChange: true });
-        }
+            // Vérification qu'il y a des sous-catégories
+            if (this.listSousCategories[0]) {
+              this.sousCatPresentes = true;
+            } else {
+              this.sousCatPresentes = false;
+            }
 
-        // Récupérer toutes les catégories pour la liste déroulante des catégories parentes.
-        this.parentsPotentiels = [];
-        this.categorieBusiness.getAllCategories().subscribe(
-          (cat) => {
-            this.allCategories = cat as Categorie[];
+            // Récupérer toutes les catégories pour la liste déroulante des catégories parentes.
+            this.parentsPotentiels = [];
+            this.categorieBusiness.getAllCategories().subscribe(
+              (cat) => {
+                this.allCategories = cat as Categorie[];
 
-            // TODO: enlever aussi les sous-categories des sous-catégories
-            // Enlever les sous-catégories de la catégorie dont on examine les détails de la liste des catégories
-            // (on ne peut pas les proposer comme parents potentiels)
-            const idsDejaAjoutees = [];
-            this.allCategories.forEach(c1 => {
-              let estAAjouter = true;
-              this.listSousCategories.forEach(c2 => {
-                if (c1.sontIdentiques(c2)) {
-                  estAAjouter = false;
-                }
-              });
-              // On évite de rajouter des catégories en doublon et la catégorie de départ elle-même
-              if (estAAjouter && idsDejaAjoutees.indexOf(c1.id) < 0 && c1.nomCat !== this.nomCategorie) {
-                idsDejaAjoutees.push(c1.id);
-                this.parentsPotentiels.push(c1);
+                // TODO: enlever aussi les sous-categories des sous-catégories
+                // Enlever les sous-catégories de la catégorie dont on examine les détails de la liste des catégories
+                // (on ne peut pas les proposer comme parents potentiels)
+                const idsDejaAjoutees = [];
+                this.allCategories.forEach(c1 => {
+                  let estAAjouter = true;
+                  this.listSousCategories.forEach(c2 => {
+                    if (c1.sontIdentiques(c2)) {
+                      estAAjouter = false;
+                    }
+                  });
+                  // On évite de rajouter des catégories en doublon et la catégorie de départ elle-même
+                  if (estAAjouter && idsDejaAjoutees.indexOf(c1.id) < 0 && c1.nomCat !== this.categorie.nomCat) {
+                    idsDejaAjoutees.push(c1.id);
+                    this.parentsPotentiels.push(c1);
+                  }
+                });
               }
-            });
-          }
-        );
+            );
+          });
+        } else {
+          this._router.navigate(['page-404'], {skipLocationChange: true});
+        }
       });
     }
   }
@@ -218,9 +232,8 @@ export class DetailCategorieComponent implements OnInit {
         this.isError = true;
       } else {
         this.isError = false;
-
         this.categories.forEach(categorie => {
-          if(categorie.nomCat === this.inputChoixParent){
+          if (categorie.nomCat === this.inputChoixParent) {
             this.categorieBusiness.ajouterCategorieEnfant(this.nomNouvelleCategorie, categorie.id).subscribe(
               (value) => {
                 // si la value instancie un objet categorie, on fait une redirection sinon on affiche le message erreur
@@ -265,8 +278,8 @@ export class DetailCategorieComponent implements OnInit {
           this.getCategorie();
 
           // Mettre à jour la liste des sous-catégories
-          this.sousCategories = this.categorieBusiness.getDetails(this.nomCategorie);
-          this.sousCategories.subscribe( categories => {
+          this.sousCategories = this.categorieBusiness.getDetails(this.categorie.nomCat);
+          this.sousCategories.subscribe(categories => {
             this.listSousCategories = categories as Categorie[];
 
             // Conversion de listSousCategories en tableau pour itérer dessus dans le HTML

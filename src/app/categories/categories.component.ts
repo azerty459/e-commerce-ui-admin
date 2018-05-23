@@ -42,7 +42,7 @@ export class CategoriesComponent implements OnInit {
       .cancelBtn('Annuler la supression')
       .open();
     dialogRef.result
-      .then(() =>       this.categorieBusiness.supprimerCategorie(categorie.id).subscribe(() => {
+      .then(() => this.categorieBusiness.supprimerCategorie(categorie.id).subscribe(() => {
         this.ngOnInit();
         this.message = 'La catégorie a été supprimée';
       }))
