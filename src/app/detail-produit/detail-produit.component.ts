@@ -31,6 +31,7 @@ export class DetailProduitComponent implements OnInit {
   cacherAlert: boolean = true;
   public observableProduit: Observable<Produit>;
   public produit: Produit;
+  public produitModifie: Produit;
   public disabledAjoutCategorie: boolean;
 
   constructor(
@@ -39,7 +40,6 @@ export class DetailProduitComponent implements OnInit {
     private previousRouteBusiness : PreviousRouteBusiness,
     private route: ActivatedRoute,
     private produitBusiness: ProduitBusiness,
-    private location: Location
 ) {}
 
   ngOnInit() {
@@ -47,7 +47,6 @@ export class DetailProduitComponent implements OnInit {
   }
 
   getProduit(): void {
-
     const refProduit = this.route.snapshot.paramMap.get('id');
     if(refProduit === 'nouveau') {
       this.ajout = true;
@@ -58,7 +57,10 @@ export class DetailProduitComponent implements OnInit {
       this.observableProduit = this.produitBusiness.getProduitByRef(refProduit);
       this.disabledAjoutCategorie = false;
       this.observableProduit.subscribe(
-        value => this.produit = value
+        value => {
+          this.produit = value;
+          this.produitModifie = JSON.parse(JSON.stringify(this.produit));
+        }
       )
     }
 
@@ -82,15 +84,16 @@ export class DetailProduitComponent implements OnInit {
   }
 
   modifier() {
-    this.produitBusiness.updateProduit(this.produit.ref, this.produit.nom, this.produit.description, this.produit.prixHT)
+    this.produitBusiness.updateProduit(this.produitModifie.ref, this.produitModifie.nom, this.produitModifie.description, this.produitModifie.prixHT)
       .subscribe(() => {
         this.cacherAlert = false;
         this.message = "Le produit a été mis à jour";
+        this.produit = JSON.parse(JSON.stringify(this.produitModifie));
       });
   }
 
   ajouter() {
-    this.produitBusiness.addProduit(this.produit.ref, this.produit.nom, this.produit.description, this.produit.prixHT)
+    this.produitBusiness.addProduit(this.produitModifie.ref, this.produitModifie.nom, this.produitModifie.description, this.produitModifie.prixHT)
       .subscribe(() => {
         this.cacherAlert = false;
         this.message = "Votre produit a été correctement ajouté";
