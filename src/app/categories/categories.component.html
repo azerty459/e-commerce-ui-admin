@@ -17,7 +17,7 @@
   <div class="margin card">
     <div class="card-header">
       <p> </p>
-      <a [routerLink]="['./detailcategorie', 'nouveauparent']"><button class="btn btn-success">Ajouter une catégorie parent</button></a>
+      <a [routerLink]="['./detail', 'ajouter']"><button class="btn btn-success">Ajouter une catégorie</button></a>
     </div>
     <div class="card-body">
       <div class="card-body">
@@ -30,7 +30,7 @@
             </tr>
             </thead>
             <tbody>
-            <ng-container *ngIf="categories; else pasDeCategorie">
+            <ng-container *ngIf="categories | async; else pasDeCategorie">
               <tr id="test" *ngFor="let c of categories | async; let i = index">
 
                 <td>
@@ -39,8 +39,8 @@
 
                 <div id="buttons-right-aligned">
 
-                  <a [routerLink]="['./detailcategorie', 'modif', c.nomCat]"><button type="button" class="btn btn-warning">Modifier</button></a>
-                  <button type="button" class="btn btn-danger" (click)="supprimer(c.nomCat)">Supprimer</button>
+                  <a [routerLink]="['./detail', c.id]"><button type="button" class="btn btn-warning">Modifier</button></a>
+                  <button type="button" class="btn btn-danger" (click)="supprimer(c)">Supprimer</button>
                 </div>
 
               </tr>
@@ -61,7 +61,7 @@
     </div>
     <div class="card-header">
       <p> </p>
-      <a [routerLink]="['./detailcategorie', 'nouveauparent']"><button class="btn btn-success">Ajouter une catégorie parent</button></a>
+      <a [routerLink]="['./detail', 'ajouter']"><button class="btn btn-success">Ajouter une catégorie</button></a>
     </div>
   </div>
 </div>

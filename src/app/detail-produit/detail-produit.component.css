@@ -19,6 +19,9 @@
 .descriptionPanel{
   margin: auto;
 }
+.mat-input-wrapper {
+  width: 100%;
+}
 .photoCard{
   max-width: 30%;
   min-width: 200px;

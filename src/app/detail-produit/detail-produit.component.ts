@@ -8,6 +8,7 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material';
 import {Categorie} from "../../../e-commerce-ui-common/models/Categorie";
 import {Modal} from "ngx-modialog/plugins/bootstrap";
+import {CategorieBusinessService} from "../../../e-commerce-ui-common/business/categorie-business.service";
 import {UploadImgComponent} from "../utilitaires/upload-img/upload-img.component";
 import {PreviousRouteBusiness} from "../../../e-commerce-ui-common/business/previous-route.business";
 
@@ -40,7 +41,9 @@ export class DetailProduitComponent implements OnInit {
     private previousRouteBusiness : PreviousRouteBusiness,
     private route: ActivatedRoute,
     private produitBusiness: ProduitBusiness,
-) {}
+    private categorieBusiness: CategorieBusinessService,
+    private location: Location
+  ) {}
 
   ngOnInit() {
     this.getProduit();
@@ -55,8 +58,8 @@ export class DetailProduitComponent implements OnInit {
       this.disabledAjoutCategorie = true;
     } else {
       this.ajout = false;
-      this.observableProduit = this.produitBusiness.getProduitByRef(refProduit);
       this.disabledAjoutCategorie = false;
+      this.observableProduit = this.produitBusiness.getProduitByRef(refProduit);
       this.observableProduit.subscribe(
         value => {
           this.produit = value;
@@ -64,7 +67,6 @@ export class DetailProduitComponent implements OnInit {
         }
       )
     }
-
   }
 
   supprimer(produit:Produit) {
@@ -114,13 +116,18 @@ export class DetailProduitComponent implements OnInit {
       });
   }
 
-  add(event: MatChipInputEvent): void {
+  ajouterCategorie(event: MatChipInputEvent): void {
     let input = event.input;
     let nomCat = event.value;
-
     if ((nomCat || '').trim()) {
-      let categorie = new Categorie(null, nomCat, null, null);
-      this.produitBusiness.addCategorieProduit(this.produit, categorie).subscribe(value => this.produit.arrayCategorie = value.arrayCategorie);
+      this.categorieBusiness.getCategorieByID(nomCat).subscribe(value => {
+        if (value.valueOf() instanceof Categorie) {
+          let categorie = value;
+          this.produitBusiness.addCategorieProduit(this.produit, categorie).subscribe(value => this.produit.arrayCategorie = value.arrayCategorie);
+        } else {
+          this.message = value;
+        }
+      });
     }
 
     // Reset the input value
@@ -129,14 +136,12 @@ export class DetailProduitComponent implements OnInit {
     }
   }
 
-  remove(categorie: any): void {
+  supprimerCategorie(categorie: any): void {
     let index = this.produit.arrayCategorie.indexOf(categorie);
     if (index >= 0) {
       this.produit.arrayCategorie.splice(index, 1);
+      console.log(categorie);
       this.produitBusiness.deleteCategorieProduit(this.produit,categorie).subscribe();
     }
   }
-
 }
-
-

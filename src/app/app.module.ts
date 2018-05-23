@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import {FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { FormsModule } from '@angular/forms';
 //business retour
 import { PreviousRouteBusiness } from '../../e-commerce-ui-common/business/previous-route.business';
@@ -10,7 +12,7 @@ import { ProduitComponent } from './produit/page.produit.component';
 import {RouterModule, Routes} from '@angular/router';
 import {HttpModule} from '@angular/http';
 import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
-import {AlertModule, CollapseModule} from 'ngx-bootstrap';
+import {CollapseModule} from 'ngx-bootstrap';
 import {ProduitBusiness} from '../../e-commerce-ui-common/business/produit.business';
 import { DetailProduitComponent } from './detail-produit/detail-produit.component';
 import {
@@ -22,7 +24,10 @@ import { CategorieBusinessService } from '../../e-commerce-ui-common/business/ca
 import {HttpClientModule} from '@angular/common/http';
 import { DetailCategorieComponent } from './detail-categorie/detail-categorie.component';
 // angular material
-import {MatChipsModule,MatIconModule,MatFormFieldModule} from "@angular/material";
+import {
+  MatChipsModule, MatIconModule, MatFormFieldModule, MatAutocompleteModule, MatInputModule,
+  MatRadioModule
+} from "@angular/material";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Tool tip angular material
 import {MatTooltipModule} from '@angular/material/tooltip';
@@ -36,25 +41,19 @@ import {UploadImgComponent} from "./utilitaires/upload-img/upload-img.component"
 import { CovalentFileModule } from '@covalent/core/file';
 //Angular card
 import {MatCardModule} from '@angular/material/card';
+import { ErreurComponent } from './erreur/erreur.component';
+
 const appRoutes: Routes = [
 
-  {
-    path: 'admin/produit',
-    redirectTo: 'admin/produit/1',
-  },
-  {
-    path: 'admin/produit/:page',
-    component: ProduitComponent,
-    data: { title: 'Admin - Produits' }
-  },
   {
     path: 'admin',
     component: AccueilComponent,
     data: { title: 'Admin - Accueil' }
   },
-  { path: '',
-    redirectTo: '/admin',
-    pathMatch: 'full',
+  {
+    path: 'admin/produit/:page',
+    component: ProduitComponent,
+    data: { title: 'Admin - Produits' }
   },
   {
     path: 'admin/produit/detail/:id',
@@ -67,19 +66,28 @@ const appRoutes: Routes = [
     data: { title: 'Gestion des catégories' }
   },
   {
-    path: 'admin/categories/detailcategorie/modif/:id',
+    path: 'admin/categories/detail/ajouter',
     component: DetailCategorieComponent,
-    data: { title: 'Détail de catégorie'}
+    data: { title: 'Ajout catégorie' }
   },
   {
-    path: 'admin/categories/detailcategorie/nouveauparent', // Ajout d'une catégorie parent
+    path: 'admin/categories/detail/:id',
     component: DetailCategorieComponent,
-    data: { title: 'Ajout de catégorie parent' }
+    data: { title: 'Détail catégorie'}
   },
   {
-    path: 'admin/categories/detailcategorie/nouvelenfant/:id', // Ajout d'une catégorie enfant
-    component: DetailCategorieComponent,
-    data: { title: 'Ajout de catégorie enfant'}
+    path: 'page-404',
+    component: ErreurComponent
+  },
+  {
+    path: '',
+    redirectTo: '/admin',
+    pathMatch: 'full',
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    component: ErreurComponent
   }
   // { path: '**', component: PageNotFoundComponent }
 ];
@@ -94,6 +102,7 @@ const appRoutes: Routes = [
     DetailCategorieComponent,
     UploadImgComponent,
     RetourComponent,
+    ErreurComponent,
   ],
   imports: [
     BrowserModule,
@@ -104,7 +113,11 @@ const appRoutes: Routes = [
     MatIconModule, // utilisation des icons de angular material
     BrowserAnimationsModule,// utilisation des animations de angular material
     MatFormFieldModule,//utilisation des formulaires de angular material
+    MatAutocompleteModule, // Utilisation des auto complete de angular material
+    MatInputModule, // Utilisation des input d'angular material
+    MatRadioModule, // Utilisation des radio button
     FormsModule,
+    ReactiveFormsModule,
     ModalModule.forRoot(),// Modal boostrap
     BootstrapModalModule,// Modal boostrap
     HttpModule, // Utilisation du module http
