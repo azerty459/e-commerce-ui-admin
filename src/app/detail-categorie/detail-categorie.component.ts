@@ -19,7 +19,7 @@ export class DetailCategorieComponent implements OnInit {
   /**
    * Nom de la nouvelle catégorie en cas de création.
    */
-  nomNouvelleCategorie: string;
+  public nomNouvelleCategorie: string;
 
   /**
    * Message à afficher après une action
@@ -29,12 +29,12 @@ export class DetailCategorieComponent implements OnInit {
   /**
    * Parent direct de la catégorie (sous forme d'objet)
    */
-  parentObj: Categorie;
+  public parentObj: Categorie;
 
   /**
    * Nom de la catégorie parente directement.
    */
-  parent: string;
+  public parent: string;
 
   /**
    * Indique si on ajoute une catégorie enfant d'une autre catégorie
@@ -90,17 +90,17 @@ export class DetailCategorieComponent implements OnInit {
   /**
    * Liste de toutes les catégories
    */
-  allCategories: Categorie[];
+  public allCategories: Categorie[];
 
   /**
    * Parents potentiels d'une catégorie
    */
-  parentsPotentiels: Categorie[];
+  public parentsPotentiels: Categorie[];
 
   /**
    * Message affiché en cas de changement de parent d'une catégorie
    */
-  alerte: string;
+  public alerte: string;
 
   /**
    * Form contrôle permettant de gérer la liste déroulante pour la recherche intelligente

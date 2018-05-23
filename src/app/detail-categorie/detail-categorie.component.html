@@ -5,9 +5,9 @@
   <i class="material-icons backArrow" matTooltip="Revenir en arrière" [matTooltipPosition]="positionApresTooltip"
      (click)="goBack()">arrow_back</i>
   <button *ngIf="enfant; else PasEnfant" type="button" class="btn btn-success margin-none pull-right centrer-block"
-          matTooltip="Ajouter la sous-catégorie" [matTooltipPosition]="positionAvantTooltip"
+          matTooltip="Enregistrer les modifications" [matTooltipPosition]="positionAvantTooltip"
           (click)="ajouterEnfant(categorie.id)">
-    <b>Ajouter la sous-catégorie</b><i class="material-icons">save</i>
+    <b>Enregistrer les modifications</b><i class="material-icons">save</i>
   </button>
   <ng-template #PasEnfant>
     <button type="button" class="btn btn-success margin-none pull-right centrer-block"
@@ -48,8 +48,8 @@
   <div class="row">
     <ng-template #pas_de_sous_categories><p>Pas de sous-catégories</p></ng-template>
 
-    <label for="nomCategorie" class="col-sm-3">Ajouter une sous-catégorie à {{categorie.nomCat}}:</label>
-    <input type="text" id="nomCategorie" [(ngModel)]="nomNouvelleCategorie" class="col-sm-9" name="nomcat">
+    <label for="sousCategorie" class="col-sm-3">Ajouter une sous-catégorie à {{categorie.nomCat}}:</label>
+    <input type="text" id="sousCategorie" [(ngModel)]="nomNouvelleCategorie" class="col-sm-9" name="nomcat">
     <button *ngIf="enfant" type="submit" class="btn btn-success" (click)="ajouterEnfant(categorie.id)">Ajouter une
       nouvelle sous-catégorie
     </button>
