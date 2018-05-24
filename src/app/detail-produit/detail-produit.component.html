@@ -3,7 +3,7 @@
 <div id="mainContainer">
   <div class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>
   <div id="toolbar">
-    <app-retour [urlPrecedenteAttendue]="urlPrecedenteAttendue" matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip"></app-retour>
+    <app-retour matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip"></app-retour>
     <button type="button" class="btn btn-danger pull-right" matTooltip="Supprimer ce produit" [matTooltipPosition]="positionBeforeTooltip"  *ngIf="! ajout" (click)="supprimer(produit)">
       <i class="material-icons " >delete</i>
     </button>
