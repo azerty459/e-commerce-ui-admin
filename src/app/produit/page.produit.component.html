@@ -1,4 +1,9 @@
-<h1>Gestion des produits</h1>
+<div class="div-header">
+    <h1>Gestion des produits</h1>
+    <a class="boutton_ajouterproduit" [routerLink]="['/admin/produit/ajouter']">
+      <button class="btn btn-success">Ajouter un produit</button>
+    </a>
+</div>
 
 <div class="row">
   <div class="margin card">
@@ -6,6 +11,18 @@
       <strong>Filtres</strong>
     </div>
     <div class="card-body">
+      <div class="afficher flex flex-row">
+        <span class="text_afficher">Nombre de produit à afficher:</span>
+        <div class="form-group">
+          <select id="messagesParPage" (change)="selected($event.target.value)" class="form-control">
+            <option value="5">5 produits</option>
+            <option value="25">25 produits</option>
+            <option value="50">50 produits</option>
+            <option value="75">75 produits</option>
+            <option value="100">100 produits</option>
+          </select>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -14,7 +31,13 @@
   <div class="margin card">
     <div class="card-header">
       <strong>Nombre total de produits: {{nombreDeProduit}}</strong>
-      <a [routerLink]="['/admin/produit/ajouter']"><button class="btn btn-success">Ajouter un produit</button></a>
+      <span class="text_afficher">Page {{pageActuelURL}} sur {{pageMax}}</span>
+      <div class="toolbar-pagination">
+        <button type="button" class="btn btn-outline-success" (click)="pagination('precedent')"><- Précédent
+        </button>
+        <div class="espace"></div>
+        <button type="button" class="btn btn-outline-success" (click)="pagination('suivant')">Suivant -></button>
+      </div>
     </div>
     <div class="card-body">
       <div class="card-body">
@@ -32,13 +55,15 @@
             </thead>
             <tbody>
             <ng-container *ngIf="nombreDeProduit > 0;else pasDeProduit">
-              <tr *ngFor="let produit of produits | async; let i = index">
+              <tr *ngFor="let produit of produits; let i = index">
                 <td><p>{{produit.ref}}</p></td>
                 <td><p>{{produit.nom}}</p></td>
                 <td><p>{{produit.description}}</p></td>
                 <td><p>{{produit.prixHT}}</p></td>
                 <td>
-                  <a [routerLink]="['/admin/produit/detail', produit.ref]"><button type="button" class="btn btn-warning">Modifier</button></a>
+                  <a [routerLink]="['/admin/produit/detail', produit.ref]">
+                    <button type="button" class="btn btn-warning">Modifier</button>
+                  </a>
                 </td>
                 <td>
                   <button type="button" class="btn btn-danger" (click)="supprimer(produit)">Supprimer</button>
@@ -59,8 +84,15 @@
       </div>
     </div>
     <div class="card-header">
-      <strong>Nombre total de produits: {{nombreDeProduit}}</strong>
-      <a [routerLink]="['/admin/produit/ajouter']"><button class="btn btn-success">Ajouter un produit</button></a>
+      <br>
+      <!--<strong>Nombre total de produits: {{nombreDeProduit}}</strong>-->
+      <!--<div class="toolbar-pagination">-->
+        <!--<div class="toolbar-pagination">-->
+          <!--<button type="button" class="btn btn-outline-success" (click)="pagination('precedent')"><- Précédent-->
+          <!--</button>-->
+          <!--<div class="espace"></div>-->
+          <!--<button type="button" class="btn btn-outline-success" (click)="pagination('suivant')">Suivant -></button>-->
+        <!--</div>-->
+      <!--</div>-->
     </div>
   </div>
-</div>

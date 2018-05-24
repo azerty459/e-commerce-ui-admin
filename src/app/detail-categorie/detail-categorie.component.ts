@@ -112,6 +112,8 @@ export class DetailCategorieComponent implements OnInit {
    */
   public formGroupQuestion: FormGroup;
 
+  private idCategorie;
+
   /**
    * Categorie
    */
@@ -124,6 +126,7 @@ export class DetailCategorieComponent implements OnInit {
               private categorieBusiness: CategorieBusinessService,
               private location: Location,
               private router: Router,
+              private activatedRoute: ActivatedRoute,
               private fb: FormBuilder) {
   }
 
@@ -162,9 +165,16 @@ export class DetailCategorieComponent implements OnInit {
         });
     } else {
 
-      // cas où on ajoute une catégorie enfant à une catégorie de référence 'id'
-      const idCategorie = this.route.snapshot.paramMap.get('id');
-      this.categorieBusiness.getCategorieByID(idCategorie).subscribe(value => {
+      // // cas où on ajoute une catégorie enfant à une catégorie de référence 'id'
+      // this.activatedRoute.params.subscribe(params => {
+      //     this.pageActuelURL = parseInt(params.page);
+      //   },
+      //   error => {
+      //     console.log("Erreur gestion de page ", error)
+      //   },
+      // );
+      this.idCategorie = this.route.snapshot.paramMap.get('id');
+      this.categorieBusiness.getCategorieByID(this.idCategorie).subscribe(value => {
         if (value.valueOf() instanceof Categorie) {
           this.categorie = value;
           this.categorieModifiable = JSON.parse(JSON.stringify(this.categorie));
@@ -314,5 +324,10 @@ export class DetailCategorieComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/admin/categorie']);
+  }
+
+  redirectionEnfant(id: number): void{
+    this.router.navigateByUrl('', {skipLocationChange: true}).then(()=>
+      this.router.navigate(['/admin/categorie/detail/'+ id]));
   }
 }

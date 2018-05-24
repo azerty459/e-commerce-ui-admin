@@ -41,7 +41,7 @@
     <label for="ulsouscat" class="col-sm-3">Les sous-catégories de {{categorie.nomCat}}</label>
     <div>
       <ul id="ulsouscat" class="col-sm-9" *ngIf="sousCatPresentes;else pas_de_sous_categories">
-        <li *ngFor="let souscat of listSousCategories">{{souscat.nom}}</li>
+        <li *ngFor="let souscat of listSousCategories"><a (click)="redirectionEnfant(souscat.id)">{{souscat.nom}}</a></li>
       </ul>
     </div>
   </div>
