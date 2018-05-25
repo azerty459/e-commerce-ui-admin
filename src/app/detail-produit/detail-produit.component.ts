@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Location } from '@angular/common';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.business';
@@ -8,6 +8,9 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material';
 import {Categorie} from "../../../e-commerce-ui-common/models/Categorie";
 import {Modal} from "ngx-modialog/plugins/bootstrap";
+import {CategorieBusinessService} from "../../../e-commerce-ui-common/business/categorie-business.service";
+import {UploadImgComponent} from "../utilitaires/upload-img/upload-img.component";
+import {PreviousRouteBusiness} from "../../../e-commerce-ui-common/business/previous-route.business";
 
 @Component({
   selector: 'app-detail-produit',
@@ -15,31 +18,32 @@ import {Modal} from "ngx-modialog/plugins/bootstrap";
   styleUrls: ['./detail-produit.component.css']
 })
 export class DetailProduitComponent implements OnInit {
-  visible: boolean = true;
+  @ViewChild('photo') photo;
   selectable: boolean = true;
   removable: boolean = true;
   addOnBlur: boolean = true;
+  urlPrecedenteAttendue ="/admin/produit";
   positionBeforeTooltip = 'before';
-  positionBelowTooltip = 'below';
   positionAfterTooltip = 'after';
-
   // Enter, comma
   separatorKeysCodes = [ENTER, COMMA];
-
   message: string;
   ajout: boolean;
   cacherAlert: boolean = true;
-
   public observableProduit: Observable<Produit>;
   public produit: Produit;
-
+  public produitModifie: Produit;
   public disabledAjoutCategorie: boolean;
 
   constructor(
+    private uploadImg: UploadImgComponent,
     private modal: Modal,
+    private previousRouteBusiness : PreviousRouteBusiness,
     private route: ActivatedRoute,
     private produitBusiness: ProduitBusiness,
-    private location: Location
+    private categorieBusiness: CategorieBusinessService,
+    private location: Location,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -47,24 +51,30 @@ export class DetailProduitComponent implements OnInit {
   }
 
   getProduit(): void {
+    const url = this.route.snapshot.routeConfig.path;
 
-    const refProduit = this.route.snapshot.paramMap.get('id');
-    if(refProduit === 'nouveau') {
+    if (url === 'admin/produit/ajouter') {
       this.ajout = true;
-      this.produit = new Produit(null,null,null,null, null);
+      this.produitModifie = new Produit(null,null,null,null, []);
+      this.produit = new Produit(null,null,null,null, []);
       this.disabledAjoutCategorie = true;
     } else {
       this.ajout = false;
-      this.observableProduit = this.produitBusiness.getProduitByRef(refProduit);
       this.disabledAjoutCategorie = false;
+      const refProduit = this.route.snapshot.paramMap.get('id');
+      this.observableProduit = this.produitBusiness.getProduitByRef(refProduit);
       this.observableProduit.subscribe(
-        value => this.produit = value
+        value => {
+          if (value.valueOf() instanceof Produit) {
+            this.produit = value;
+            this.produitModifie = JSON.parse(JSON.stringify(value));
+          } else {
+            this.router.navigate(['page-404'], {skipLocationChange: true});
+          }
+        }
       )
-
     }
-
-    console.log(this.produit); // UNDEFINED
-    // console.log(this.ajout);
+    console.log(this.ajout);
   }
 
   supprimer(produit:Produit) {
@@ -73,14 +83,11 @@ export class DetailProduitComponent implements OnInit {
       .isBlocking(true)
       .showClose(false)
       .keyboard(27)
-      .title('Attention vous allez supprimer un produit ! ')
-      .body('<p>Référence: '+produit.ref+'</p>' +
-        '<p>Nom: '+produit.nom+'</p>' +
-        '<p>Description: '+produit.description+'</p>' +
-        '<p>Prix HT: '+produit.prixHT+'</p>')
-      .okBtn('Supprimer')
+      .title('Suppresion de '+produit.nom+' - '+produit.ref)
+      .body('Comfirmez vous la supression de '+produit.nom+' - '+produit.ref+'?')
+      .okBtn('Comfirmer la suppression')
       .okBtnClass('btn btn-danger')
-      .cancelBtn('Annuler')
+      .cancelBtn('Annuler la supression')
       .open();
     dialogRef.result
       .then(() => this.produitBusiness.deleteProduit(this.produit.ref).subscribe(() => this.message = "Le produit a été supprimé.")  )
@@ -88,33 +95,53 @@ export class DetailProduitComponent implements OnInit {
   }
 
   modifier() {
-    this.produitBusiness.updateProduit(this.produit.ref, this.produit.nom, this.produit.description, this.produit.prixHT)
+    this.produitBusiness.updateProduit(this.produitModifie.ref, this.produitModifie.nom, this.produitModifie.description, this.produitModifie.prixHT)
       .subscribe(() => {
         this.cacherAlert = false;
         this.message = "Le produit a été mis à jour";
+        this.produit = JSON.parse(JSON.stringify(this.produitModifie));
       });
   }
 
   ajouter() {
-    this.produitBusiness.addProduit(this.produit.ref, this.produit.nom, this.produit.description, this.produit.prixHT)
-      .subscribe(() => {
-        this.cacherAlert = false;
-        this.message = "Votre produit a été correctement ajouté";
-        this.disabledAjoutCategorie = false;
+    this.produitBusiness.addProduit(this.produitModifie)
+      .subscribe((value) => {
+        if (value.valueOf() instanceof Produit) {
+          this.cacherAlert = false;
+          this.message = "Votre produit a été correctement ajouté";
+          this.disabledAjoutCategorie = false;
+          this.ajout = false;
+          this.observableProduit = this.produitBusiness.getProduitByRef(this.produitModifie.ref);
+          this.disabledAjoutCategorie = false;
+          this.observableProduit.subscribe(
+            value => {
+              this.produit = value;
+              this.produitModifie = JSON.parse(JSON.stringify(value));
+            }
+          )
+        } else {
+          this.cacherAlert = false;
+          this.message = "Votre produit ne peut être ajouté, vous devez renseigner la référence, le nom et le prix HT.";
+        }
+      },()=>{
+        console.log("erreur subscribe ajouter");
+      },()=>{
+        //TODO Ne fonctionne pas car il y a une valeur retourner dans le subscribe
       });
   }
 
-  goBack(): void {
-    this.location.back();
-  }
-
-  add(event: MatChipInputEvent): void {
+  ajouterCategorie(event: MatChipInputEvent): void {
     let input = event.input;
     let nomCat = event.value;
-
     if ((nomCat || '').trim()) {
-      let categorie = new Categorie(null, nomCat);
-      this.produitBusiness.addCategorieProduit(this.produit, categorie).subscribe(value => this.produit.arrayCategorie = value.arrayCategorie);
+      this.categorieBusiness.getCategorieByID(nomCat).subscribe(value => {
+        if (value.valueOf() instanceof Categorie) {
+          let categorie = value;
+          this.produitBusiness.addCategorieProduit(this.produit, categorie).subscribe(value => this.produit.arrayCategorie = value.arrayCategorie);
+        } else {
+          this.message = value;
+        }
+      });
     }
 
     // Reset the input value
@@ -123,16 +150,12 @@ export class DetailProduitComponent implements OnInit {
     }
   }
 
-  remove(categorie: any): void {
+  supprimerCategorie(categorie: any): void {
     let index = this.produit.arrayCategorie.indexOf(categorie);
     if (index >= 0) {
       this.produit.arrayCategorie.splice(index, 1);
+      console.log(categorie);
       this.produitBusiness.deleteCategorieProduit(this.produit,categorie).subscribe();
     }
   }
-
-
-
 }
-
-
