@@ -1,12 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.business';
+import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
-import {Overlay} from 'ngx-modialog';
 import {Modal} from 'ngx-modialog/plugins/bootstrap';
 import {ActivatedRoute, Router} from "@angular/router";
-import {Pagination} from "../../../e-commerce-ui-common/models/Pagination";
-
 
 @Component({
   selector: 'app-produit',
@@ -15,13 +11,7 @@ import {Pagination} from "../../../e-commerce-ui-common/models/Pagination";
 })
 export class ProduitComponent implements OnInit {
 
-  public ajoutRef: String;
-  public ajoutNom: String;
-  public ajoutDescription: String;
-  public ajoutPrixHT: number;
-
   // Pagination
-  public page: Observable<Pagination>;
   public produits: Array<Produit>;
   public nombreDeProduit;
 
@@ -48,16 +38,15 @@ export class ProduitComponent implements OnInit {
   }
 
   async affichage() {
-    this.page = this.produitBusiness.getProduitByPagination(this.pageActuelURL, this.messagesParPage);
-    this.page.subscribe(value => {
-        this.pageActuelURL = value.pageActuelle;
-        this.nombreDeProduit = value.total;
-        this.produits = value.tableau;
-      },
-      error2 => {
-        console.log("Erreur getProduitByPagination", error2)
-      });
-    this.pageMax = await this.getPageMax();
+    let page = await this.produitBusiness.getProduitByPagination(this.pageActuelURL, this.messagesParPage);
+    if(page != null && page != undefined){
+      this.pageActuelURL = page.pageActuelle;
+      this.nombreDeProduit = page.total;
+      this.produits = page.tableau;
+      this.pageMax = page.pageMax;
+    }else{
+      console.log("Erreur getProduitByPagination");
+    }
     this.redirection();
   }
 
@@ -66,12 +55,7 @@ export class ProduitComponent implements OnInit {
     this.affichage();
   }
 
-  getPageMax(): Promise<number> {
-    return new Promise(resolve => this.page.subscribe(value => resolve(value.pageMax)));
-  }
-
   async redirection() {
-    console.log(this.pageActuelURL);
     if (this.pageActuelURL <= 0)
       this.router.navigate(['/admin/produit', this.pageMin]);
     else if (this.pageActuelURL > this.pageMax) {
@@ -106,16 +90,13 @@ export class ProduitComponent implements OnInit {
       .cancelBtn('Annuler la supression')
       .open();
     dialogRef.result
-      .then(() => this.produitBusiness.deleteProduit(produit.ref).subscribe(() => this.rafraichirListeProduit()))
+      .then(async() => {
+        let supprimer = await this.produitBusiness.deleteProduit(produit);
+        if(supprimer){
+          this.rafraichirListeProduit();
+        }
+      })
       .catch(() => null); // Pour éviter l'erreur de promise dans console.log
-  }
-
-  rafraichirAjout() {
-    this.rafraichirListeProduit();
-    this.ajoutRef = '';
-    this.ajoutNom = '';
-    this.ajoutDescription = '';
-    this.ajoutPrixHT = null;
   }
 
   rafraichirListeProduit() {

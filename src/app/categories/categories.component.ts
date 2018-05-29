@@ -1,10 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {CategorieBusinessService} from '../../../e-commerce-ui-common/business/categorie-business.service';
-import {Observable} from 'rxjs/Observable';
+import {CategorieBusinessService} from '../../../e-commerce-ui-common/business/categorie.service';
 
 import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
 import {Modal} from "ngx-modialog/plugins/bootstrap";
-import {Pagination} from "../../../e-commerce-ui-common/models/Pagination";
 import {ActivatedRoute, Router} from "@angular/router";
 
 
@@ -18,7 +16,6 @@ export class CategoriesComponent implements OnInit {
   public message: string;
 
   // Pagination
-  public page: Observable<Pagination>;
   public categories: Array<Categorie>;
   public nombreDeCategorie;
 
@@ -48,16 +45,15 @@ export class CategoriesComponent implements OnInit {
   }
 
   async affichage() {
-    this.page = this.categorieBusiness.getCategorieByPagination(this.pageActuelURL, this.messagesParPage);
-    this.page.subscribe(value => {
-        this.pageActuelURL = value.pageActuelle;
-        this.nombreDeCategorie = value.total;
-        this.categories = value.tableau;
-      },
-      error2 => {
-        console.log("Erreur getCategorieByPagination", error2)
-      });
-    this.pageMax = await this.getPageMax();
+    let page = await this.categorieBusiness.getCategorieByPagination(this.pageActuelURL, this.messagesParPage);
+    if(page != undefined && page != null){
+      this.pageActuelURL = page.pageActuelle;
+      this.nombreDeCategorie = page.total;
+      this.categories = page.tableau;
+      this.pageMax = page.pageMax;
+    }else{
+      console.log("Erreur getCategorieByPagination");
+    }
     this.redirection();
   }
 
@@ -66,12 +62,7 @@ export class CategoriesComponent implements OnInit {
     this.affichage();
   }
 
-  getPageMax(): Promise<number> {
-    return new Promise(resolve => this.page.subscribe(value => resolve(value.pageMax)));
-  }
-
   async redirection() {
-    console.log(this.pageActuelURL);
     if (this.pageActuelURL <= 0)
       this.router.navigate(['/admin/categorie', this.pageMin]);
     else if (this.pageActuelURL > this.pageMax) {
@@ -93,7 +84,7 @@ export class CategoriesComponent implements OnInit {
     this.router.navigate(['/admin/categorie', this.pageActuelURL]);
   }
 
-  supprimer(categorie: Categorie): void {
+  async supprimer(categorie: Categorie) {
     const dialogRef = this.modal.confirm()
       .size('lg')
       .isBlocking(true)
@@ -106,10 +97,13 @@ export class CategoriesComponent implements OnInit {
       .cancelBtn('Annuler la supression')
       .open();
     dialogRef.result
-      .then(() => this.categorieBusiness.supprimerCategorie(categorie.id).subscribe(() => {
-        this.ngOnInit();
-        this.message = 'La catégorie a été supprimée';
-      }))
+      .then(async() => {
+        let suppresion = await this.categorieBusiness.supprimerCategorie(categorie);
+        if(suppresion != null && suppresion != undefined){
+          this.ngOnInit();
+          this.message = 'La catégorie a été supprimée';
+        }
+      })
       .catch(() => null); // Pour éviter l'erreur de promise dans console.log
   }
 }

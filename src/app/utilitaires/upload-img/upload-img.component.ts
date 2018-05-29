@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Produit} from "../../../../e-commerce-ui-common/models/Produit";
-import {ProduitBusiness} from "../../../../e-commerce-ui-common/business/produit.business";
+import {ProduitBusiness} from "../../../../e-commerce-ui-common/business/produit.service";
 import {Observable} from "rxjs/Observable";
 
 @Component({
@@ -35,20 +35,17 @@ export class UploadImgComponent implements OnInit {
    * Permet de realiser l'upload du fichier
    * @param {File} file
    */
-  uploadEvent(file: File): void {
+  async uploadEvent(file: File) {
     this.imgSelected = false;
     this.fileUploadMsg = file.name;
     const dataAEnvoyer = new FormData();
     dataAEnvoyer.append('fichier',file);
     dataAEnvoyer.append('ref',this.produit.ref);
-    this.produitBusiness.ajoutPhoto(dataAEnvoyer).subscribe(() => {
-      this.observableProduit = this.produitBusiness.getProduitByRef(this.produit.ref);
-      this.observableProduit.subscribe(
-        value => {
-          this.produit.arrayPhoto = value.arrayPhoto;
-        }
-      );
-    });
+    let resultatUpload = await this.produitBusiness.ajoutPhoto(dataAEnvoyer);
+    if(resultatUpload){
+      let produit: Produit = await this.produitBusiness.getProduitByRef(this.produit.ref)
+      this.produit.arrayPhoto = produit.arrayPhoto;
+    }
   }
 
   /**

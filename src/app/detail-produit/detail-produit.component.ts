@@ -2,13 +2,13 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import { Location } from '@angular/common';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
-import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.business';
+import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
 import {Observable} from "rxjs/Observable";
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material';
 import {Categorie} from "../../../e-commerce-ui-common/models/Categorie";
 import {Modal} from "ngx-modialog/plugins/bootstrap";
-import {CategorieBusinessService} from "../../../e-commerce-ui-common/business/categorie-business.service";
+import {CategorieBusinessService} from "../../../e-commerce-ui-common/business/categorie.service";
 import {UploadImgComponent} from "../utilitaires/upload-img/upload-img.component";
 import {PreviousRouteBusiness} from "../../../e-commerce-ui-common/business/previous-route.business";
 
@@ -50,7 +50,7 @@ export class DetailProduitComponent implements OnInit {
     this.getProduit();
   }
 
-  getProduit(): void {
+  async getProduit() {
     const url = this.route.snapshot.routeConfig.path;
 
     if (url === 'admin/produit/ajouter') {
@@ -62,22 +62,18 @@ export class DetailProduitComponent implements OnInit {
       this.ajout = false;
       this.disabledAjoutCategorie = false;
       const refProduit = this.route.snapshot.paramMap.get('id');
-      this.observableProduit = this.produitBusiness.getProduitByRef(refProduit);
-      this.observableProduit.subscribe(
-        value => {
-          if (value.valueOf() instanceof Produit) {
-            this.produit = value;
-            this.produitModifie = JSON.parse(JSON.stringify(value));
-          } else {
-            this.router.navigate(['page-404'], {skipLocationChange: true});
-          }
-        }
-      )
+      let retourAPI = await this.produitBusiness.getProduitByRef(refProduit);
+      if (retourAPI.valueOf() instanceof Produit) {
+        this.produit = retourAPI;
+        this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
+      } else {
+        this.router.navigate(['page-404'], {skipLocationChange: true});
+      }
     }
     console.log(this.ajout);
   }
 
-  supprimer(produit:Produit) {
+   supprimer(produit:Produit) {
     const dialogRef = this.modal.confirm()
       .size('lg')
       .isBlocking(true)
@@ -90,72 +86,69 @@ export class DetailProduitComponent implements OnInit {
       .cancelBtn('Annuler la supression')
       .open();
     dialogRef.result
-      .then(() => this.produitBusiness.deleteProduit(this.produit.ref).subscribe(() => this.message = "Le produit a été supprimé.")  )
+      .then(async() => {
+        let supprimer = await this.produitBusiness.deleteProduit(this.produit);
+        if(supprimer){
+          this.message = "Le produit a été supprimé.";
+        }
+      })
       .catch(() => null); // Pour éviter l'erreur de promise dans console.log
   }
 
   modifier() {
-    this.produitBusiness.updateProduit(this.produitModifie.ref, this.produitModifie.nom, this.produitModifie.description, this.produitModifie.prixHT)
-      .subscribe(() => {
-        this.cacherAlert = false;
-        this.message = "Le produit a été mis à jour";
-        this.produit = JSON.parse(JSON.stringify(this.produitModifie));
-      });
+    let produit = this.produitBusiness.updateProduit(this.produitModifie);
+    if (produit != null && produit != undefined) {
+      this.cacherAlert = false;
+      this.message = "Le produit a été mis à jour";
+      this.produit = JSON.parse(JSON.stringify(this.produitModifie));
+    } else {
+      this.cacherAlert = false;
+      this.message = "Votre produit ne peut être modifié, vous devez renseigner la référence, le nom et le prix HT.";
+    }
   }
 
-  ajouter() {
-    this.produitBusiness.addProduit(this.produitModifie)
-      .subscribe((value) => {
-        if (value.valueOf() instanceof Produit) {
-          this.cacherAlert = false;
-          this.message = "Votre produit a été correctement ajouté";
-          this.disabledAjoutCategorie = false;
-          this.ajout = false;
-          this.observableProduit = this.produitBusiness.getProduitByRef(this.produitModifie.ref);
-          this.disabledAjoutCategorie = false;
-          this.observableProduit.subscribe(
-            value => {
-              this.produit = value;
-              this.produitModifie = JSON.parse(JSON.stringify(value));
-            }
-          )
-        } else {
-          this.cacherAlert = false;
-          this.message = "Votre produit ne peut être ajouté, vous devez renseigner la référence, le nom et le prix HT.";
-        }
-      },()=>{
-        console.log("erreur subscribe ajouter");
-      },()=>{
-        //TODO Ne fonctionne pas car il y a une valeur retourner dans le subscribe
-      });
+  async ajouter() {
+    let retourAPI = await this.produitBusiness.addProduit(this.produitModifie);
+    if (retourAPI.valueOf() instanceof Produit) {
+      this.cacherAlert = false;
+      this.message = "Votre produit a été correctement ajouté";
+      this.disabledAjoutCategorie = false;
+      this.ajout = false;
+      this.produit = retourAPI;
+      console.log(this.produit.arrayCategorie);
+      if(this.produit != null && this.produit != undefined){
+        this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
+      }
+      this.disabledAjoutCategorie = false;
+    } else {
+      this.cacherAlert = false;
+      this.message = "Votre produit ne peut être ajouté, vous devez renseigner la référence, le nom et le prix HT.";
+    }
   }
 
-  ajouterCategorie(event: MatChipInputEvent): void {
+  async ajouterCategorie(event: MatChipInputEvent) {
     let input = event.input;
     let nomCat = event.value;
     if ((nomCat || '').trim()) {
-      this.categorieBusiness.getCategorieByID(nomCat).subscribe(value => {
-        if (value.valueOf() instanceof Categorie) {
-          let categorie = value;
-          this.produitBusiness.addCategorieProduit(this.produit, categorie).subscribe(value => this.produit.arrayCategorie = value.arrayCategorie);
+      let retourAPI = await this.categorieBusiness.getCategorieByID(nomCat);
+      if (retourAPI != null && retourAPI != undefined) {
+        if (retourAPI.valueOf() instanceof Categorie) {
+          let produit = await this.produitBusiness.addCategorieProduit(this.produit, retourAPI);
+          if(produit != null && produit != undefined){
+            this.produit = produit;
+          }
         } else {
-          this.message = value;
+          this.message = retourAPI;
         }
-      });
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
+      }
+      // Reset the input value
+      if (input) {
+        input.value = '';
+      }
     }
   }
 
-  supprimerCategorie(categorie: any): void {
-    let index = this.produit.arrayCategorie.indexOf(categorie);
-    if (index >= 0) {
-      this.produit.arrayCategorie.splice(index, 1);
-      console.log(categorie);
-      this.produitBusiness.deleteCategorieProduit(this.produit,categorie).subscribe();
-    }
+  async supprimerCategorie(categorie: Categorie) {
+    this.produit = await this.produitBusiness.deleteCategorieProduit(this.produit,categorie);
   }
 }

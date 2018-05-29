@@ -8,8 +8,8 @@ import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap';
 
 import { PreviousRouteBusiness } from '../../e-commerce-ui-common/business/previous-route.business';
-import { ProduitBusiness } from '../../e-commerce-ui-common/business/produit.business';
-import { CategorieBusinessService } from '../../e-commerce-ui-common/business/categorie-business.service';
+import { ProduitBusiness } from '../../e-commerce-ui-common/business/produit.service';
+import { CategorieBusinessService } from '../../e-commerce-ui-common/business/categorie.service';
 
 import { AccueilComponent } from './accueil/accueil.component';
 import { ProduitComponent } from './produit/page.produit.component';

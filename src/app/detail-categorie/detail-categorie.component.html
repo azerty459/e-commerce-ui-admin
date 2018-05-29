@@ -50,7 +50,7 @@
     <ng-template #pas_de_sous_categories><p>Pas de sous-catégories</p></ng-template>
     <label for="sousCategorie" class="col-sm-3">Ajouter une sous-catégorie à {{categorie.nomCat}}:</label>
     <input type="text" id="sousCategorie" [(ngModel)]="nomNouvelleCategorie" class="col-sm-9" name="nomcat">
-    <button *ngIf="enfant" type="submit" class="btn btn-success" (click)="ajouterEnfant(categorie.id)">Ajouter une
+    <button *ngIf="enfant" type="submit" class="btn btn-success" (click)="ajouterEnfant(categorie)">Ajouter une
       nouvelle sous-catégorie
     </button>
   </div>
