@@ -7,7 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap';
 
-import { PreviousRouteBusiness } from '../../e-commerce-ui-common/business/previous-route.business';
+import { PreviousRouteBusiness } from '../../e-commerce-ui-common/business/previous-route.service';
 import { ProduitBusiness } from '../../e-commerce-ui-common/business/produit.service';
 import { CategorieBusinessService } from '../../e-commerce-ui-common/business/categorie.service';
 

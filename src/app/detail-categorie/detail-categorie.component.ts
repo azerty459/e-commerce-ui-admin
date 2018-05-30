@@ -4,9 +4,8 @@ import {Location} from '@angular/common';
 import {CategorieBusinessService} from '../../../e-commerce-ui-common/business/categorie.service';
 import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {Observable} from 'rxjs/Observable';
-import {startWith} from 'rxjs/operators/startWith';
-import {map} from 'rxjs/operators/map';
+import {Observable} from 'rxjs';
+import {startWith, map} from 'rxjs/operators';
 import {Component} from "@angular/core";
 
 @Component({

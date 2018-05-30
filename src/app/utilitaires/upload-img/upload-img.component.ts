@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Produit} from "../../../../e-commerce-ui-common/models/Produit";
 import {ProduitBusiness} from "../../../../e-commerce-ui-common/business/produit.service";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-upload-img',
