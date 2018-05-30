@@ -10,9 +10,6 @@ import { CollapseModule } from 'ngx-bootstrap';
 import { PreviousRouteBusiness } from '../../e-commerce-ui-common/business/previous-route.service';
 import { ProduitBusiness } from '../../e-commerce-ui-common/business/produit.service';
 import { CategorieBusinessService } from '../../e-commerce-ui-common/business/categorie.service';
-import { PreviousRouteBusiness } from '../../e-commerce-ui-common/business/previous-route.service';
-import { ProduitBusiness } from '../../e-commerce-ui-common/business/produit.service';
-import { CategorieBusinessService } from '../../e-commerce-ui-common/business/categorie.service';
 
 import { AccueilComponent } from './accueil/accueil.component';
 import { ProduitComponent } from './produit/page.produit.component';
@@ -91,7 +88,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'admin/categorie',
-    component: CategoriesComponent
+    redirectTo: 'admin/categorie/1'
   },
   {
     path: 'admin/arbre',
