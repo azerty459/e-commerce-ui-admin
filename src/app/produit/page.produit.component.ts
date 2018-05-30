@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
+import {Observable} from 'rxjs';
+import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {Modal} from 'ngx-modialog/plugins/bootstrap';
 import {ActivatedRoute, Router} from "@angular/router";

@@ -1,4 +1,3 @@
-
 import {mergeMap, map, filter} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';

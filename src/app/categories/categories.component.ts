@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CategorieBusinessService} from '../../../e-commerce-ui-common/business/categorie.service';
+import {Observable} from 'rxjs';
 
 import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
 import {Modal} from "ngx-modialog/plugins/bootstrap";
@@ -41,6 +42,7 @@ export class CategoriesComponent implements OnInit {
     // // Lancement de la récupération des catégories / NB: this.categories = liste d'objets Categorie
     // this.categories = this.categorieBusiness.getAllCategories();
     this.message = '';
+    this.categorieBusiness.getTree();
     this.affichage();
   }
 
