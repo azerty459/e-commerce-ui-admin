@@ -7,10 +7,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap';
 
-import { PreviousRouteBusiness } from '../../e-commerce-ui-common/business/previous-route.business';
-import { ProduitBusiness } from '../../e-commerce-ui-common/business/produit.business';
-import { CategorieBusinessService } from '../../e-commerce-ui-common/business/categorie-business.service';
-
+import { PreviousRouteBusiness } from '../../e-commerce-ui-common/business/previous-route.service';
+import { ProduitBusiness } from '../../e-commerce-ui-common/business/produit.service';
+import { CategorieBusinessService } from '../../e-commerce-ui-common/business/categorie.service';
 import { AccueilComponent } from './accueil/accueil.component';
 import { ProduitComponent } from './produit/page.produit.component';
 import { RetourComponent } from '../../e-commerce-ui-common/utilitaires/retour/retour.component';
@@ -23,7 +22,7 @@ import {HttpClientModule} from '@angular/common/http';
 // angular material
 import {
   MatChipsModule, MatIconModule, MatFormFieldModule, MatAutocompleteModule, MatInputModule,
-  MatRadioModule
+  MatRadioModule, MatButtonModule, MatTreeNodePadding
 } from "@angular/material";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //Tool tip angular material
@@ -38,6 +37,10 @@ import {UploadImgComponent} from "./utilitaires/upload-img/upload-img.component"
 import { CovalentFileModule } from '@covalent/core/file';
 //Angular card
 import {MatCardModule} from '@angular/material/card';
+//Angular tree
+import {MatTreeModule} from '@angular/material/tree';
+import {ArbreCategorieComponent} from './ArbreCategorie/arbreCategorie.component';
+
 
 const appRoutes: Routes = [
 
@@ -84,7 +87,11 @@ const appRoutes: Routes = [
   },
   {
     path: 'admin/categorie',
-    redirectTo: 'admin/categorie/1'
+    component: CategoriesComponent
+  },
+  {
+    path: 'admin/arbre',
+    component: ArbreCategorieComponent
   },
 
   {
@@ -115,6 +122,7 @@ const appRoutes: Routes = [
     UploadImgComponent,
     RetourComponent,
     ErreurComponent,
+    ArbreCategorieComponent,
   ],
   imports: [
     BrowserModule,
@@ -129,7 +137,9 @@ const appRoutes: Routes = [
     MatInputModule, // Utilisation des input d'angular material
     MatRadioModule, // Utilisation des radio button
     FormsModule,
+    MatButtonModule,// Utilisation des boutons angular material
     ReactiveFormsModule,
+    MatTreeModule, // Angular tree
     ModalModule.forRoot(),// Modal boostrap
     BootstrapModalModule,// Modal boostrap
     HttpClientModule, // Utilisation du module http

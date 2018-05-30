@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {CategorieBusinessService} from '../../../e-commerce-ui-common/business/categorie-business.service';
-import {Observable} from 'rxjs/Observable';
+import {CategorieBusinessService} from '../../../e-commerce-ui-common/business/categorie.service';
+import {Observable} from 'rxjs';
 
 import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
 import {Modal} from "ngx-modialog/plugins/bootstrap";
@@ -44,6 +44,7 @@ export class CategoriesComponent implements OnInit {
     // // Lancement de la récupération des catégories / NB: this.categories = liste d'objets Categorie
     // this.categories = this.categorieBusiness.getAllCategories();
     this.message = '';
+    this.categorieBusiness.getTree();
     this.affichage();
   }
 
@@ -71,7 +72,6 @@ export class CategoriesComponent implements OnInit {
   }
 
   async redirection() {
-    console.log(this.pageActuelURL);
     if (this.pageActuelURL <= 0)
       this.router.navigate(['/admin/categorie', this.pageMin]);
     else if (this.pageActuelURL > this.pageMax) {

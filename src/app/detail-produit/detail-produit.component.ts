@@ -2,15 +2,15 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import { Location } from '@angular/common';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
-import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.business';
-import {Observable} from "rxjs/Observable";
+import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
+import {Observable} from "rxjs";
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material';
 import {Categorie} from "../../../e-commerce-ui-common/models/Categorie";
 import {Modal} from "ngx-modialog/plugins/bootstrap";
-import {CategorieBusinessService} from "../../../e-commerce-ui-common/business/categorie-business.service";
+import {CategorieBusinessService} from "../../../e-commerce-ui-common/business/categorie.service";
 import {UploadImgComponent} from "../utilitaires/upload-img/upload-img.component";
-import {PreviousRouteBusiness} from "../../../e-commerce-ui-common/business/previous-route.business";
+import {PreviousRouteBusiness} from "../../../e-commerce-ui-common/business/previous-route.service";
 
 @Component({
   selector: 'app-detail-produit',

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.business';
+import {Observable} from 'rxjs';
+import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {Overlay} from 'ngx-modialog';
 import {Modal} from 'ngx-modialog/plugins/bootstrap';
@@ -38,7 +38,7 @@ export class ProduitComponent implements OnInit {
         this.pageActuelURL = parseInt(params.page);
       },
       error => {
-        console.log("Erreur gestion de page ", error)
+
       },
     );
   }
@@ -71,7 +71,6 @@ export class ProduitComponent implements OnInit {
   }
 
   async redirection() {
-    console.log(this.pageActuelURL);
     if (this.pageActuelURL <= 0)
       this.router.navigate(['/admin/produit', this.pageMin]);
     else if (this.pageActuelURL > this.pageMax) {
