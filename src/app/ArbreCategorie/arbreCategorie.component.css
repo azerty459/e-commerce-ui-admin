@@ -1,0 +1,15 @@
+
+.arbreCard {
+  min-height: 80%;
+  margin-top: 30px;
+}
+
+.mat-tree-node{
+  font-size: 1.7rem;
+  height: 20px;
+
+}
+.border{
+  height: 48px;
+  border-left-style:groove;
+}
