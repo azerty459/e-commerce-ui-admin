@@ -21,31 +21,48 @@
             <mat-icon>details</mat-icon>
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <form>
-          <div class="form-group">
+
+        <form id="formProduit">
+
+
+        <div class="flex-container">
+
+          <div class="form-group short-field">
             <label for="referenceProduit">Référence</label>
             <input id="referenceProduit" type="text" [(ngModel)]="produitModifie.ref" name="reference" class="form-control form-control-lg" [attr.disabled]="! ajout ? 'disabled' : null">
           </div>
 
-          <div class="form-group">
+          <div class="form-group long-field">
             <label for="nomProduit">Nom</label>
             <input id="nomProduit" type="text" [(ngModel)]="produitModifie.nom" name="nom" class="form-control form-control-lg">
           </div>
 
-          <div class="form-group">
-            <label for="descProduit">Description</label>
-            <input id="descProduit" type="text" [(ngModel)]="produitModifie.description" name="description" class="form-control form-control-lg">
-          </div>
-
-          <div class="form-group">
+          <div class="form-group short-field">
             <label for="prixProduit">Prix HT</label>
             <input id="prixProduit" type="text" [(ngModel)]="produitModifie.prixHT" name="prix" class="form-control form-control-lg">
           </div>
+
+          <div class="form-group short-field">
+            <label for="autreChamp">Test</label>
+            <input id="autreChamp" type="text" [(ngModel)]="produitModifie.prixHT" name="test" class="form-control form-control-lg">
+          </div>
+
+        </div>
+
+        <div class="form-group">
+          <label for="descProduit">Description</label>
+          <textarea id="descProduit" from="formProduit" rows="4" [(ngModel)]="produitModifie.description" name="description" class="form-control form-control-lg"></textarea>
+        </div>
+
+
           <!--<button type="button" class="btn btn-primary" (click)="goBack()">Retour à la liste</button>-->
           <!--<button type="button" class="btn btn-danger" *ngIf="! ajout" (click)="supprimer(produit.ref)">Supprimer le produit</button>-->
 
-            <button type="submit" class="btn btn-success" *ngIf="! ajout" (click)="modifier()">Sauvegarder les modifications</button>
+          <button type="submit" class="btn btn-success" *ngIf="! ajout" (click)="modifier()">Sauvegarder les modifications</button>
           <button type="submit" class="btn btn-success" *ngIf="ajout" (click)="ajouter()">Ajouter le produit</button>
+
+
+
 
         </form>
       </mat-expansion-panel>
