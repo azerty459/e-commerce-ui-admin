@@ -148,7 +148,11 @@ export class DetailProduitComponent implements OnInit {
     }
   }
 
-  async supprimerCategorie(categorie: Categorie) {
-    this.produit = await this.produitBusiness.deleteCategorieProduit(this.produit,categorie);
+  async supprimerCategorie(categorie: any) {
+    let index = this.produit.arrayCategorie.indexOf(categorie);
+    if (index >= 0) {
+      this.produit.arrayCategorie.splice(index, 1);
+      await this.produitBusiness.deleteCategorieProduit(this.produitModifie,categorie);
+    }
   }
 }
