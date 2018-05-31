@@ -44,3 +44,23 @@ app-upload-img{
   margin-bottom: 10px;
 }
 
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+}
+
+.form-group {
+  margin-right: 1em;
+}
+
+.short-field {
+  width: 12%;
+  min-width: 150px;
+}
+
+.long-field {
+  width: 35%;
+  min-width: 200px
+}

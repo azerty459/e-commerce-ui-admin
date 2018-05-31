@@ -26,6 +26,7 @@ import {
   MatRadioModule
 } from "@angular/material";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatGridListModule} from '@angular/material';
 //Tool tip angular material
 import {MatTooltipModule} from '@angular/material/tooltip';
 //Modal bootstrap
@@ -34,6 +35,7 @@ import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 // Angular material expansion
 import {MatExpansionModule} from '@angular/material/expansion';
 import {UploadImgComponent} from "./utilitaires/upload-img/upload-img.component";
+
 //Teradata covalent library
 import { CovalentFileModule } from '@covalent/core/file';
 //Angular card
@@ -135,6 +137,7 @@ const appRoutes: Routes = [
     HttpClientModule, // Utilisation du module http
     MatExpansionModule, // angular material expans
     MatTooltipModule,//Tool tip angular material
+    MatGridListModule,
     CollapseModule.forRoot(), // Pour ngx bootstrap
     BsDropdownModule.forRoot(), // Pour ngx bootstrap
     RouterModule.forRoot( // Pour le module routing
