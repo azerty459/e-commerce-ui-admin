@@ -1,7 +1,7 @@
 <div class="div-header">
     <h1>Gestion des produits</h1>
     <a class="boutton_ajouterproduit" [routerLink]="['/admin/produit/ajouter']">
-      <button class="btn btn-success">Ajouter un produit</button>
+      <button class="btn btn-success centrer-block"><b class="noShow">Ajouter un produit</b><i class="material-icons">add</i></button>
     </a>
 </div>
 
@@ -62,11 +62,11 @@
                 <td><p>{{produit.prixHT}}</p></td>
                 <td>
                   <a [routerLink]="['/admin/produit/detail', produit.ref]">
-                    <button type="button" class="btn btn-warning">Modifier</button>
+                    <button type="button" class="btn btn-warning centrer-block"><b class="noShow">Modifier</b><i class="material-icons">create</i></button>
                   </a>
                 </td>
                 <td>
-                  <button type="button" class="btn btn-danger" (click)="supprimer(produit)">Supprimer</button>
+                  <button type="button" class="btn btn-danger centrer-block" (click)="supprimer(produit)"><b class="noShow">Supprimer</b><i class="material-icons">delete</i></button>
                 </td>
               </tr>
             </ng-container>

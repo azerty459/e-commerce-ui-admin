@@ -4,8 +4,8 @@
   <div class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>
   <div id="toolbar">
     <app-retour matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip"></app-retour>
-    <button type="button" class="btn btn-danger pull-right" matTooltip="Supprimer ce produit" [matTooltipPosition]="positionBeforeTooltip"  *ngIf="! ajout" (click)="supprimer(produit)">
-      <i class="material-icons " >delete</i>
+    <button type="button" class="btn btn-danger pull-right centrer-block" matTooltip="Supprimer ce produit" [matTooltipPosition]="positionBeforeTooltip"  *ngIf="! ajout" (click)="supprimer(produit)">
+      <b class="noShow">Supprimer le produit</b><i class="material-icons">delete</i>
     </button>
   </div>
 
@@ -58,7 +58,7 @@
           <!--<button type="button" class="btn btn-primary" (click)="goBack()">Retour à la liste</button>-->
           <!--<button type="button" class="btn btn-danger" *ngIf="! ajout" (click)="supprimer(produit.ref)">Supprimer le produit</button>-->
 
-          <button type="submit" class="btn btn-success" *ngIf="! ajout" (click)="modifier()">Sauvegarder les modifications</button>
+          <button type="submit" class="btn btn-success centrer-block" *ngIf="! ajout" (click)="modifier()"><b class="noShow">Sauvegarder les modifications</b><i class="material-icons">save</i></button>
           <button type="submit" class="btn btn-success" *ngIf="ajout" (click)="ajouter()">Ajouter le produit</button>
 
 
@@ -118,8 +118,8 @@
             </mat-card-actions>
           </mat-card>
         </div>
-        <div class="rowPhoto">
 
+        <div class="rowPhoto">
           <mat-card class="col-md-6 photoCard" *ngFor="let photo of produit.arrayPhoto;let i = index">
             <mat-card-header>
               <mat-card-title>Photo n°{{i+1}}</mat-card-title>

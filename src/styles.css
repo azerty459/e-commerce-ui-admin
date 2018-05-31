@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
+
+
+
+
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 /*
   Nav bar
@@ -163,3 +167,12 @@ Styles pour les pages de listes de produits et de catégories
   justify-content: space-between;
 }
 
+
+/*
+Requête média pour l'affichage du texte dans les boutons
+ */
+@media screen and (max-width: 768px) {
+  .noShow {
+    display: none;
+  }
+}

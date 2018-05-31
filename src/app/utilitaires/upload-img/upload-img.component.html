@@ -1,9 +1,10 @@
 <td-file-upload #singleFileUpload (select)="selectEvent($event)" (upload)="uploadEvent($event)" (cancel)="cancelEvent()" >
   <mat-icon>file_upload</mat-icon><span>Cliquer pour envoyer : {{ singleFileUpload.value?.name }}</span>
   <ng-template td-file-input-label>
+
     <mat-icon>attach_file</mat-icon>
     <span>
-      Choisissez un fichier...
+      <b class="noShow">Choisissez un fichier</b>
       <span [hidden]="!singleFileUpload?.required"></span>
     </span>
   </ng-template>

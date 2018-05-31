@@ -8,7 +8,7 @@
   <button *ngIf="enfant; else PasEnfant" type="button" class="btn btn-success margin-none pull-right centrer-block"
           matTooltip="Enregistrer les modifications" [matTooltipPosition]="positionAvantTooltip"
           (click)="ajouterEnfant(categorie.id)">
-    <b>Enregistrer les modifications</b><i class="material-icons">save</i>
+    <b class="noShow">Enregistrer les modifications</b><i class="material-icons">save</i>
   </button>
   <ng-template #PasEnfant>
     <button type="button" class="btn btn-success margin-none pull-right centrer-block"
@@ -50,11 +50,10 @@
     <ng-template #pas_de_sous_categories><p>Pas de sous-catégories</p></ng-template>
     <label for="sousCategorie" class="col-sm-3">Ajouter une sous-catégorie à {{categorie.nomCat}}:</label>
     <input type="text" id="sousCategorie" [(ngModel)]="nomNouvelleCategorie" class="col-sm-9" name="nomcat">
-    <button *ngIf="enfant" type="submit" class="btn btn-success" (click)="ajouterEnfant(categorie)">Ajouter une
-      nouvelle sous-catégorie
+    <button *ngIf="enfant" type="submit" class="btn btn-success pull-right centrer-block" (click)="ajouterEnfant(categorie)"><b class="noShow">Ajouter une
+      nouvelle sous-catégorie</b><i class="material-icons">add</i>
     </button>
   </div>
-
 
 </div>
 
