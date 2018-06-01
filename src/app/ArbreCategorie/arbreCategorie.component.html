@@ -2,17 +2,27 @@
 
 
 <mat-card class="arbreCard">
+  <mat-card-header>
+    <button class="generalTool" mat-icon-button (click)="this.arbreService.initialize()">
+      <mat-icon class="mat-icon-rtl-mirror">
+        refresh
+      </mat-icon>
+    </button>
+  </mat-card-header>
 
   <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
 
 
     <!-- NODE qui s'affiche si elle ne possède pas d'enfant-->
-    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
-      <div class="border">
+    <mat-tree-node *matTreeNodeDef="let node;"  matTreeNodeToggle matTreeNodePadding>
+      <!-- Le ngClass permet d'afficher le trait de lisibilité lorsque la node a un parent-->
+      <div ngClass="{{node.idParent!=undefined ? 'border' : ''}}">
+        <!--prend la place d'un bouton-->
         <button mat-icon-button disabled></button>
       </div>
+      <div class="messageSupression" *ngIf="node.justDeleted">{{node.nomCategorie}}</div>
       <!--Div qui contient la node (le nom de la categorie) ainsi que la barre d'outil situé sur sa droite-->
-      <div class="nodeAndTool" (mouseover)="enableToolNode(node)" (mouseout)="disableToolNode(node)" >
+      <div class="nodeAndTool" *ngIf="!node.justDeleted" (mouseover)="enableToolNode(node)" (mouseout)="disableToolNode(node)" >
         <!-- si la node est en mode edition le click sur cette dernière ne fait rien, sinon le click permet
         de rentrer en mode edition -->
         <div class="node" *ngIf="!node.isInEditMode" (click)="node.isInEditMode ? null :editCategorieName(node)" >
@@ -40,22 +50,29 @@
               {{node.isInEditMode ? 'check' : 'edit'}}
             </mat-icon>
           </button>
+          <!--Bouton permettant l'entré en mode edition ainsi que la validation des modification,
+          c'est pour cela qu'on appelle une methode qui se chargera de savoir si il faut entré en mode edition
+          ou bien enregistré les modification -->
+          <button mat-icon-button (click)="suprimerCategorie(node)">
+            <mat-icon class="mat-icon-rtl-mirror">
+              delete
 
+            </mat-icon>
+          </button>
         </div>
       </div>
-
-
     </mat-tree-node>
     <!-- NODE qui s'affiche si elle possède des enfants -->
     <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
-      <button mat-icon-button matTreeNodeToggle
+      <button *ngIf="!node.justDeleted"  mat-icon-button matTreeNodeToggle
               [attr.aria-label]="'toggle ' + node.nomCategorie">
         <mat-icon class="mat-icon-rtl-mirror">
           {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
         </mat-icon>
       </button>
+      <div class="messageSupression" *ngIf="node.justDeleted">{{node.nomCategorie}}</div>
       <!--Div qui contient la node (le nom de la categorie) ainsi que la barre d'outil situé sur sa droite-->
-      <div class="nodeAndTool" (mouseover)="enableToolNode(node)" (mouseout)="disableToolNode(node)" >
+      <div class="nodeAndTool" *ngIf="!node.justDeleted" (mouseover)="enableToolNode(node)" (mouseout)="disableToolNode(node)" >
         <!-- si la node est en mode edition le click sur cette dernière ne fait rien, sinon le click permet
         de rentrer en mode edition -->
         <div class="node" *ngIf="!node.isInEditMode" (click)="node.isInEditMode ? null :editCategorieName(node)" >
@@ -83,11 +100,17 @@
               {{node.isInEditMode ? 'check' : 'edit'}}
             </mat-icon>
           </button>
+          <!--Bouton permettant l'entré en mode edition ainsi que la validation des modification,
+          c'est pour cela qu'on appelle une methode qui se chargera de savoir si il faut entré en mode edition
+          ou bien enregistré les modification -->
+          <button mat-icon-button (click)="suprimerCategorie(node)">
+            <mat-icon class="mat-icon-rtl-mirror">
+              delete
 
+            </mat-icon>
+          </button>
         </div>
       </div>
-
-
     </mat-tree-node>
   </mat-tree>
 
