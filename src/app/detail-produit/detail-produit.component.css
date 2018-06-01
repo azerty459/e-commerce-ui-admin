@@ -37,10 +37,34 @@
   justify-content: center;
   flex-wrap: wrap;
 }
-img{
+
+.img{
   padding: 5px;
 }
-app-upload-img{
+
+.app-upload-img{
   margin-bottom: 10px;
+}
+
+.backArrow{
+  cursor:pointer;
+  padding: 5px;
+  margin-bottom: 20px;
+  padding-left: 0;
+}
+
+.mat-expansion-panel{
+  margin-bottom: 10px;
+}
+
+.navbar-fixed-top{
+  width: 100%;
+  right: unset;
+  left: unset;
+  background: white;
+}
+
+.alert {
+  margin-top: 20px;
 }
 
