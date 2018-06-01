@@ -13,3 +13,13 @@
   height: 48px;
   border-left-style:groove;
 }
+.tool{
+margin-left: 20px;
+}
+
+.nodeAndTool{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
