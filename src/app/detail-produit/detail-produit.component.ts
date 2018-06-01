@@ -155,4 +155,5 @@ export class DetailProduitComponent implements OnInit {
       await this.produitBusiness.deleteCategorieProduit(this.produitModifie,categorie);
     }
   }
+
 }

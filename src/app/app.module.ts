@@ -43,6 +43,7 @@ import {MatCardModule} from '@angular/material/card';
 //Angular tree
 import {MatTreeModule} from '@angular/material/tree';
 import {ArbreCategorieComponent} from './ArbreCategorie/arbreCategorie.component';
+import {ArbreService} from "../../e-commerce-ui-common/business/arbre.service";
 
 
 const appRoutes: Routes = [
@@ -156,7 +157,7 @@ const appRoutes: Routes = [
       { enableTracing: false } // <-- debugging purposes only
     ),
   ],
-  providers: [ProduitBusiness, CategorieBusinessService, UploadImgComponent, PreviousRouteBusiness],
+  providers: [ProduitBusiness, CategorieBusinessService, UploadImgComponent, PreviousRouteBusiness, ArbreService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

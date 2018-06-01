@@ -1,15 +1,52 @@
 <h1>Gestion des catégories de produits</h1>
+
+
 <mat-card class="arbreCard">
 
   <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
 
+
+    <!-- NODE qui s'affiche si elle ne possède pas d'enfant-->
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
       <div class="border">
         <button mat-icon-button disabled></button>
       </div>
-      {{node.nomCategorie}}
-    </mat-tree-node>
+      <!--Div qui contient la node (le nom de la categorie) ainsi que la barre d'outil situé sur sa droite-->
+      <div class="nodeAndTool" (mouseover)="enableToolNode(node)" (mouseout)="disableToolNode(node)" >
+        <!-- si la node est en mode edition le click sur cette dernière ne fait rien, sinon le click permet
+        de rentrer en mode edition -->
+        <div class="node" *ngIf="!node.isInEditMode" (click)="node.isInEditMode ? null :editCategorieName(node)" >
+          {{node.nomCategorie}}
+        </div>
+        <!-- formulaire qui contient les champs qui apparaissent quand la node entre en mode edit (modification) -->
+        <mat-form-field *ngIf="node.isInEditMode">
+          <!-- Input pour modifier le nom de la categorie-->
+          <input matInput [(ngModel)]="node.nomCategorieModifie" (keyup.enter)="editCategorieName(node)">
+        </mat-form-field>
+        <!-- Div contenant les outils elle apparait quand le boolean node.enableToolNode est vrai-->
+        <div class="tool" [hidden]="!node.enableToolNode">
+          <!--Bouton permettant la sortie du mode edition-->
+          <button mat-icon-button (click)="node.isInEditMode=false;node.enableToolNode=false;" *ngIf="node.isInEditMode">
+            <mat-icon class="mat-icon-rtl-mirror">
+              cancel
+            </mat-icon>
+          </button>
+          <!--Bouton permettant l'entré en mode edition ainsi que la validation des modification,
+          c'est pour cela qu'on appelle une methode qui se chargera de savoir si il faut entré en mode edition
+          ou bien enregistré les modification -->
+          <button mat-icon-button (click)="editCategorieName(node)">
+            <mat-icon class="mat-icon-rtl-mirror">
+              <!--Si la node est en edit mode l'icone check apparait sinon l'icone edit apparait-->
+              {{node.isInEditMode ? 'check' : 'edit'}}
+            </mat-icon>
+          </button>
 
+        </div>
+      </div>
+
+
+    </mat-tree-node>
+    <!-- NODE qui s'affiche si elle possède des enfants -->
     <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
       <button mat-icon-button matTreeNodeToggle
               [attr.aria-label]="'toggle ' + node.nomCategorie">
@@ -17,7 +54,40 @@
           {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
         </mat-icon>
       </button>
-      {{node.nomCategorie}}
+      <!--Div qui contient la node (le nom de la categorie) ainsi que la barre d'outil situé sur sa droite-->
+      <div class="nodeAndTool" (mouseover)="enableToolNode(node)" (mouseout)="disableToolNode(node)" >
+        <!-- si la node est en mode edition le click sur cette dernière ne fait rien, sinon le click permet
+        de rentrer en mode edition -->
+        <div class="node" *ngIf="!node.isInEditMode" (click)="node.isInEditMode ? null :editCategorieName(node)" >
+          {{node.nomCategorie}}
+        </div>
+        <!-- formulaire qui contient les champs qui apparaissent quand la node entre en mode edit (modification) -->
+        <mat-form-field *ngIf="node.isInEditMode">
+          <!-- Input pour modifier le nom de la categorie-->
+          <input matInput [(ngModel)]="node.nomCategorieModifie" (keyup.enter)="editCategorieName(node)">
+        </mat-form-field>
+        <!-- Div contenant les outils elle apparait quand le boolean node.enableToolNode est vrai-->
+        <div class="tool" [hidden]="!node.enableToolNode">
+          <!--Bouton permettant la sortie du mode edition-->
+          <button mat-icon-button (click)="node.isInEditMode=false;node.enableToolNode=false;" *ngIf="node.isInEditMode">
+            <mat-icon class="mat-icon-rtl-mirror">
+              cancel
+            </mat-icon>
+          </button>
+          <!--Bouton permettant l'entré en mode edition ainsi que la validation des modification,
+          c'est pour cela qu'on appelle une methode qui se chargera de savoir si il faut entré en mode edition
+          ou bien enregistré les modification -->
+          <button mat-icon-button (click)="editCategorieName(node)">
+            <mat-icon class="mat-icon-rtl-mirror">
+              <!--Si la node est en edit mode l'icone check apparait sinon l'icone edit apparait-->
+              {{node.isInEditMode ? 'check' : 'edit'}}
+            </mat-icon>
+          </button>
+
+        </div>
+      </div>
+
+
     </mat-tree-node>
   </mat-tree>
 
