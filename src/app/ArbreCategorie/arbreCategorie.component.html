@@ -1,16 +1,12 @@
-<h1>Gestion des catégories de produits</h1>
 
-
+<mat-card-header >
+  <h1>Gestion des catégories de produits</h1>
+</mat-card-header>
 <mat-card class="arbreCard">
-  <mat-card-header>
-    <button class="generalTool" mat-icon-button (click)="this.arbreService.initialize()">
-      <mat-icon class="mat-icon-rtl-mirror">
-        refresh
-      </mat-icon>
-    </button>
-  </mat-card-header>
-
-  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <div class="alert alert-danger" *ngIf="!hasCategories()">
+    <strong>Aucune catégorie trouvée</strong>
+  </div>
+  <mat-tree *ngIf="hasCategories()" [dataSource]="dataSource" [treeControl]="treeControl">
 
 
     <!-- NODE qui s'affiche si elle ne possède pas d'enfant-->
@@ -20,9 +16,8 @@
         <!--prend la place d'un bouton-->
         <button mat-icon-button disabled></button>
       </div>
-      <div class="messageSupression" *ngIf="node.justDeleted">{{node.nomCategorie}}</div>
       <!--Div qui contient la node (le nom de la categorie) ainsi que la barre d'outil situé sur sa droite-->
-      <div class="nodeAndTool" *ngIf="!node.justDeleted" (mouseover)="enableToolNode(node)" (mouseout)="disableToolNode(node)" >
+      <div class="nodeAndTool"  (mouseover)="enableToolNode(node)" (mouseout)="disableToolNode(node)" >
         <!-- si la node est en mode edition le click sur cette dernière ne fait rien, sinon le click permet
         de rentrer en mode edition -->
         <div class="node" *ngIf="!node.isInEditMode" (click)="node.isInEditMode ? null :editCategorieName(node)" >
@@ -64,15 +59,14 @@
     </mat-tree-node>
     <!-- NODE qui s'affiche si elle possède des enfants -->
     <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
-      <button *ngIf="!node.justDeleted"  mat-icon-button matTreeNodeToggle
+      <button  mat-icon-button matTreeNodeToggle
               [attr.aria-label]="'toggle ' + node.nomCategorie">
-        <mat-icon class="mat-icon-rtl-mirror">
+        <mat-icon class="mat-icon-rtl-mirror" *ngIf="node.expandable">
           {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
         </mat-icon>
       </button>
-      <div class="messageSupression" *ngIf="node.justDeleted">{{node.nomCategorie}}</div>
       <!--Div qui contient la node (le nom de la categorie) ainsi que la barre d'outil situé sur sa droite-->
-      <div class="nodeAndTool" *ngIf="!node.justDeleted" (mouseover)="enableToolNode(node)" (mouseout)="disableToolNode(node)" >
+      <div class="nodeAndTool"  (mouseover)="enableToolNode(node)" (mouseout)="disableToolNode(node)" >
         <!-- si la node est en mode edition le click sur cette dernière ne fait rien, sinon le click permet
         de rentrer en mode edition -->
         <div class="node" *ngIf="!node.isInEditMode" (click)="node.isInEditMode ? null :editCategorieName(node)" >
