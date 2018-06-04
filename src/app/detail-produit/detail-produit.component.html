@@ -1,140 +1,167 @@
 <h1 *ngIf="ajout">Ajout d'un produit</h1>
-<h1 *ngIf="!ajout">{{produit?.nom}} - {{produit?.ref}}</h1>
+<h1 *ngIf="!ajout">
+  <div class="navbar-fixed-top">{{produit?.nom}} - {{produit?.ref}}</div>
+</h1>
 <div id="mainContainer">
-  <div class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>
-  <div id="toolbar">
-    <app-retour matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip"></app-retour>
-    <button type="button" class="btn btn-danger pull-right centrer-block" matTooltip="Supprimer ce produit" [matTooltipPosition]="positionBeforeTooltip"  *ngIf="! ajout" (click)="supprimer(produit)">
-      <b class="noShow">Supprimer le produit</b><i class="material-icons">delete</i>
-    </button>
+  <div *ngIf="!cacherAlert" class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>
+  <div *ngIf="!cacherErreur" class="alert alert-danger" role="alert" [hidden]="cacherErreur">{{message}}</div>
+  <div class="toolbar">
+    <div>
+      <i matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip" class="material-icons backArrow"
+         (click)="goBack()">arrow_back</i>
+    </div>
+    <div>
+      <button *ngIf="! ajout" (click)="supprimer(produit)" type="button" class="btn btn-danger pull-right centrer-block"
+              matTooltip="Supprimer ce produit" [matTooltipPosition]="positionBeforeTooltip">
+        <i class="material-icons ">delete</i>
+      </button>
+
+      <button *ngIf="! ajout" (click)="sauvegarderModification()" type="button"
+              class="btn btn-success pull-right centrer-block"
+              matTooltip="Enregistrer les modifications" [matTooltipPosition]="positionAfterTooltip">
+        <i class="material-icons">save</i>
+      </button>
+
+      <button *ngIf="! ajout" (click)="annulerModification(produit)" [disabled]="cacherBoutonAnnulation"
+              (click)="annulerModification(produit)" type="button" class="btn btn-warning pull-right centrer-block"
+              matTooltip="Annuler les modifications" [matTooltipPosition]="">
+        <i class="material-icons">settings_backup_restore</i>
+      </button>
+
+    </div>
   </div>
 
   <div *ngIf="produitModifie">
-    <mat-accordion>
-      <mat-expansion-panel [expanded]="true">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-              Details
-          </mat-panel-title>
-          <mat-panel-description>
-            <div class="descriptionPanel">Modifier les details du produit</div>
-            <mat-icon>details</mat-icon>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
 
-        <form id="formProduit">
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Details
+        </mat-panel-title>
+        <mat-panel-description>
+          <div class="descriptionPanel">Modifier les details du produit</div>
+          <mat-icon>details</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form>
+        <div class="form-group">
+          <label for="referenceProduit">Référence</label>
+          <input id="referenceProduit" type="text" [(ngModel)]="produitModifie.ref" name="reference"
+                 class="form-control form-control-lg" [attr.disabled]="! ajout ? 'disabled' : null">
+        </div>
 
-
-        <div class="flex-container">
-
-          <div class="form-group short-field">
-            <label for="referenceProduit">Référence</label>
-            <input id="referenceProduit" type="text" [(ngModel)]="produitModifie.ref" name="reference" class="form-control form-control-lg" [attr.disabled]="! ajout ? 'disabled' : null">
-          </div>
-
-          <div class="form-group long-field">
-            <label for="nomProduit">Nom</label>
-            <input id="nomProduit" type="text" [(ngModel)]="produitModifie.nom" name="nom" class="form-control form-control-lg">
-          </div>
-
-          <div class="form-group short-field">
-            <label for="prixProduit">Prix HT</label>
-            <input id="prixProduit" type="text" [(ngModel)]="produitModifie.prixHT" name="prix" class="form-control form-control-lg">
-          </div>
-
-          <div class="form-group short-field">
-            <label for="autreChamp">Test</label>
-            <input id="autreChamp" type="text" [(ngModel)]="produitModifie.prixHT" name="test" class="form-control form-control-lg">
-          </div>
-
+        <div class="form-group">
+          <label for="nomProduit">Nom</label>
+          <input (input)="compareProduitAvecProduitModif()" id="nomProduit" type="text"
+                 [(ngModel)]="produitModifie.nom"
+                 name="nom" class="form-control form-control-lg">
         </div>
 
         <div class="form-group">
           <label for="descProduit">Description</label>
-          <textarea id="descProduit" from="formProduit" rows="4" [(ngModel)]="produitModifie.description" name="description" class="form-control form-control-lg"></textarea>
+          <input (input)="compareProduitAvecProduitModif()" id="descProduit" type="text"
+                 [(ngModel)]="produitModifie.description" name="description" class="form-control form-control-lg">
         </div>
 
-
-          <!--<button type="button" class="btn btn-primary" (click)="goBack()">Retour à la liste</button>-->
-          <!--<button type="button" class="btn btn-danger" *ngIf="! ajout" (click)="supprimer(produit.ref)">Supprimer le produit</button>-->
-
-          <button type="submit" class="btn btn-success centrer-block" *ngIf="! ajout" (click)="modifier()"><b class="noShow">Sauvegarder les modifications</b><i class="material-icons">save</i></button>
-          <button type="submit" class="btn btn-success" *ngIf="ajout" (click)="ajouter()">Ajouter le produit</button>
-
-
-
-
-        </form>
-      </mat-expansion-panel>
-      <mat-expansion-panel disabled="{{disabledAjoutCategorie}}">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Categories
-          </mat-panel-title>
-          <mat-panel-description>
-            <div class="descriptionPanel">Modifier les categories du produit</div>
-            <mat-icon>details</mat-icon>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <mat-form-field class="demo-chip-list">
-          <mat-chip-list #chipList>
-            <mat-chip *ngFor="let categorie of produit.arrayCategorie" [selectable]="selectable"
-                      [removable]="removable" (removed)="supprimerCategorie(categorie)">
-              {{categorie.nomCat}}
-              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-            </mat-chip>
-            <label for="listCategorie"></label>
-            <input id="listCategorie"
-              [matChipInputFor]="chipList"
-              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-              [matChipInputAddOnBlur]="addOnBlur"
-              (matChipInputTokenEnd)="ajouterCategorie($event)" />
-          </mat-chip-list>
-        </mat-form-field>
-      </mat-expansion-panel>
-      <mat-expansion-panel disabled="{{disabledAjoutCategorie}}" >
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Photos
-          </mat-panel-title>
-          <mat-panel-description>
-            <div class="descriptionPanel">Gérer les photos</div>
-            <mat-icon>details</mat-icon>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <div class="rowUpload">
-          <mat-card  class="col-md-6 photoCard">
-            <mat-card-header>
-              <mat-card-title>Upload</mat-card-title>
-              <mat-card-subtitle>C'est ici pour ajouter une nouvelle photo !</mat-card-subtitle>
-            </mat-card-header>
-            <img *ngIf="upload.imgSelected" class="mat-card-image" src="../../assets/img/1024px-Emblem-question.svg.png" alt="produit image"/>
-            <mat-card-content>
-              <div class="container-fluid">
-                <app-upload-img  [produit]="produit" class="center-block" #upload></app-upload-img>
-              </div>
-            </mat-card-content>
-            <mat-card-actions>
-            </mat-card-actions>
-          </mat-card>
+        <div class="form-group">
+          <label for="prixProduit">Prix HT</label>
+          <input (input)="compareProduitAvecProduitModif()" id="prixProduit" type="text"
+                 [(ngModel)]="produitModifie.prixHT" name="prix" class="form-control form-control-lg">
         </div>
 
-        <div class="rowPhoto">
-          <mat-card class="col-md-6 photoCard" *ngFor="let photo of produit.arrayPhoto;let i = index">
-            <mat-card-header>
-              <mat-card-title>Photo n°{{i+1}}</mat-card-title>
-              <mat-card-subtitle>{{photo.urlSimplifie}}</mat-card-subtitle>
-            </mat-card-header>
-            <img class="mat-card-image" src="{{photo.url}}" alt="PhotoNumero{{i}}"/>
-            <mat-card-content>
-            </mat-card-content>
-            <mat-card-actions>
-            </mat-card-actions>
-          </mat-card>
-        </div>
+        <button type="submit" class="btn btn-success" *ngIf="ajout" (click)="ajouter()">Ajouter le produit</button>
 
-      </mat-expansion-panel>
-    </mat-accordion>
+      </form>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel disabled="{{disabledAjoutCategorie}}">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Categories
+        </mat-panel-title>
+        <mat-panel-description>
+          <div class="descriptionPanel">Modifier les categories du produit</div>
+          <mat-icon>details</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-form-field class="demo-chip-list">
+        <mat-chip-list #chipList>
+          <mat-chip
+            *ngFor="let categorie of produitModifie.arrayCategorie"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="supprimerCategorie(categorie)">
+            {{categorie.nomCat}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <label for="listCategorie"></label>
+          <input
+            id="listCategorie"
+            placeholder="Écrivez le nom d'une catégorie pour associer votre produit à la catégorie choisie..."
+            #categorieInput
+            [formControl]="choixCategorieFormControl"
+            [matAutocomplete]="auto"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            [(ngModel)]="inputChoixParent"
+          />
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="ajouterCategorie($event)">
+          <mat-option *ngFor="let categorie of categoriesObservable | async" [value]="categorie">
+            {{ categorie.nomCat }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </mat-expansion-panel>
+
+
+
+
+   <mat-expansion-panel disabled="{{disabledAjoutCategorie}}">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Photos
+        </mat-panel-title>
+        <mat-panel-description>
+          <div class="descriptionPanel">Gérer les photos</div>
+          <mat-icon>details</mat-icon>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="rowUpload">
+        <mat-card class="col-md-6 photoCard">
+          <mat-card-header>
+            <mat-card-title>Upload</mat-card-title>
+            <mat-card-subtitle>C'est ici pour ajouter une nouvelle photo !</mat-card-subtitle>
+          </mat-card-header>
+          <img *ngIf="upload.imgSelected" class="mat-card-image" src="../../assets/img/1024px-Emblem-question.svg.png"
+               alt="produit image"/>
+          <mat-card-content>
+            <div class="container-fluid">
+              <app-upload-img [produit]="produit" class="center-block" #upload></app-upload-img>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div class="rowPhoto">
+
+        <mat-card class="col-md-6 photoCard" *ngFor="let photo of produit.arrayPhoto;let i = index">
+          <mat-card-header>
+            <mat-card-title>Photo n°{{i+1}}</mat-card-title>
+            <mat-card-subtitle>{{photo.urlSimplifie}}</mat-card-subtitle>
+          </mat-card-header>
+          <img class="mat-card-image" src="{{photo.url}}" alt="PhotoNumero{{i}}"/>
+          <mat-card-content>
+          </mat-card-content>
+          <mat-card-actions>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+    </mat-expansion-panel>
 
   </div>
 

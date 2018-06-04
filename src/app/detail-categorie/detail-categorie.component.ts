@@ -4,6 +4,7 @@ import {Location} from '@angular/common';
 import {CategorieBusinessService} from '../../../e-commerce-ui-common/business/categorie.service';
 import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {MatAutocompleteSelectedEvent, MatChipInputEvent} from '@angular/material';
 import {Observable} from 'rxjs';
 import {startWith, map} from 'rxjs/operators';
 import {Component} from "@angular/core";
@@ -298,5 +299,9 @@ export class DetailCategorieComponent implements OnInit {
   redirectionEnfant(id: number): void {
     this.router.navigateByUrl('', {skipLocationChange: true}).then(() =>
       this.router.navigate(['/admin/categorie/detail/' + id]));
+  }
+
+  selected(event: MatAutocompleteSelectedEvent) {
+    console.log(event.option.viewValue);
   }
 }

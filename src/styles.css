@@ -9,6 +9,12 @@
   Nav bar
  */
 
+.toolbar {
+  display: flex;
+  margin: 10px 0px 10px 0;
+  justify-content: space-between;
+}
+
 .navbar {
   margin: 0px;
 }
@@ -75,6 +81,7 @@ main {
 .centrer-block {
   display: flex;
   justify-content: center;
+  margin-left: 10px!important;
 }
 
 .centrer-block > b {
@@ -100,6 +107,10 @@ main {
 
 .margin {
   margin: 1%;
+}
+
+.margin-bottom-20 {
+  margin-bottom: 20px;
 }
 
 .espace {

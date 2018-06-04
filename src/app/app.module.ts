@@ -44,6 +44,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MatTreeModule} from '@angular/material/tree';
 import {ArbreCategorieComponent} from './ArbreCategorie/arbreCategorie.component';
 import {ArbreService} from "../../e-commerce-ui-common/business/arbre.service";
+import {FormEditGuard} from "../../e-commerce-ui-common/business/guard/form-edit.guard";
+import {FormEditService} from "../../e-commerce-ui-common/business/form-edit.service";
 
 
 const appRoutes: Routes = [
@@ -67,6 +69,7 @@ const appRoutes: Routes = [
   {
     path: 'admin/produit/detail/:id',
     component: DetailProduitComponent,
+    canDeactivate: [FormEditGuard],
     data: { title: 'Détail produit' }
   },
   {
@@ -157,7 +160,15 @@ const appRoutes: Routes = [
       { enableTracing: false } // <-- debugging purposes only
     ),
   ],
-  providers: [ProduitBusiness, CategorieBusinessService, UploadImgComponent, PreviousRouteBusiness, ArbreService],
+  providers: [
+    ProduitBusiness,
+    CategorieBusinessService,
+    UploadImgComponent,
+    PreviousRouteBusiness,
+    ArbreService,
+    FormEditService,
+    FormEditGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
