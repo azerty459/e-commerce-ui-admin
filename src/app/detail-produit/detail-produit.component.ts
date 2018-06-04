@@ -1,10 +1,9 @@
 import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
-import {ActivatedRoute, Router, NavigationEnd} from '@angular/router';
-import {Location} from '@angular/common';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
-import {MatAutocompleteSelectedEvent, MatChipInputEvent} from '@angular/material';
-import {Observable} from "rxjs";
+import {MatAutocompleteSelectedEvent} from '@angular/material';
+import {Observable} from 'rxjs/Rx';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Categorie} from "../../../e-commerce-ui-common/models/Categorie";
 import {Modal} from "ngx-modialog/plugins/bootstrap";
@@ -13,6 +12,7 @@ import {UploadImgComponent} from "../utilitaires/upload-img/upload-img.component
 import {PreviousRouteBusiness} from "../../../e-commerce-ui-common/business/previous-route.service";
 import {map, startWith} from "rxjs/operators";
 import {FormControl} from "@angular/forms";
+import {FormEditService} from "../../../e-commerce-ui-common/business/form-edit.service";
 
 @Component({
   selector: 'app-detail-produit',
@@ -73,42 +73,21 @@ export class DetailProduitComponent implements OnInit {
 
   constructor(private uploadImg: UploadImgComponent,
               private modal: Modal,
+              private formEditService: FormEditService,
               private previousRouteBusiness: PreviousRouteBusiness,
               private route: ActivatedRoute,
               private produitBusiness: ProduitBusiness,
               private categorieBusiness: CategorieBusinessService,
-              private location: Location,
               private router: Router) {
-    location.subscribe((event: Event) => {
-      if (JSON.stringify(this.produit) != JSON.stringify(this.produitModifie)) {
-        history.go(1);
-        const dialogRef = this.modal.confirm()
-          .size('lg')
-          .isBlocking(true)
-          .showClose(false)
-          .keyboard(27)
-          .title('Produits non sauvegardé')
-          .body('Voulez vous sauvegarder vos modifications ?')
-          .okBtn('Oui')
-          .okBtnClass('btn btn-danger')
-          .cancelBtn('Non')
-          .open();
-        dialogRef.result
-          .then(() => {
-            this.sauvegarderModification(this.produitModifie);
-          })
-          .catch(() => null) // Pour éviter l'erreur de promise dans console.log
-      }
-    });
   }
 
   ngOnInit() {
+    this.formEditService.clear();
     this.getProduit();
   }
 
   async getProduit() {
     const url = this.route.snapshot.routeConfig.path;
-
     if (url === 'admin/produit/ajouter') {
       this.ajout = true;
       this.produitModifie = new Produit(null, null, null, null, []);
@@ -119,12 +98,19 @@ export class DetailProduitComponent implements OnInit {
       this.disabledAjoutCategorie = false;
       const refProduit = this.route.snapshot.paramMap.get('id');
       let retourAPI = await this.produitBusiness.getProduitByRef(refProduit);
+
       if (!(retourAPI.valueOf() instanceof Produit)) {
         this.router.navigate(['page-404'], {skipLocationChange: true});
       }
       this.produit = retourAPI;
-      this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
 
+      let localStorageProduitModifier = localStorage.getItem("produitModifier");
+      if(localStorageProduitModifier != undefined && localStorageProduitModifier != null){
+        this.produitModifie = JSON.parse(localStorageProduitModifier);
+        localStorage.clear();
+      }else{
+        this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
+      }
       this.categories = await this.categorieBusiness.getAllCategories();
       if (this.categories != undefined) {
         // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
@@ -143,12 +129,14 @@ export class DetailProduitComponent implements OnInit {
   compareProduitAvecProduitModif() {
     if (JSON.stringify(this.produit) != JSON.stringify(this.produitModifie)) {
       this.cacherBoutonAnnulation = false;
+      this.formEditService.setDirty(true);
     }
   }
 
   annulerModification(produit: Produit) {
     this.produitModifie = JSON.parse(JSON.stringify(produit));
     this.cacherBoutonAnnulation = true;
+    this.formEditService.setDirty(false);
   }
 
   supprimer(produit: Produit) {
@@ -183,6 +171,7 @@ export class DetailProduitComponent implements OnInit {
         this.cacherAlert = false;
         this.message = "Le produit a été mis à jour";
         this.cacherBoutonAnnulation = true;
+        this.formEditService.setDirty(false);
       } else {
         this.cacherErreur = false;
         this.cacherAlert = true;
@@ -232,6 +221,10 @@ export class DetailProduitComponent implements OnInit {
       this.message = "Cette catégorie est déjà ajoutée.";
     }
     this.compareProduitAvecProduitModif();
+  }
+
+  goBack(): void {
+    this.router.navigate(['/admin/produit']);
   }
 
   supprimerCategorie(categorie: any) {
