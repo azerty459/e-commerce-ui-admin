@@ -8,7 +8,7 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
 import {Modal} from 'ngx-modialog/plugins/bootstrap';
 import {CategorieBusinessService} from '../../../e-commerce-ui-common/business/categorie.service';
-import {UploadImgComponent} from '../utilitaires/upload-img/upload-img.component';
+import {UploadImgComponent} from '../../utilitaires/upload-img/upload-img.component';
 import {PreviousRouteBusiness} from '../../../e-commerce-ui-common/business/previous-route.service';
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';

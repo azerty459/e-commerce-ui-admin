@@ -1,13 +1,13 @@
-import {RouterModule, Routes} from "@angular/router";
-import {AccueilComponent} from "./accueil/accueil.component";
-import {DetailProduitComponent} from "./detail-produit/detail-produit.component";
-import {ProduitComponent} from "./produit/page.produit.component";
-import {FormEditGuard} from "../../e-commerce-ui-common/business/guard/form-edit.guard";
-import {DetailCategorieComponent} from "./detail-categorie/detail-categorie.component";
-import {CategoriesComponent} from "./categories/categories.component";
-import {ArbreCategorieComponent} from "./ArbreCategorie/arbreCategorie.component";
-import {ErreurComponent} from "./erreur/erreur.component";
-import {NgModule} from "@angular/core";
+import {RouterModule, Routes} from '@angular/router';
+import {AccueilComponent} from '../page/accueil/accueil.component';
+import {DetailProduitComponent} from '../page/detail-produit/detail-produit.component';
+import {ProduitComponent} from '../page/produit/produit.component';
+import {FormEditGuard} from '../../e-commerce-ui-common/business/guard/form-edit.guard';
+import {DetailCategorieComponent} from '../page/detail-categorie/detail-categorie.component';
+import {CategoriesComponent} from '../page/categories/categories.component';
+import {ArbreCategorieComponent} from '../page/ArbreCategorie/arbreCategorie.component';
+import {ErreurComponent} from '../page/erreur/erreur.component';
+import {NgModule} from '@angular/core';
 
 const appRoutes: Routes = [
 

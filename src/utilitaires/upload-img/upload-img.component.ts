@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Produit} from '../../../../e-commerce-ui-common/models/Produit';
-import {ProduitBusiness} from '../../../../e-commerce-ui-common/business/produit.service';
+import {Produit} from '../../../e-commerce-ui-common/models/Produit';
+import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
 
 @Component({
   selector: 'app-upload-img',
