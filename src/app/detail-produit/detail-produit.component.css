@@ -5,10 +5,8 @@
 .demo-chip-list {
   width: 100%;
 }
-
 #mainContainer{
-  margin-top: 10px;
-  padding-top: 10px;
+  padding-top: 60px;
 }
 .mat-expansion-panel-header-description .material-icons{
   margin-left: auto;
@@ -51,10 +49,6 @@
   padding: 5px;
   margin-bottom: 20px;
   padding-left: 0;
-}
-
-.mat-expansion-panel{
-  margin-bottom: 10px;
 }
 
 .flex-container {

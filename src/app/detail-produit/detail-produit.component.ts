@@ -3,16 +3,16 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
 import {MatAutocompleteSelectedEvent} from '@angular/material';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Categorie} from "../../../e-commerce-ui-common/models/Categorie";
-import {Modal} from "ngx-modialog/plugins/bootstrap";
-import {CategorieBusinessService} from "../../../e-commerce-ui-common/business/categorie.service";
-import {UploadImgComponent} from "../utilitaires/upload-img/upload-img.component";
-import {PreviousRouteBusiness} from "../../../e-commerce-ui-common/business/previous-route.service";
-import {map, startWith} from "rxjs/operators";
-import {FormControl} from "@angular/forms";
-import {FormEditService} from "../../../e-commerce-ui-common/business/form-edit.service";
+import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
+import {Modal} from 'ngx-modialog/plugins/bootstrap';
+import {CategorieBusinessService} from '../../../e-commerce-ui-common/business/categorie.service';
+import {UploadImgComponent} from '../utilitaires/upload-img/upload-img.component';
+import {PreviousRouteBusiness} from '../../../e-commerce-ui-common/business/previous-route.service';
+import {map, startWith} from 'rxjs/operators';
+import {FormControl} from '@angular/forms';
+import {FormEditService} from '../../../e-commerce-ui-common/business/form-edit.service';
 
 @Component({
   selector: 'app-detail-produit',
@@ -20,18 +20,16 @@ import {FormEditService} from "../../../e-commerce-ui-common/business/form-edit.
   styleUrls: ['./detail-produit.component.css']
 })
 export class DetailProduitComponent implements OnInit {
-  @ViewChild('photo') photo;
-  selectable: boolean = true;
-  removable: boolean = true;
-  addOnBlur: boolean = true;
-  urlPrecedenteAttendue = "/admin/produit";
-  positionBeforeTooltip = 'before';
-  positionAfterTooltip = 'after';
+  @ViewChild('photo') public photo;
+  public selectable = true;
+  public removable = true;
+  public addOnBlur = true;
+  public positionBeforeTooltip = 'before';
+  public positionAfterTooltip = 'after';
   // Enter, comma
-  separatorKeysCodes = [ENTER, COMMA];
-  message: string;
-  ajout: boolean;
-  public observableProduit: Observable<Produit>;
+  public separatorKeysCodes = [ENTER, COMMA];
+  public message: string;
+  public ajout: boolean;
   public produit: Produit;
   public produitModifie: Produit;
   public disabledAjoutCategorie: boolean;
@@ -40,7 +38,7 @@ export class DetailProduitComponent implements OnInit {
    * Boolean permettant de savoir si le bouton d'annulation dans la toolbar doit être cacher ou non
    * @type {boolean}
    */
-  public cacherBoutonAnnulation: boolean = true;
+  public cacherBoutonAnnulation = true;
 
   /**
    * Observable d'un tableau d'objets de categories
@@ -58,16 +56,16 @@ export class DetailProduitComponent implements OnInit {
   public choixCategorieFormControl: FormControl = new FormControl();
 
   /**
-   * Boolean permettant de cacher l'alerte
+   * Boolean permettant de cacher l'alerte de succès
    * @type {boolean}
    */
-  cacherAlert: boolean = true;
+  cacherAlert =  true;
 
   /**
-   * Boolean permettant de cacher l'erreur
+   * Boolean permettant de cacher l'alerte d'erreur
    * @type {boolean}
    */
-  cacherErreur: boolean = true;
+  cacherErreur = true;
 
   @ViewChild('categorieInput') fruitInput: ElementRef;
 
@@ -97,22 +95,22 @@ export class DetailProduitComponent implements OnInit {
       this.ajout = false;
       this.disabledAjoutCategorie = false;
       const refProduit = this.route.snapshot.paramMap.get('id');
-      let retourAPI = await this.produitBusiness.getProduitByRef(refProduit);
+      const retourAPI = await this.produitBusiness.getProduitByRef(refProduit);
 
       if (!(retourAPI.valueOf() instanceof Produit)) {
         this.router.navigate(['page-404'], {skipLocationChange: true});
       }
       this.produit = retourAPI;
 
-      let localStorageProduitModifier = localStorage.getItem("produitModifier");
-      if(localStorageProduitModifier != undefined && localStorageProduitModifier != null){
+      const localStorageProduitModifier = localStorage.getItem('produitModifier');
+      if (localStorageProduitModifier !== undefined && localStorageProduitModifier != null) {
         this.produitModifie = JSON.parse(localStorageProduitModifier);
         localStorage.clear();
-      }else{
+      } else {
         this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
       }
       this.categories = await this.categorieBusiness.getAllCategories();
-      if (this.categories != undefined) {
+      if (this.categories !== undefined) {
         // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
         this.categoriesObservable = this.choixCategorieFormControl.valueChanges.pipe(
           startWith(''),
@@ -122,24 +120,77 @@ export class DetailProduitComponent implements OnInit {
     }
   }
 
-  async sauvegarderModification(produit: Produit) {
-    this.modifier();
-  }
-
-  compareProduitAvecProduitModif() {
-    if (JSON.stringify(this.produit) != JSON.stringify(this.produitModifie)) {
+  comparedProductWithProductModif() {
+    // Si produit modifier est différent de produit
+    if (JSON.stringify(this.produit) !== JSON.stringify(this.produitModifie)) {
       this.cacherBoutonAnnulation = false;
+      // Permets d'afficher la pop-up "en cours d'édition"
       this.formEditService.setDirty(true);
     }
   }
 
-  annulerModification(produit: Produit) {
+  cancelModification(produit: Produit) {
+    // Permet de copier la variable produit dans produitModifier
     this.produitModifie = JSON.parse(JSON.stringify(produit));
+    // Permets de cacher le bouton d'annulation des modifications
     this.cacherBoutonAnnulation = true;
+    //  Permets de désactiver la pop-up "en cours d'édition"
     this.formEditService.setDirty(false);
   }
 
-  supprimer(produit: Produit) {
+  public saveModification(): void {
+    this.updateProduct();
+  }
+
+  public async updateProduct() {
+    const retourAPI = await this.produitBusiness.updateProduit(this.produitModifie);
+    console.log(retourAPI);
+    if (retourAPI != null && retourAPI !== undefined) {
+      if (retourAPI.valueOf() instanceof Produit) {
+        // Mets à jour la variable produit et produit modifiée
+        this.produit = retourAPI;
+        this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
+        // Permets gérer la gestion d'alerte en cas de succès ou erreur
+        this.cacherErreur = true;
+        this.cacherAlert = false;
+        this.message = 'Le produit a été mis à jour.';
+        this.cacherBoutonAnnulation = true;
+        // Permets gérer la gestion d'alerte en cas de succès ou erreur
+        this.formEditService.setDirty(false);
+      } else {
+        // Permets gérer la gestion d'alerte en cas de succès ou erreur
+        this.cacherErreur = false;
+        this.cacherAlert = true;
+        this.message = 'Votre produit n\'a pas pu être modifié, vous devez renseigner au minimum les champs de la référence,' +
+          ' le nom et le prix HT.';
+      }
+    }
+  }
+
+  public async addProduct() {
+    const retourAPI = await this.produitBusiness.addProduit(this.produitModifie);
+    if (retourAPI.valueOf() instanceof Produit) {
+      this.cacherErreur = true;
+      this.cacherAlert = false;
+      this.disabledAjoutCategorie = false;
+      this.ajout = false;
+      this.produit = retourAPI;
+      // Permet de copier la variable produit dans produitModifier
+      if (this.produit != null && this.produit !== undefined) {
+        this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
+      }
+      this.message = 'Votre produit a été correctement ajouté';
+      this.disabledAjoutCategorie = false;
+    } else {
+      this.cacherErreur = false;
+      this.cacherAlert = true;
+      this.message = 'Votre produit n\'a pas pu être ajouté, vous devez renseigner au minimum les champs de la référence,' +
+        ' le nom et le prix HT.';
+    }
+  }
+
+  public deleteProduct(produit: Produit) {
+    // Pop-up gérant la suppression d'un produit
     const dialogRef = this.modal.confirm()
       .size('lg')
       .isBlocking(true)
@@ -153,86 +204,50 @@ export class DetailProduitComponent implements OnInit {
       .open();
     dialogRef.result
       .then(async () => {
-        let supprimer = await this.produitBusiness.deleteProduit(this.produit);
+        const supprimer = await this.produitBusiness.deleteProduit(this.produit);
+        // Si le produit a été supprimé, on affiche le message
         if (supprimer) {
-          this.message = "Le produit a été supprimé.";
+          this.cacherErreur = false;
+          this.cacherAlert = true;
+          this.message = 'Le produit a été supprimé.';
         }
       })
-      .catch(() => null); // Pour éviter l'erreur de promise dans console.log
+      // Pour éviter l'erreur de promise dans console.log
+      .catch(() => null);
   }
 
-  async modifier() {
-    let retourAPI = await this.produitBusiness.updateProduit(this.produitModifie);
-    if (retourAPI != null && retourAPI != undefined) {
-      if (retourAPI.valueOf() instanceof Produit) {
-        this.produit = retourAPI;
-        this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
-        this.cacherErreur = true;
-        this.cacherAlert = false;
-        this.message = "Le produit a été mis à jour";
-        this.cacherBoutonAnnulation = true;
-        this.formEditService.setDirty(false);
-      } else {
-        this.cacherErreur = false;
-        this.cacherAlert = true;
-        this.message = "Votre produit ne peut être modifié, vous devez renseigner au minimum la référence, le nom et le prix HT.";
-      }
+  public deleteCategory(categorie: any): void {
+    const index = this.produitModifie.arrayCategorie.indexOf(categorie);
+    if (index >= 0) {
+      this.produitModifie.arrayCategorie.splice(index, 1);
+      this.comparedProductWithProductModif();
     }
   }
 
-  async ajouter() {
-    let retourAPI = await this.produitBusiness.addProduit(this.produitModifie);
-    if (retourAPI.valueOf() instanceof Produit) {
-      this.cacherErreur = true;
-      this.cacherAlert = false;
-      this.disabledAjoutCategorie = false;
-      this.ajout = false;
-      this.produit = retourAPI;
-      // Permet de copier la variable produit dans produitModifier
-      if (this.produit != null && this.produit != undefined) {
-        this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
-      }
-      this.message = "Votre produit a été correctement ajouté";
-      this.disabledAjoutCategorie = false;
-    } else {
-      this.cacherErreur = false;
-      this.cacherAlert = true;
-      this.message = "Votre produit ne peut être ajouté, vous devez renseigner au minimum la référence, le nom et le prix HT.";
-    }
-  }
-
-  async ajouterCategorie(event: MatAutocompleteSelectedEvent) {
-    let retourCategorie = event.option.value;
+  public addCategory(event: MatAutocompleteSelectedEvent): void {
+    const retourCategorie = event.option.value;
     this.fruitInput.nativeElement.value = '';
     this.choixCategorieFormControl.setValue(null);
-    let categories = this.produitModifie.arrayCategorie;
+    const categories = this.produitModifie.arrayCategorie;
     let trouver = false;
-    for(let categorie of categories){
-      if(categorie.nomCat == retourCategorie.nomCat){
+    for (const categorie of categories) {
+      if (categorie.id === retourCategorie.id) {
         trouver = true;
         break;
       }
     }
-    if(trouver == false){
+    if (trouver === false) {
       this.cacherErreur = true;
       this.produitModifie.arrayCategorie.push(retourCategorie);
-    }else{
+      this.comparedProductWithProductModif();
+    } else {
       this.cacherErreur = false;
-      this.message = "Cette catégorie est déjà ajoutée.";
+      this.message = 'Cette catégorie est déjà ajoutée.';
     }
-    this.compareProduitAvecProduitModif();
   }
 
-  goBack(): void {
+  public goBack(): void {
     this.router.navigate(['/admin/produit']);
+    this.comparedProductWithProductModif();
   }
-
-  supprimerCategorie(categorie: any) {
-    let index = this.produitModifie.arrayCategorie.indexOf(categorie);
-    if (index >= 0) {
-      this.produitModifie.arrayCategorie.splice(index, 1);
-      this.compareProduitAvecProduitModif();
-    }
-  }
-
 }
