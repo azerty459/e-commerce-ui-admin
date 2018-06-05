@@ -33,10 +33,10 @@
       <strong>Nombre total de produits: {{nombreDeProduit}}</strong>
       <span class="text_afficher">Page {{pageActuelURL}} sur {{pageMax}}</span>
       <div class="toolbar-pagination">
-        <button type="button" class="btn btn-outline-success" (click)="pagination('precedent')"><- Précédent
+        <button type="button" class="btn btn-outline-success" (click)="paging('precedent')"><- Précédent
         </button>
         <div class="espace"></div>
-        <button type="button" class="btn btn-outline-success" (click)="pagination('suivant')">Suivant -></button>
+        <button type="button" class="btn btn-outline-success" (click)="paging('suivant')">Suivant -></button>
       </div>
     </div>
     <div class="card-body">
@@ -66,7 +66,7 @@
                   </a>
                 </td>
                 <td>
-                  <button type="button" class="btn btn-danger centrer-block" (click)="supprimer(produit)"><b class="noShow">Supprimer</b><i class="material-icons">delete</i></button>
+                  <button type="button" class="btn btn-danger centrer-block" (click)="deleteProduit(produit)"><b class="noShow">Supprimer</b><i class="material-icons">delete</i></button>
                 </td>
               </tr>
             </ng-container>
@@ -96,3 +96,4 @@
       <!--</div>-->
     </div>
   </div>
+</div>

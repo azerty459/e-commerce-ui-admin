@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {Modal} from 'ngx-modialog/plugins/bootstrap';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-produit',
@@ -17,54 +17,55 @@ export class ProduitComponent implements OnInit {
 
   public pageActuelURL: number;
   public pageMax: number;
-  public pageMin: number = 1;
-  public messagesParPage: number = 5;
+  public pageMin  = 1;
+  public messagesParPage = 5;
 
   constructor(private modal: Modal,
               private produitBusiness: ProduitBusiness,
               private router: Router,
               private activatedRoute: ActivatedRoute) {
     this.activatedRoute.params.subscribe(params => {
-        this.pageActuelURL = parseInt(params.page);
+      // radix à 10 pour un décimal
+        this.pageActuelURL = parseInt(params.page, 10);
       },
       error => {
-        console.log("Erreur gestion de page ", error)
+        console.log('Erreur gestion de page ', error);
       },
     );
   }
 
   ngOnInit() {
-    this.affichage();
+    this.display();
   }
 
-  async affichage() {
-    let page = await this.produitBusiness.getProduitByPagination(this.pageActuelURL, this.messagesParPage);
-    if(page != null && page != undefined){
+  async display() {
+    const page = await this.produitBusiness.getProduitByPagination(this.pageActuelURL, this.messagesParPage);
+    if (page != null && page !== undefined) {
       this.pageActuelURL = page.pageActuelle;
       this.nombreDeProduit = page.total;
       this.produits = page.tableau;
       this.pageMax = page.pageMax;
-    }else{
-      console.log("Erreur getProduitByPagination");
+    } else {
+      console.log('Erreur getProduitByPagination');
     }
-    this.redirection();
+    this.redirect();
   }
 
   selected(value: any) {
     this.messagesParPage = value;
-    this.affichage();
+    this.display();
   }
 
-  async redirection() {
-    if (this.pageActuelURL <= 0)
+  async redirect() {
+    if (this.pageActuelURL <= 0) {
       this.router.navigate(['/admin/produit', this.pageMin]);
-    else if (this.pageActuelURL > this.pageMax) {
+    } else if (this.pageActuelURL > this.pageMax) {
       this.router.navigate(['/admin/produit', this.pageMax]);
     }
   }
 
-  pagination(value: String) {
-    if (value === "precedent") {
+  paging(value: String) {
+    if (value === 'precedent') {
       if (this.pageActuelURL > this.pageMin) {
         this.pageActuelURL = this.pageActuelURL - 1;
       }
@@ -73,11 +74,11 @@ export class ProduitComponent implements OnInit {
         this.pageActuelURL = this.pageActuelURL + 1;
       }
     }
-    this.affichage();
+    this.display();
     this.router.navigate(['/admin/produit', this.pageActuelURL]);
   }
 
-  supprimer(produit: Produit) {
+  deleteProduit(produit: Produit) {
     const dialogRef = this.modal.confirm()
       .size('lg')
       .isBlocking(true)
@@ -91,15 +92,15 @@ export class ProduitComponent implements OnInit {
       .open();
     dialogRef.result
       .then(async() => {
-        let supprimer = await this.produitBusiness.deleteProduit(produit);
-        if(supprimer){
-          this.rafraichirListeProduit();
+        const supprimer = await this.produitBusiness.deleteProduit(produit);
+        if (supprimer) {
+          this.refreshProductList();
         }
       })
       .catch(() => null); // Pour éviter l'erreur de promise dans console.log
   }
 
-  rafraichirListeProduit() {
-    this.affichage();
+  refreshProductList() {
+    this.display();
   }
 }

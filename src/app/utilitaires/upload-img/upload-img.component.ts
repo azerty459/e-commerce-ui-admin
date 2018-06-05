@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Produit} from "../../../../e-commerce-ui-common/models/Produit";
-import {ProduitBusiness} from "../../../../e-commerce-ui-common/business/produit.service";
-import {Observable} from "rxjs";
+import {Produit} from '../../../../e-commerce-ui-common/models/Produit';
+import {ProduitBusiness} from '../../../../e-commerce-ui-common/business/produit.service';
 
 @Component({
   selector: 'app-upload-img',
@@ -10,10 +9,9 @@ import {Observable} from "rxjs";
 })
 
 export class UploadImgComponent implements OnInit {
-  private fileSelectMsg: string = 'No file selected yet.';
-  private fileUploadMsg: string = 'No file uploaded yet.';
-  public observableProduit: Observable<Produit>;
-  imgSelected= false;
+  private fileSelectMsg = 'No file selected yet.';
+  private fileUploadMsg = 'No file uploaded yet.';
+  imgSelected = false;
   constructor(
     private produitBusiness: ProduitBusiness
 
@@ -28,7 +26,7 @@ export class UploadImgComponent implements OnInit {
    */
   selectEvent(file: File): void {
     this.fileSelectMsg = file.name;
-    this.imgSelected=true;
+    this.imgSelected = true;
   }
 
   /**
@@ -39,11 +37,11 @@ export class UploadImgComponent implements OnInit {
     this.imgSelected = false;
     this.fileUploadMsg = file.name;
     const dataAEnvoyer = new FormData();
-    dataAEnvoyer.append('fichier',file);
-    dataAEnvoyer.append('ref',this.produit.ref);
-    let resultatUpload = await this.produitBusiness.ajoutPhoto(dataAEnvoyer);
-    if(resultatUpload){
-      let produit: Produit = await this.produitBusiness.getProduitByRef(this.produit.ref)
+    dataAEnvoyer.append('fichier', file);
+    dataAEnvoyer.append('ref', this.produit.ref);
+    const resultatUpload = await this.produitBusiness.ajoutPhoto(dataAEnvoyer);
+    if (resultatUpload) {
+      const produit: Produit = await this.produitBusiness.getProduitByRef(this.produit.ref);
       this.produit.arrayPhoto = produit.arrayPhoto;
     }
   }
