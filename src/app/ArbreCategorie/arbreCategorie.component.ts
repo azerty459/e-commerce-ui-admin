@@ -41,7 +41,7 @@ export class ArbreCategorieComponent implements OnInit {
    * @param {CategorieFlatNode} nodeData
    * @return {boolean} true si extensibe false sinon
    */
-  hasChild = (_: number, nodeData: CategorieFlatNode) => {
+  public hasChild = (_: number, nodeData: CategorieFlatNode) => {
     return nodeData.expandable;
   }
 
@@ -87,7 +87,7 @@ export class ArbreCategorieComponent implements OnInit {
    * Permet de desactiver l'affichage des outils d'une node
    * @param node la node concerné
    */
-  disableToolNode(node: CategorieFlatNode): void {
+  public disableToolNode(node: CategorieFlatNode): void {
     if (!node.isInEditMode) {
       node.enableToolNode = false;
     }
@@ -97,7 +97,7 @@ export class ArbreCategorieComponent implements OnInit {
    * Permet d'activer l'affichage des outils d'une node
    * @param node la node concerné
    */
-  enableToolNode(node: CategorieFlatNode): void {
+  public enableToolNode(node: CategorieFlatNode): void {
     node.enableToolNode = true;
   }
 
@@ -146,7 +146,7 @@ export class ArbreCategorieComponent implements OnInit {
    * Methode permettant de supprimer une categorie visuelement
    * @param {CategorieFlatNode} node la flat node representant la categorie a supprimer
    */
-  deleteNode(node: CategorieFlatNode) {
+  public deleteNode(node: CategorieFlatNode) {
     // Si la flat node possède un parent on la supprimer des enfants de ce parent
     if (node.idParent !== undefined) {
       let nodeParent = null;
