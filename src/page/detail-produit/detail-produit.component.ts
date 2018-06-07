@@ -85,6 +85,14 @@ export class DetailProduitComponent implements OnInit {
   }
 
   async getProduit() {
+    this.categories = await this.categorieBusiness.getAllCategories();
+    if (this.categories !== undefined) {
+      // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
+      this.categoriesObservable = this.choixCategorieFormControl.valueChanges.pipe(
+        startWith(''),
+        map(val => this.categories.filter(categorie => categorie.nomCat.toLowerCase().indexOf(val) === 0))
+      );
+    }
     const url = this.route.snapshot.routeConfig.path;
     if (url === 'admin/produit/ajouter') {
       this.ajout = true;
@@ -108,14 +116,6 @@ export class DetailProduitComponent implements OnInit {
         localStorage.clear();
       } else {
         this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
-      }
-      this.categories = await this.categorieBusiness.getAllCategories();
-      if (this.categories !== undefined) {
-        // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
-        this.categoriesObservable = this.choixCategorieFormControl.valueChanges.pipe(
-          startWith(''),
-          map(val => this.categories.filter(categorie => categorie.nomCat.toLowerCase().indexOf(val) === 0))
-        );
       }
     }
   }
