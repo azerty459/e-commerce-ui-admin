@@ -22,6 +22,9 @@ export class ArbreCategorieComponent implements OnInit {
   public treeControl: FlatTreeControl<CategorieFlatNode>;
   public treeFlattener: MatTreeFlattener<CategorieNode, CategorieFlatNode>;
   public dataSource: MatTreeFlatDataSource<CategorieNode, CategorieFlatNode>;
+  // EXEMPLE FILTRES
+  filter = ['Catégorie vide', 'Nouvelles', 'Promo ', '+ de 100 articles', '- de 50 articles' , 'Plus de stock', 'Top vente'];
+  displayFilter = false;
   ngOnInit(): void {
   }
   constructor(private arbreService: ArbreService, private modal: Modal) {
@@ -167,7 +170,14 @@ export class ArbreCategorieComponent implements OnInit {
   public hasCategories() {
     return this.arbreService.hasCategories;
   }
-
+  public enableFilter() {
+    console.log(this.displayFilter);
+    if (this.displayFilter === false) {
+      this.displayFilter = true;
+    } else {
+      this.displayFilter = false;
+    }
+  }
 
 }
 
