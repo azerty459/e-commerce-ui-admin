@@ -17,7 +17,7 @@ import {FormEditService} from '../../../e-commerce-ui-common/business/form-edit.
 @Component({
   selector: 'app-detail-produit',
   templateUrl: './detail-produit.component.html',
-  styleUrls: ['./detail-produit.component.css']
+  styleUrls: ['./detail-produit.component.scss']
 })
 export class DetailProduitComponent implements OnInit {
   @ViewChild('photo') public photo;

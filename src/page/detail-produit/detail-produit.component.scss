@@ -1,3 +1,39 @@
+// Longueur des champs
+$short-field-width: 12%;
+$short-field-min-width: 150px;
+$long-field-width: 35%;
+$long-field-min-width: 200px;
+
+// s
+$navbar-color: #F9FAFB;
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  .form-group {
+    margin-right: 1em;
+  }
+}
+
+.short-field {
+  width: $short-field-width;
+  min-width: $short-field-min-width;
+}
+
+.long-field {
+  width: $long-field-width;
+  min-width: $long-field-min-width;
+}
+
+.navbar-fixed-top {
+  width: 100%;
+  right: unset;
+  left: unset;
+  background-color: $navbar-color;
+}
+
 #message {
   font-weight: bold;
   color: green;
@@ -58,49 +94,8 @@
 
 }
 
-.form-group {
-  margin-right: 1em;
-}
-
-.short-field {
-  width: 12%;
-  min-width: 150px;
-}
-
-.long-field {
-  width: 35%;
-  min-width: 200px
-}
-.navbar-fixed-top{
-  width: 100%;
-  right: unset;
-  left: unset;
-  background-color:#F9FAFB;
-}
-
 .alert {
   margin-top: 20px;
-}
-
-.flex-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-
-}
-
-.form-group {
-  margin-right: 1em;
-}
-
-.short-field {
-  width: 12%;
-  min-width: 150px;
-}
-
-.long-field {
-  width: 35%;
-  min-width: 200px
 }
 
 @media only screen and (max-width: 740px) {

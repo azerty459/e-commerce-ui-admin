@@ -74,10 +74,10 @@
                      [(ngModel)]="produitModifie.prixHT" name="prix" class="form-control form-control-lg">
             </div>
 
-            <div class="form-group short-field">
-              <label for="autreChamp">Test</label>
-              <input id="autreChamp" type="text" [(ngModel)]="produitModifie.prixHT" name="test" class="form-control form-control-lg">
-            </div>
+            <!--<div class="form-group short-field">-->
+              <!--<label for="autreChamp">Test</label>-->
+              <!--<input id="autreChamp" type="text" [(ngModel)]="produitModifie.prixHT" name="test" class="form-control form-control-lg">-->
+            <!--</div>-->
 
           </div>
           <div class="form-group">
@@ -139,6 +139,7 @@
             <div class="descriptionPanel">Gérer les photos</div>
           </mat-panel-description>
         </mat-expansion-panel-header>
+
         <div class="rowUpload">
           <mat-card class="col-md-6 photoCard">
             <mat-card-header>
@@ -156,6 +157,7 @@
             </mat-card-actions>
           </mat-card>
         </div>
+
         <div class="rowPhoto">
 
           <mat-card class="col-md-6 photoCard" *ngFor="let photo of produit.arrayPhoto;let i = index">
