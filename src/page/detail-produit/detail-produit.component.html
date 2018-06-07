@@ -80,11 +80,11 @@
               <input id="autreChamp" type="text" [(ngModel)]="produitModifie.prixHT" name="test" class="form-control form-control-lg">
             </div>
 
-            <div class="form-group">
-              <label for="descProduit">Description</label>
-              <textarea (input)="comparedProductWithProductModif()" id="descProduit" rows="4"
-                        [(ngModel)]="produitModifie.description" name="description" class="form-control form-control-lg"></textarea>
-            </div>
+          </div>
+          <div class="form-group">
+            <label for="descProduit">Description</label>
+            <textarea (input)="comparedProductWithProductModif()" id="descProduit" rows="4"
+                      [(ngModel)]="produitModifie.description" name="description" class="form-control form-control-lg"></textarea>
           </div>
         </form>
       </mat-expansion-panel>
