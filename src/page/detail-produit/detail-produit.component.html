@@ -13,21 +13,29 @@
          (click)="goBack()">arrow_back</i>
     </div>
     <div>
+
+      <button type="submit" class="btn btn-success" *ngIf="ajout" (click)="addProduct()">
+        Ajouter le produit
+      </button>
+
       <button *ngIf="! ajout" (click)="deleteProduct(produit)" type="button"
               class="btn btn-danger pull-right centrer-block"
               matTooltip="Supprimer ce produit" [matTooltipPosition]="positionBeforeTooltip">
-        <i class="material-icons ">delete</i>
+        <b class="noShow">Supprimer</b>
+        <i class="material-icons">delete</i>
       </button>
 
       <button *ngIf="! ajout" (click)="saveModification()" type="button"
               class="btn btn-success pull-right centrer-block"
               matTooltip="Enregistrer les modifications" [matTooltipPosition]="positionAfterTooltip">
+        <b class="noShow">Sauvegarder</b>
         <i class="material-icons">save</i>
       </button>
 
       <button *ngIf="! ajout" (click)="cancelModification(produit)" [disabled]="cacherBoutonAnnulation"
               type="button" class="btn btn-warning pull-right centrer-block"
               matTooltip="Annuler les modifications" [matTooltipPosition]="">
+        <b class="noShow">Annuler</b>
         <i class="material-icons">settings_backup_restore</i>
       </button>
 
@@ -46,34 +54,38 @@
             <mat-icon>details</mat-icon>
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <form>
-          <div class="form-group">
-            <label for="referenceProduit">Référence</label>
-            <input id="referenceProduit" type="text" [(ngModel)]="produitModifie.ref" name="reference"
-                   class="form-control form-control-lg" [attr.disabled]="! ajout ? 'disabled' : null">
+        <form id="formProduit">
+          <div class="flex-container">
+            <div class="form-group short-field">
+              <label for="referenceProduit">Référence</label>
+              <input id="referenceProduit" type="text" [(ngModel)]="produitModifie.ref" name="reference"
+                     class="form-control form-control-lg" [attr.disabled]="! ajout ? 'disabled' : null">
+            </div>
+
+            <div class="form-group long-field">
+              <label for="nomProduit">Nom</label>
+              <input (input)="comparedProductWithProductModif()" id="nomProduit" type="text"
+                     [(ngModel)]="produitModifie.nom"
+                     name="nom" class="form-control form-control-lg">
+            </div>
+
+            <div class="form-group short-field">
+              <label for="prixProduit">Prix HT</label>
+              <input (input)="comparedProductWithProductModif()" id="prixProduit" type="text"
+                     [(ngModel)]="produitModifie.prixHT" name="prix" class="form-control form-control-lg">
+            </div>
+
+            <div class="form-group short-field">
+              <label for="autreChamp">Test</label>
+              <input id="autreChamp" type="text" [(ngModel)]="produitModifie.prixHT" name="test" class="form-control form-control-lg">
+            </div>
+
+            <div class="form-group">
+              <label for="descProduit">Description</label>
+              <textarea (input)="comparedProductWithProductModif()" id="descProduit" rows="4"
+                        [(ngModel)]="produitModifie.description" name="description" class="form-control form-control-lg"></textarea>
+            </div>
           </div>
-
-          <div class="form-group">
-            <label for="nomProduit">Nom</label>
-            <input (input)="comparedProductWithProductModif()" id="nomProduit" type="text"
-                   [(ngModel)]="produitModifie.nom"
-                   name="nom" class="form-control form-control-lg">
-          </div>
-
-          <div class="form-group">
-            <label for="descProduit">Description</label>
-            <input (input)="comparedProductWithProductModif()" id="descProduit" type="text"
-                   [(ngModel)]="produitModifie.description" name="description" class="form-control form-control-lg">
-          </div>
-
-          <div class="form-group">
-            <label for="prixProduit">Prix HT</label>
-            <input (input)="comparedProductWithProductModif()" id="prixProduit" type="text"
-                   [(ngModel)]="produitModifie.prixHT" name="prix" class="form-control form-control-lg">
-          </div>
-
-          <button type="submit" class="btn btn-success" *ngIf="ajout" (click)="addProduct()">Ajouter le produit</button>
-
         </form>
       </mat-expansion-panel>
 
