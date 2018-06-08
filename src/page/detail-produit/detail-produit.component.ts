@@ -121,11 +121,17 @@ export class DetailProduitComponent implements OnInit {
   }
 
   comparedProductWithProductModif() {
+    console.log('Produit :', JSON.parse(JSON.stringify(this.produit)));
+    console.log('Produit Modifié:', JSON.parse(JSON.stringify(this.produitModifie)));
     // Si produit modifier est différent de produit
-    if (JSON.stringify(this.produit) !== JSON.stringify(this.produitModifie)) {
+    if (JSON.parse(JSON.stringify(this.produit)) !== JSON.parse(JSON.stringify(this.produitModifie))) {
       this.cacherBoutonAnnulation = false;
       // Permets d'afficher la pop-up "en cours d'édition"
       this.formEditService.setDirty(true);
+    } else {
+      this.cacherBoutonAnnulation = true;
+      // Permets d'afficher la pop-up "en cours d'édition"
+      this.formEditService.setDirty(false);
     }
   }
 
@@ -237,10 +243,12 @@ export class DetailProduitComponent implements OnInit {
       }
     }
     if (trouver === false) {
+      this.cacherAlert = false;
       this.cacherErreur = true;
       this.produitModifie.arrayCategorie.push(retourCategorie);
       this.comparedProductWithProductModif();
     } else {
+      this.cacherAlert = true;
       this.cacherErreur = false;
       this.message = 'Cette catégorie est déjà ajoutée.';
     }

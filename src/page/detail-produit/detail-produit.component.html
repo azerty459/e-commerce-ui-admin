@@ -20,21 +20,21 @@
 
       <button *ngIf="! ajout" (click)="deleteProduct(produit)" type="button"
               class="btn btn-danger pull-right centrer-block"
-              matTooltip="Supprimer ce produit" [matTooltipPosition]="positionBeforeTooltip">
+              matTooltip="Supprimer ce produit" [matTooltipPosition]="'below'">
         <b class="noShow">Supprimer</b>
         <i class="material-icons">delete</i>
       </button>
 
-      <button *ngIf="! ajout" (click)="saveModification()" type="button"
+      <button *ngIf="! ajout" (click)="saveModification()" type="button" [disabled]="cacherBoutonAnnulation"
               class="btn btn-success pull-right centrer-block"
-              matTooltip="Enregistrer les modifications" [matTooltipPosition]="positionAfterTooltip">
+              matTooltip="Enregistrer les modifications" [matTooltipPosition]="'below'">
         <b class="noShow">Sauvegarder</b>
         <i class="material-icons">save</i>
       </button>
 
       <button *ngIf="! ajout" (click)="cancelModification(produit)" [disabled]="cacherBoutonAnnulation"
               type="button" class="btn btn-warning pull-right centrer-block"
-              matTooltip="Annuler les modifications" [matTooltipPosition]="">
+              matTooltip="Annuler les modifications" [matTooltipPosition]="'below'">
         <b class="noShow">Annuler</b>
         <i class="material-icons">settings_backup_restore</i>
       </button>
@@ -70,7 +70,7 @@
 
             <div class="form-group short-field">
               <label for="prixProduit">Prix HT</label>
-              <input (input)="comparedProductWithProductModif()" id="prixProduit" type="text"
+              <input (input)="comparedProductWithProductModif()" id="prixProduit" type="number" min="0"
                      [(ngModel)]="produitModifie.prixHT" name="prix" class="form-control form-control-lg">
             </div>
 
