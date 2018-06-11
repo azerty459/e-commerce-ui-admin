@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, HostListener} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
@@ -66,9 +66,13 @@ export class DetailProduitComponent implements OnInit {
    * @type {boolean}
    */
   cacherErreur = true;
-
-  @ViewChild('categorieInput') fruitInput: ElementRef;
-
+  /**
+   * indique que la toolbar est en position fixed
+   * @type {boolean}
+   */
+  toolNotFixed = true;
+  @ViewChild('categorieInput') categorieInput: ElementRef;
+  @ViewChild('toolContainerNotFixed', { read: ElementRef }) toolContainerNotFixed: ElementRef;
   constructor(private uploadImg: UploadImgComponent,
               private modal: Modal,
               private formEditService: FormEditService,
@@ -79,9 +83,22 @@ export class DetailProduitComponent implements OnInit {
               private router: Router) {
   }
 
+  scroll = (): void => {
+    console.log(this.getCurrentOffsetTop(this.toolContainerNotFixed));
+    if (this.getCurrentOffsetTop(this.toolContainerNotFixed) !== 0 && this.toolNotFixed) {
+      this.toolNotFixed = false;
+    } else if (this.getCurrentOffsetTop(this.toolContainerNotFixed) === 0 && !this.toolNotFixed) {
+      this.toolNotFixed = true;
+    }
+  };
+  getCurrentOffsetTop(element) {
+    const rect = element.nativeElement.getBoundingClientRect();
+    return rect.top + window.pageYOffset - document.documentElement.clientTop;
+  }
   ngOnInit() {
     this.formEditService.clear();
     this.getProduit();
+    window.addEventListener('scroll', this.scroll, true); // third parameter
   }
 
   async getProduit() {
@@ -232,7 +249,7 @@ export class DetailProduitComponent implements OnInit {
 
   public addCategory(event: MatAutocompleteSelectedEvent): void {
     const retourCategorie = event.option.value;
-    this.fruitInput.nativeElement.value = '';
+    this.categorieInput.nativeElement.value = '';
     this.choixCategorieFormControl.setValue(null);
     const categories = this.produitModifie.arrayCategorie;
     let trouver = false;
@@ -258,4 +275,6 @@ export class DetailProduitComponent implements OnInit {
     this.router.navigate(['/admin/produit']);
     this.comparedProductWithProductModif();
   }
+
+
 }

@@ -2,12 +2,13 @@ import {NgModule} from '@angular/core';
 import {
   MatAutocompleteModule, MatButtonModule, MatCardModule, MatChipsModule, MatExpansionModule, MatFormFieldModule,
   MatGridListModule,
+  MatToolbarModule,
   MatIconModule, MatInputModule, MatRadioModule, MatTooltipModule, MatTreeModule, MatListModule,
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-
 const angularMaterial = [
   MatCardModule,
+  MatToolbarModule, // angular tool bar
   MatListModule, // angular list
   MatChipsModule, // angular material chips
   MatIconModule, // utilisation des icons de angular material
@@ -21,6 +22,7 @@ const angularMaterial = [
   MatExpansionModule, // angular material expans
   MatTooltipModule, // Tool tip angular material
   BrowserAnimationsModule, // utilisation des animations de angular material
+
 ];
 
 @NgModule({

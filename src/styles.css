@@ -12,13 +12,16 @@
 a:hover{
   text-decoration: none;
 }
+a:checked{
+  text-decoration: none;
+}
 .toolbar {
   display: flex;
   margin: 10px 0px 10px 0;
   justify-content: space-between;
 }
 
-.navbar {
+.navbar{
   margin: 0px;
 }
 
@@ -132,6 +135,7 @@ main {
   padding: 20px;
   border-right: 1px solid #eee;
   background-color: #272c33;
+  z-index: 2;
 }
 
 /*
