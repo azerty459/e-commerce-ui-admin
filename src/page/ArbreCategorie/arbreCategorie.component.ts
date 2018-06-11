@@ -170,6 +170,9 @@ export class ArbreCategorieComponent implements OnInit {
   public hasCategories() {
     return this.arbreService.hasCategories;
   }
+
+  hasNoContent = (_: number, _nodeData: CategorieFlatNode) => _nodeData.nomCategorie === '';
+
   public enableFilter() {
     console.log(this.displayFilter);
     if (this.displayFilter === false) {
@@ -177,6 +180,46 @@ export class ArbreCategorieComponent implements OnInit {
     } else {
       this.displayFilter = false;
     }
+  }
+
+  /** Créer un nouveau champ pour entrer le nom de la catégorie
+   *  a ajouter
+   *  */
+  public addNewItem(node: CategorieFlatNode) {
+    // Une node null signifie qu'on se trouve au niveau 0
+    if (node === null) {
+      this.arbreService.insertItem(null, '');
+    } else {
+      const parentNode = this.arbreService.flatNodeMap.get(node);
+      this.arbreService.insertItem(parentNode!, '');
+      node.expandable = true;
+      this.treeControl.expand(node);
+    }
+  }
+
+  /** Sauvegarde la node dans la base de donée
+   *  et ajoute visuellement la node à l'arbre
+   * */
+  async saveNode(node: CategorieFlatNode, itemValue: string) {
+    const nestedNode = this.arbreService.flatNodeMap.get(node);
+    if (node.idParent) {
+      const categorie: Categorie = await this.arbreService.categorieBusiness.ajouterCategorieEnfant(itemValue, node.idParent);
+      nestedNode.id = categorie.id;
+      nestedNode.nomCategorie = categorie.nomCat;
+    } else {
+      const categorie: Categorie = await this.arbreService.categorieBusiness.ajouterCategorieParent(itemValue);
+      nestedNode.id = categorie.id;
+      nestedNode.nomCategorie = categorie.nomCat;
+    }
+    this.arbreService.updateCategorie(nestedNode!, itemValue);
+  }
+
+  /**
+   * Annule la création d'une catégorie
+   * @param {CategorieFlatNode} node
+   */
+  public cancelAddCategorie(node: CategorieFlatNode) {
+    this.deleteNode(node);
   }
 
 }
