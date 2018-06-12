@@ -58,10 +58,15 @@ margin-left: 20px;
 
 .toolTree{
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: row;
+  justify-content: flex-end;
   width: 100%;
   border-bottom-style:groove;
   border-bottom-width: 1px;
-
+}
+.alert{
+  margin-top:2px;
+}
+.float-right{
+  float: right;
 }

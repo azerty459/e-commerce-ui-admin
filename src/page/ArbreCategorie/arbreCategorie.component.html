@@ -20,6 +20,7 @@
     <mat-card class="arbreCard">
       <mat-card-header>
         <div class="toolTree">
+          <button  mat-icon-button (click)="addNewItem(null)"><mat-icon>add</mat-icon></button>
           <button mat-icon-button (click)="enableFilter()" [matTooltipPosition]="'before'"
                   matTooltip="Afficher les filtres">
             <mat-icon class="mat-icon-rtl-mirror">
@@ -32,16 +33,27 @@
       <div class="alert alert-danger" *ngIf="!hasCategories()">
         <strong>Aucune catégorie trouvée</strong>
       </div>
-      <mat-tree *ngIf="hasCategories()" [dataSource]="dataSource" [treeControl]="treeControl">
+      <div class="alert alert-danger" *ngIf="nomCategorieIsEmpy">
+        <strong>Veuillez renseigner un nom de catégorie valide</strong>
+        <a class="float-right"> voir les régles de validité... </a>
+      </div>
+      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
 
 
         <!-- NODE qui s'affiche si elle ne possède pas d'enfant-->
         <mat-tree-node *matTreeNodeDef="let node;"  matTreeNodeToggle matTreeNodePadding>
+
           <!-- Le ngClass permet d'afficher le trait de lisibilité lorsque la node a un parent-->
-          <div ngClass="{{node.idParent!=undefined ? 'border' : ''}}">
+          <div *ngIf="!node.expandable" ngClass="{{node.idParent!=undefined ? 'border' : ''}}">
             <!--prend la place d'un bouton-->
             <button mat-icon-button disabled></button>
           </div>
+          <button  *ngIf="node.expandable" mat-icon-button matTreeNodeToggle
+                   [attr.aria-label]="'toggle ' + node.nomCategorie">
+            <mat-icon class="mat-icon-rtl-mirror" >
+              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
           <!--Div qui contient la node (le nom de la categorie) ainsi que la barre d'outil situé sur sa droite-->
           <div class="nodeAndTool"  (mouseover)="enableToolNode(node)" (mouseout)="disableToolNode(node)" >
             <!-- si la node est en mode edition le click sur cette dernière ne fait rien, sinon le click permet
@@ -57,29 +69,28 @@
             <!-- Div contenant les outils elle apparait quand le boolean node.enableToolNode est vrai-->
             <div class="tool" [hidden]="!node.enableToolNode">
               <!--Bouton permettant la sortie du mode edition-->
-              <button mat-icon-button (click)="node.isInEditMode=false;node.enableToolNode=false;" *ngIf="node.isInEditMode">
-                <mat-icon class="mat-icon-rtl-mirror">
+              <button mat-icon-button (click)="node.isInEditMode=false;node.enableToolNode=false;nomCategorieIsEmpy = false;" *ngIf="node.isInEditMode">
+                <mat-icon class="mat-icon-rtl-mirror" >
                   cancel
                 </mat-icon>
               </button>
               <!--Bouton permettant l'entré en mode edition ainsi que la validation des modification,
               c'est pour cela qu'on appelle une methode qui se chargera de savoir si il faut entré en mode edition
               ou bien enregistré les modification -->
-              <button mat-icon-button (click)="editCategorieName(node)">
+              <button mat-icon-button (click)="editCategorieName(node)" >
                 <mat-icon class="mat-icon-rtl-mirror">
                   <!--Si la node est en edit mode l'icone check apparait sinon l'icone edit apparait-->
                   {{node.isInEditMode ? 'check' : 'edit'}}
                 </mat-icon>
               </button>
-              <!--Bouton permettant l'entré en mode edition ainsi que la validation des modification,
-              c'est pour cela qu'on appelle une methode qui se chargera de savoir si il faut entré en mode edition
-              ou bien enregistré les modification -->
-              <button mat-icon-button (click)="deleteCategorie(node)">
+              <!--Bouton permettant la suppression -->
+              <button mat-icon-button (click)="deleteCategorie(node)" >
                 <mat-icon class="mat-icon-rtl-mirror">
                   delete
 
                 </mat-icon>
               </button>
+              <button mat-icon-button matTreeNodeToggle (click)="addNewItem(node)" ><mat-icon>add</mat-icon></button>
             </div>
           </div>
         </mat-tree-node>
@@ -107,7 +118,7 @@
             <div class="tool" [hidden]="!node.enableToolNode">
               <!--Bouton permettant la sortie du mode edition-->
               <button mat-icon-button (click)="node.isInEditMode=false;node.enableToolNode=false;" *ngIf="node.isInEditMode">
-                <mat-icon class="mat-icon-rtl-mirror">
+                <mat-icon class="mat-icon-rtl-mirror" >
                   cancel
                 </mat-icon>
               </button>
@@ -120,14 +131,38 @@
                   {{node.isInEditMode ? 'check' : 'edit'}}
                 </mat-icon>
               </button>
-              <!--Bouton permettant l'entré en mode edition ainsi que la validation des modification,
-              c'est pour cela qu'on appelle une methode qui se chargera de savoir si il faut entré en mode edition
-              ou bien enregistré les modification -->
+
+              <!--Bouton permettant la suppression-->
               <button mat-icon-button (click)="deleteCategorie(node)">
                 <mat-icon class="mat-icon-rtl-mirror">
                   delete
-
                 </mat-icon>
+              </button>
+              <button mat-icon-button (click)="addNewItem(node)"><mat-icon>add</mat-icon></button>
+            </div>
+          </div>
+        </mat-tree-node>
+        <mat-tree-node *matTreeNodeDef="let node; when: hasNoContent" matTreeNodePadding>
+          <!-- Le ngClass permet d'afficher le trait de lisibilité lorsque la node a un parent-->
+          <div ngClass="{{node.idParent!=undefined ? 'border' : ''}}">
+            <!--prend la place d'un bouton-->
+            <button mat-icon-button disabled></button>
+          </div>
+          <div class="nodeAndTool">
+            <div class="node">
+              <mat-form-field>
+                <input matInput #itemValue placeholder="Nouvelle catégorie...">
+              </mat-form-field>
+            </div>
+            <div class="tool">
+
+              <button mat-icon-button (click)="cancelAddCategorie(node)">
+                <mat-icon class="mat-icon-rtl-mirror">
+                  cancel
+                </mat-icon>
+              </button>
+              <button mat-button (click)="saveNode(node, itemValue.value)" (keyup.enter)="saveNode(node, itemValue.value)">
+                Enregistrer
               </button>
             </div>
           </div>
