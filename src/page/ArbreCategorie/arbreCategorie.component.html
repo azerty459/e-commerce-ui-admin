@@ -33,7 +33,11 @@
       <div class="alert alert-danger" *ngIf="!hasCategories()">
         <strong>Aucune catégorie trouvée</strong>
       </div>
-      <mat-tree *ngIf="hasCategories()" [dataSource]="dataSource" [treeControl]="treeControl">
+      <div class="alert alert-danger" *ngIf="nomCategorieIsEmpy">
+        <strong>Veuillez renseigner un nom de catégorie valide</strong>
+        <a class="float-right"> voir les régles de validité... </a>
+      </div>
+      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
 
 
         <!-- NODE qui s'affiche si elle ne possède pas d'enfant-->
@@ -65,7 +69,7 @@
             <!-- Div contenant les outils elle apparait quand le boolean node.enableToolNode est vrai-->
             <div class="tool" [hidden]="!node.enableToolNode">
               <!--Bouton permettant la sortie du mode edition-->
-              <button mat-icon-button (click)="node.isInEditMode=false;node.enableToolNode=false;" *ngIf="node.isInEditMode">
+              <button mat-icon-button (click)="node.isInEditMode=false;node.enableToolNode=false;nomCategorieIsEmpy = false;" *ngIf="node.isInEditMode">
                 <mat-icon class="mat-icon-rtl-mirror" >
                   cancel
                 </mat-icon>
