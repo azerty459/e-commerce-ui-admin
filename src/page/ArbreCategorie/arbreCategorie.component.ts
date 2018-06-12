@@ -167,56 +167,62 @@ export class ArbreCategorieComponent implements OnInit {
 
   }
 
+  /**
+   * Methode permetant de tester si l'arbre est vide
+   * @returns {boolean} vrai si vide sinon faux
+   */
   public hasCategories() {
     return this.arbreService.hasCategories;
   }
 
   hasNoContent = (_: number, _nodeData: CategorieFlatNode) => _nodeData.nomCategorie === '';
 
-  public enableFilter() {
-    console.log(this.displayFilter);
-    if (this.displayFilter === false) {
-      this.displayFilter = true;
-    } else {
-      this.displayFilter = false;
-    }
+  /**
+   * Methode permettant d'afficher la fenétre de filtre
+   */
+  public enableFilter() {;
+    this.displayFilter = this.displayFilter === false;
   }
 
   /** Créer un nouveau champ pour entrer le nom de la catégorie
    *  a ajouter
-   *  */
-  public addNewItem(node: CategorieFlatNode) {
-    // Une node null signifie qu'on se trouve au niveau 0
-    if (node === null) {
+   * @param {CategorieFlatNode} nodeParent le parent de la node a créer
+   */
+  public addNewItem(nodeParent: CategorieFlatNode) {
+    // Une nodeParent null signifie qu'on se trouve au niveau 0
+    if (nodeParent === null) {
       this.arbreService.insertItem(null, '');
     } else {
-      const parentNode = this.arbreService.flatNodeMap.get(node);
-      this.arbreService.insertItem(parentNode!, '');
-      node.expandable = true;
-      this.treeControl.expand(node);
+      const nodeParentFlat = this.arbreService.flatNodeMap.get(nodeParent);
+      this.arbreService.insertItem(nodeParentFlat!, '');
+      nodeParent.expandable = true;
+      this.treeControl.expand(nodeParent);
     }
   }
 
   /** Sauvegarde la node dans la base de donée
    *  et ajoute visuellement la node à l'arbre
-   * */
-  async saveNode(node: CategorieFlatNode, itemValue: string) {
+   * @param {CategorieFlatNode} node a sauvegardé
+   * @param {string} nomCategorie  nom de la catégorie a associer
+   * @returns {Promise<void>}
+   */
+  async saveNode(node: CategorieFlatNode, nomCategorie: string) {
     const nestedNode = this.arbreService.flatNodeMap.get(node);
     if (node.idParent) {
-      const categorie: Categorie = await this.arbreService.categorieBusiness.ajouterCategorieEnfant(itemValue, node.idParent);
+      const categorie: Categorie = await this.arbreService.categorieBusiness.ajouterCategorieEnfant(nomCategorie, node.idParent);
       nestedNode.id = categorie.id;
       nestedNode.nomCategorie = categorie.nomCat;
     } else {
-      const categorie: Categorie = await this.arbreService.categorieBusiness.ajouterCategorieParent(itemValue);
+      const categorie: Categorie = await this.arbreService.categorieBusiness.ajouterCategorieParent(nomCategorie);
       nestedNode.id = categorie.id;
       nestedNode.nomCategorie = categorie.nomCat;
     }
-    this.arbreService.updateCategorie(nestedNode!, itemValue);
+    this.arbreService.updateCategorie(nestedNode!, nomCategorie);
   }
 
   /**
    * Annule la création d'une catégorie
-   * @param {CategorieFlatNode} node
+   * @param {CategorieFlatNode} node représentant la catégorie a désafficher
    */
   public cancelAddCategorie(node: CategorieFlatNode) {
     this.deleteNode(node);
