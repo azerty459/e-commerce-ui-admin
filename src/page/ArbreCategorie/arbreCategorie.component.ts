@@ -25,6 +25,8 @@ export class ArbreCategorieComponent implements OnInit {
   // EXEMPLE FILTRES
   filter = ['Catégorie vide', 'Nouvelles', 'Promo ', '+ de 100 articles', '- de 50 articles' , 'Plus de stock', 'Top vente'];
   displayFilter = false;
+  // boolean afficher erreur
+  nomCategorieIsEmpy = false;
   ngOnInit(): void {
   }
   constructor(private arbreService: ArbreService, private modal: Modal) {
@@ -74,13 +76,15 @@ export class ArbreCategorieComponent implements OnInit {
           if (retourAPI.valueOf() instanceof Categorie) {
             // On met à jour le nom de la categorie afficher dans la node concerné
             node.nomCategorie = retourAPI.nomCat;
+            node.isInEditMode = false;
+            this.nomCategorieIsEmpy = false;
           } else {
-            // TODO Message erreur
+            this.nomCategorieIsEmpy = true;
           }
         }
       }
       // On sort du mode edit
-      node.isInEditMode = false;
+
 
     }
   }
@@ -174,13 +178,12 @@ export class ArbreCategorieComponent implements OnInit {
   public hasCategories() {
     return this.arbreService.hasCategories;
   }
-
   hasNoContent = (_: number, _nodeData: CategorieFlatNode) => _nodeData.nomCategorie === '';
 
   /**
    * Methode permettant d'afficher la fenétre de filtre
    */
-  public enableFilter() {;
+  public enableFilter() {
     this.displayFilter = this.displayFilter === false;
   }
 
@@ -208,16 +211,22 @@ export class ArbreCategorieComponent implements OnInit {
    */
   async saveNode(node: CategorieFlatNode, nomCategorie: string) {
     const nestedNode = this.arbreService.flatNodeMap.get(node);
-    if (node.idParent) {
-      const categorie: Categorie = await this.arbreService.categorieBusiness.ajouterCategorieEnfant(nomCategorie, node.idParent);
-      nestedNode.id = categorie.id;
-      nestedNode.nomCategorie = categorie.nomCat;
+    if (nomCategorie === '') {
+      this.nomCategorieIsEmpy = true;
     } else {
-      const categorie: Categorie = await this.arbreService.categorieBusiness.ajouterCategorieParent(nomCategorie);
-      nestedNode.id = categorie.id;
-      nestedNode.nomCategorie = categorie.nomCat;
+      this.nomCategorieIsEmpy = false;
+      if (node.idParent) {
+        const categorie: Categorie = await this.arbreService.categorieBusiness.ajouterCategorieEnfant(nomCategorie, node.idParent);
+        nestedNode.id = categorie.id;
+        nestedNode.nomCategorie = categorie.nomCat;
+      } else {
+        const categorie: Categorie = await this.arbreService.categorieBusiness.ajouterCategorieParent(nomCategorie);
+        nestedNode.id = categorie.id;
+        nestedNode.nomCategorie = categorie.nomCat;
+      }
+
+      this.arbreService.updateCategorie(nestedNode!, nomCategorie);
     }
-    this.arbreService.updateCategorie(nestedNode!, nomCategorie);
   }
 
   /**
@@ -225,8 +234,10 @@ export class ArbreCategorieComponent implements OnInit {
    * @param {CategorieFlatNode} node représentant la catégorie a désafficher
    */
   public cancelAddCategorie(node: CategorieFlatNode) {
+    this.nomCategorieIsEmpy = false;
     this.deleteNode(node);
   }
+
 
 }
 
