@@ -64,3 +64,9 @@ margin-left: 20px;
   border-bottom-style:groove;
   border-bottom-width: 1px;
 }
+.alert{
+  margin-top:2px;
+}
+.float-right{
+  float: right;
+}
