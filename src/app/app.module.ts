@@ -30,7 +30,8 @@ import { UploadImgComponent } from '../utilitaires/upload-img/upload-img.compone
 
 import { MaterialModule } from './material.module';
 import { RoutingModule } from './routing.module';
-
+// DRAG & DROP MODULE
+import { NgDragDropModule } from 'ng-drag-drop';
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,6 +50,7 @@ import { RoutingModule } from './routing.module';
     BrowserModule,
     CovalentFileModule, // Teradata covalent library
     FormsModule,
+    NgDragDropModule.forRoot(), // Drag & drop module
     ReactiveFormsModule,
     ModalModule.forRoot(), // Modal boostrap
     BootstrapModalModule, // Modal boostrap
