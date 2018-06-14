@@ -84,7 +84,6 @@ export class DetailProduitComponent implements OnInit {
   }
 
   scroll = (): void => {
-    console.log(this.getCurrentOffsetTop(this.toolContainerNotFixed));
     if (this.getCurrentOffsetTop(this.toolContainerNotFixed) !== 0 && this.toolNotFixed) {
       this.toolNotFixed = false;
     } else if (this.getCurrentOffsetTop(this.toolContainerNotFixed) === 0 && !this.toolNotFixed) {

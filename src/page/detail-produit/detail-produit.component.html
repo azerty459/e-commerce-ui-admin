@@ -225,7 +225,7 @@
           <mat-card class="col-md-6 photoCard" *ngFor="let photo of produit.arrayPhoto;let i = index">
             <mat-card-header>
               <mat-card-title>Photo n°{{i+1}}</mat-card-title>
-              <mat-card-subtitle>{{photo.urlSimplifie}}</mat-card-subtitle>
+              <mat-card-subtitle>{{photo.nom}}</mat-card-subtitle>
             </mat-card-header>
             <img class="mat-card-image" src="{{photo.url}}" alt="PhotoNumero{{i}}"/>
             <mat-card-content>
