@@ -1,11 +1,12 @@
 import {FlatTreeControl} from '@angular/cdk/tree';
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, ElementRef, OnInit, Renderer, Renderer2, ViewChild} from '@angular/core';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import {CategorieNode} from '../../../e-commerce-ui-common/models/CategorieNode';
 import {CategorieFlatNode} from '../../../e-commerce-ui-common/models/CategorieFlatNode';
 import {ArbreService} from '../../../e-commerce-ui-common/business/arbre.service';
 import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
 import {Modal} from 'ngx-modialog/plugins/bootstrap';
+import {AfterViewInit} from '@angular/core';
 
 
 /**
@@ -23,13 +24,14 @@ export class ArbreCategorieComponent implements OnInit {
   public treeFlattener: MatTreeFlattener<CategorieNode, CategorieFlatNode>;
   public dataSource: MatTreeFlatDataSource<CategorieNode, CategorieFlatNode>;
   // EXEMPLE FILTRES
-  filter = ['Catégorie vide', 'Nouvelles', 'Promo ', '+ de 100 articles', '- de 50 articles' , 'Plus de stock', 'Top vente'];
+  filter = ['Catégorie vide', 'Nouvelles', 'Promo ', '+ de 100 articles', '- de 50 articles', 'Plus de stock', 'Top vente'];
   displayFilter = false;
   // boolean afficher erreur
   nomCategorieIsEmpy = false;
   ngOnInit(): void {
   }
-  constructor(private arbreService: ArbreService, private modal: Modal) {
+
+  constructor(private arbreService: ArbreService, private modal: Modal,  private renderer: Renderer2) {
     this.treeFlattener = new MatTreeFlattener(arbreService.transformerNodeToFlatNode, arbreService.getLevel,
       arbreService.isExpandable, arbreService.getChildren);
     this.treeControl = new FlatTreeControl<CategorieFlatNode>(arbreService.getLevel, arbreService.isExpandable);
@@ -48,7 +50,7 @@ export class ArbreCategorieComponent implements OnInit {
    */
   public hasChild = (_: number, nodeData: CategorieFlatNode) => {
     return nodeData.expandable;
-  }
+  };
 
 
 
@@ -115,7 +117,7 @@ export class ArbreCategorieComponent implements OnInit {
    * @return {Promise<void>}
    */
   async deleteCategorie(node: CategorieFlatNode) {
-  // Modal
+    // Modal
     const dialogRef = this.modal.confirm()
       .size('lg')
       .isBlocking(true)
@@ -128,7 +130,7 @@ export class ArbreCategorieComponent implements OnInit {
       .cancelBtn('Annuler la supression')
       .open();
     dialogRef.result
-      .then(async() => {
+      .then(async () => {
         // On appelle la methode supprimerCategorie du service categorieBusiness en passant par arbreService
         const retourAPI = await this.arbreService.categorieBusiness.supprimerCategorie(
           new Categorie(node.id, node.nomCategorie, null, null)
@@ -154,19 +156,28 @@ export class ArbreCategorieComponent implements OnInit {
    * @param {CategorieFlatNode} node la flat node representant la categorie a supprimer
    */
   public deleteNode(node: CategorieFlatNode) {
+    const arbreService = this.arbreService;
     // Si la flat node possède un parent on la supprimer des enfants de ce parent
     if (node.idParent !== undefined) {
       let nodeParent = null;
-      const nodeEnfant = this.arbreService.flatNodeMap.get(node);
-      this.arbreService.flatNodeMap.forEach(function (value) {
+      const nodeEnfant = arbreService.flatNodeMap.get(node);
+      arbreService.flatNodeMap.forEach(function (value) {
         if (value.id === node.idParent) {
           nodeParent = value;
         }
       });
-      this.arbreService.deleteChild(nodeParent, nodeEnfant);
+      arbreService.deleteChild(nodeParent, nodeEnfant);
     } else {
-      // Si la flat node ne possède pas de parent on recharge l'arbre pour la supprimer de l'affichage
-      this.arbreService.initialize();
+      // la node n'a pas de parent on la supprime des data
+      arbreService.data.forEach(function (value, index) {
+        if (value.id === node.id) {
+          arbreService.data.splice(index, 1);
+        }
+      });
+      if (this.arbreService.data.length === 0) {
+        this.arbreService.hasCategories = false;
+      }
+      this.arbreService.dataChange.next(this.arbreService.data);
     }
 
   }
@@ -178,6 +189,7 @@ export class ArbreCategorieComponent implements OnInit {
   public hasCategories() {
     return this.arbreService.hasCategories;
   }
+
   hasNoContent = (_: number, _nodeData: CategorieFlatNode) => _nodeData.nomCategorie === '';
 
   /**
@@ -192,12 +204,13 @@ export class ArbreCategorieComponent implements OnInit {
    * @param {CategorieFlatNode} nodeParent le parent de la node a créer
    */
   public addNewItem(nodeParent: CategorieFlatNode) {
+
     // Une nodeParent null signifie qu'on se trouve au niveau 0
     if (nodeParent === null) {
-      this.arbreService.insertItem(null, '');
+      this.arbreService.insertItem(null, <CategorieNode>{nomCategorie: ''});
     } else {
       const nodeParentFlat = this.arbreService.flatNodeMap.get(nodeParent);
-      this.arbreService.insertItem(nodeParentFlat!, '');
+      this.arbreService.insertItem(nodeParentFlat!, <CategorieNode>{nomCategorie: ''});
       nodeParent.expandable = true;
       this.treeControl.expand(nodeParent);
     }
@@ -236,6 +249,75 @@ export class ArbreCategorieComponent implements OnInit {
   public cancelAddCategorie(node: CategorieFlatNode) {
     this.nomCategorieIsEmpy = false;
     this.deleteNode(node);
+  }
+
+  /**
+   * Methode permetant de déplacer une node dans une autre.
+   * @param event L'evenement du déplacement , contient notament la node a deplacer
+   * @param {CategorieFlatNode} flatNodeParent , la node parent qui va accueillir l'enfant
+   */
+  public deplacerCategorieFlatNode(event: any, flatNodeParent: CategorieFlatNode) {
+    const flatNode: CategorieFlatNode = event.dragData;
+    const node = this.arbreService.flatNodeMap.get(flatNode);
+    // si undefined on déplace a la racine
+    if (flatNodeParent === undefined) {
+      if (flatNode.level === 0) {
+        // Todo erreur déja au level 0
+      } else {
+        this.deleteNode(flatNode);
+        node.idParent = undefined;
+        this.arbreService.data.push(node);
+        this.arbreService.dataChange.next(this.arbreService.data);
+        this.arbreService.categoriedataBusiness.moveCategorie(
+          new Categorie(node.id, node.nomCategorie, null, null),
+          undefined
+        )
+      }
+
+    } else {
+      console.log(this.arbreService.data);
+      const nodeParent = this.arbreService.flatNodeMap.get(flatNodeParent);
+      // On vérifie que le deplacement est autorisé
+      if (this.isDropAllowed(flatNode, flatNodeParent)) {
+        this.treeControl.expand(flatNodeParent);
+        // On insère la node enfant dans la node parent
+
+        this.arbreService.insertItem(nodeParent, <CategorieNode>{
+          children: node.children,
+          idParent: nodeParent.id,
+          nomCategorie: node.nomCategorie,
+          id: node.id,
+        });
+        // On supprime l'ancienne node enfant
+        this.deleteNode(flatNode);
+        this.arbreService.categoriedataBusiness.moveCategorie(
+          new Categorie(node.id, node.nomCategorie, null, null),
+          new Categorie(nodeParent.id, nodeParent.nomCategorie, null, null)
+        )
+      } else {
+        // TODO message drop pas autorisé
+      }
+    }
+    flatNode.isInEditMode = false;
+  }
+
+  /**
+   * Methode permettant de vérifie si flaNode est doppable dans flatNodeParent
+   * @param {CategorieFlatNode} flatNode
+   * @param {CategorieFlatNode} flatNodeParent
+   * @returns {boolean}
+   */
+  public isDropAllowed(flatNode: CategorieFlatNode , flatNodeParent: CategorieFlatNode){
+
+    const nodeParent = this.arbreService.flatNodeMap.get(flatNodeParent);
+    const node = this.arbreService.flatNodeMap.get(flatNode);
+    const nodesDifferentes = node.id !== nodeParent.id;
+    const nodeNonDirectementAparente = node.idParent !== nodeParent.id;
+    if ( nodesDifferentes && nodeNonDirectementAparente && !this.arbreService.nodeContain(node, nodeParent)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 
