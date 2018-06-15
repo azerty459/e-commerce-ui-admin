@@ -4,7 +4,7 @@ $short-field-min-width: 150px;
 $long-field-width: 35%;
 $long-field-min-width: 200px;
 
-// s
+// Couleurs
 $navbar-color: #F9FAFB;
 
 .flex-container {
@@ -59,6 +59,12 @@ $navbar-color: #F9FAFB;
   max-width: 30%;
   min-width: 200px;
   margin: 10px;
+
+  mat-card-subtitle {
+    width: 280px;
+    overflow: hidden;
+  }
+
 }
 .rowPhoto{
   display: flex;
