@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
+import {throwError as observableThrowError} from 'rxjs/index';
 
 @Component({
   selector: 'app-upload-img',
@@ -28,6 +29,8 @@ export class UploadImgComponent implements OnInit {
     this.fileSelectMsg = file.name;
     this.imgSelected = true;
   }
+
+
 
   /**
    * Permet de realiser l'upload du fichier
