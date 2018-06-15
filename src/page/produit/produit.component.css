@@ -10,3 +10,11 @@
 .boutton_ajouterproduit{
   margin-top: 25px;
 }
+
+.card-footer {
+  text-align: center;
+}
+
+.navigationButtons {
+  background-color: white;
+}
