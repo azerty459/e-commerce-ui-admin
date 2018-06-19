@@ -1,0 +1,208 @@
+<div  #toolContainerNotFixed>
+  <mat-toolbar  class="toolContainer">
+    <mat-toolbar-row>
+      <div class="title">
+        {{ajout ? 'Ajout d\'un utilisateur' : ''+utilisateur?.email+' - '+utilisateur?.id }}
+      </div>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+      <div class="toolbar">
+        <div class="leftTool">
+          <i matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip" class="material-icons backArrow"
+             (click)="goBack()">arrow_back</i>
+        </div>
+        <div class="rightTool">
+
+          <button type="submit" class="btn btn-success centrer-block" *ngIf="ajout"
+                  matTooltip="Ajouter l'utilisateur" [matTooltipPosition]="'below'" (click)="addUser()">
+            <i class="material-icons">add</i>
+          </button>
+
+          <button *ngIf="! ajout" (click)="deleteProduct(utilisateur)" type="button"
+                  class="btn btn-danger pull-right centrer-block"
+                  matTooltip="Supprimer cet utilisateur" [matTooltipPosition]="'below'">
+            <b class="noShow">Supprimer</b>
+            <i class="material-icons">delete</i>
+          </button>
+
+          <button *ngIf="! ajout" (click)="saveModification()" type="button" [disabled]="cacherBoutonAnnulation"
+                  class="btn btn-success pull-right centrer-block"
+                  matTooltip="Enregistrer les modifications" [matTooltipPosition]="'below'">
+            <b class="noShow">Sauvegarder</b>
+            <i class="material-icons">save</i>
+          </button>
+
+          <button *ngIf="! ajout" (click)="cancelModification(utilisateur)" [disabled]="cacherBoutonAnnulation"
+                  type="button" class="btn btn-warning pull-right centrer-block"
+                  matTooltip="Annuler les modifications" [matTooltipPosition]="'below'">
+            <b class="noShow">Annuler</b>
+            <i class="material-icons">settings_backup_restore</i>
+          </button>
+
+        </div>
+      </div>
+    </mat-toolbar-row>
+    <mat-toolbar-row *ngIf="!cacherAlert || !cacherErreur">
+      <div class="alerteDiv">
+        <div *ngIf="!cacherAlert" class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>
+        <div *ngIf="!cacherErreur" class="alert alert-danger" role="alert" [hidden]="cacherErreur">{{message}}</div>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>
+
+<div class="navbar-fixed-top">
+  <mat-toolbar *ngIf="!toolNotFixed" class="toolContainer">
+    <mat-toolbar-row>
+      <div class="title">
+        {{ajout ? 'Ajout d\'utilisateur' : ''+utilisateur?.email+' - '+utilisateur?.id }}
+      </div>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+      <div class="toolbar">
+        <div class="leftTool">
+          <i matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip" class="material-icons backArrow"
+             (click)="goBack()">arrow_back</i>
+        </div>
+        <div class="rightTool">
+
+          <button type="submit" class="btn btn-success" *ngIf="ajout" (click)="addUser()">
+            Ajouter l'utilisateur
+          </button>
+
+          <button *ngIf="! ajout" (click)="deleteProduct(utilisateur)" type="button"
+                  class="btn btn-danger pull-right centrer-block"
+                  matTooltip="Supprimer l'utilisateur" [matTooltipPosition]="'below'">
+            <b class="noShow">Supprimer</b>
+            <i class="material-icons">delete</i>
+          </button>
+
+          <button *ngIf="! ajout" (click)="saveModification()" type="button" [disabled]="cacherBoutonAnnulation"
+                  class="btn btn-success pull-right centrer-block"
+                  matTooltip="Enregistrer les modifications" [matTooltipPosition]="'below'">
+            <b class="noShow">Sauvegarder</b>
+            <i class="material-icons">save</i>
+          </button>
+
+          <button *ngIf="! ajout" (click)="cancelModification(utilisateur)" [disabled]="cacherBoutonAnnulation"
+                  type="button" class="btn btn-warning pull-right centrer-block"
+                  matTooltip="Annuler les modifications" [matTooltipPosition]="'below'">
+            <b class="noShow">Annuler</b>
+            <i class="material-icons">settings_backup_restore</i>
+          </button>
+
+        </div>
+      </div>
+    </mat-toolbar-row>
+    <mat-toolbar-row *ngIf="!cacherAlert || !cacherErreur">
+      <div class="alerteDiv">
+        <div *ngIf="!cacherAlert" class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>
+        <div *ngIf="!cacherErreur" class="alert alert-danger" role="alert" [hidden]="cacherErreur">{{message}}</div>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>
+
+
+<div *ngIf="utilisateurModifie">
+    <mat-accordion multi="true">
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Détails
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="descriptionPanel">Modifier les details de l'utilisateur</div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <form id="formUtilisateur">
+          <div class="flex-container">
+
+            <div class="form-group long-field">
+              <label for="emailUtilisateur">Email</label>
+              <input (input)="comparedProductWithProductModif()" id="emailUtilisateur" type="text"
+                     [(ngModel)]="utilisateurModifie.email"
+                     name="emailUtilisateur" class="form-control form-control-lg">
+            </div>
+
+            <div class="input-group long-field">
+              <label for="mdpUtilisateur">Mot de passe</label>
+              <input (input)="comparedProductWithProductModif()" id="mdpUtilisateur" [type]="typePassword"
+                     [(ngModel)]="utilisateurModifie.mdp"
+                     name="mdpUtilisateur" class="form-control form-control-lg" placeholder="Non affiché pour des raisons de sécurité">
+              <div class="input-group-btn">
+                <button class="btn btn-default" (click)="hidePassword()">
+                  <i [class]="classPassword"></i>
+                </button>
+              </div>
+            </div>
+
+            <div *ngIf="!ajout" class="form-group short-field">
+              <label for="nomUtilisateur">Nom</label>
+              <input (input)="comparedProductWithProductModif()" id="nomUtilisateur" type="text"
+                     [(ngModel)]="utilisateurModifie.nom"
+                     name="nomUtilisateur" class="form-control form-control-lg">
+            </div>
+
+            <div *ngIf="!ajout" class="form-group short-field">
+              <label for="nomUtilisateur">Prénom</label>
+              <input (input)="comparedProductWithProductModif()" id="prenomUtilisateur" type="text"
+                     [(ngModel)]="utilisateurModifie.prenom"
+                     name="prenomUtilisateur" class="form-control form-control-lg">
+            </div>
+          </div>
+        </form>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Rôles
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="descriptionPanel">Modifier les rôles de l'utilisateur</div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-form-field class="demo-chip-list">
+          <mat-chip-list #chipList>
+            <mat-chip
+              *ngFor="let role of utilisateurModifie.roles"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="deleteCategory(role)">
+              {{role.nom}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <label for="listRole"></label>
+            <input
+              id="listRole"
+              placeholder="Écrivez le nom d'une catégorie pour associer votre produit à la catégorie choisie..."
+              #roleInput
+              [formControl]="choixRoleFormControl"
+              [matAutocomplete]="auto"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur"
+              [(ngModel)]="inputChoixParent"
+            />
+          </mat-chip-list>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addCategory($event)">
+            <mat-option *ngFor="let role of roleObservable | async" [value]="role">
+              {{ role.nom }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+
+
+
+
+
+
+
+
+
