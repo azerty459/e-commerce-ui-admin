@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {Modal} from "ngx-modialog/plugins/bootstrap";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Produit} from "../../../e-commerce-ui-common/models/Produit";
-import {ProduitBusiness} from "../../../e-commerce-ui-common/business/produit.service";
-import {PaginationService} from "../../../e-commerce-ui-common/business/pagination.service";
-import {UtilisateurService} from "../../../e-commerce-ui-common/business/utilisateur.service";
-import {Utilisateur} from "../../../e-commerce-ui-common/models/Utilisateur";
+import {Modal} from 'ngx-modialog/plugins/bootstrap';
+import {ActivatedRoute} from '@angular/router';
+import {PaginationService} from '../../../e-commerce-ui-common/business/pagination.service';
+import {UtilisateurService} from '../../../e-commerce-ui-common/business/utilisateur.service';
+import {Utilisateur} from '../../../e-commerce-ui-common/models/Utilisateur';
 
 @Component({
   selector: 'app-utilisateur',
@@ -14,7 +12,6 @@ import {Utilisateur} from "../../../e-commerce-ui-common/models/Utilisateur";
 })
 export class UtilisateurComponent implements OnInit {
 
-
   // Pagination
   public messagesParPage = 5;
   private pageActuelURL;
@@ -22,8 +19,8 @@ export class UtilisateurComponent implements OnInit {
   constructor(private modal: Modal,
               public paginationService: PaginationService,
               public utilisateurService: UtilisateurService,
-              private router: Router,
               private activatedRoute: ActivatedRoute) {
+    // Récupère le params dans la page pour la pagination /page/'1'
     this.activatedRoute.params.subscribe(params => {
         // radix à 10 pour un décimal
         this.pageActuelURL = parseInt(params.page, 10);
@@ -34,10 +31,9 @@ export class UtilisateurComponent implements OnInit {
     );
   }
 
-
+  // Permet de rafraichir l'écran d'affichage
   async display() {
     this.paginationService.paginationUtilisateur(this.pageActuelURL, this.messagesParPage);
-    console.log(await this.paginationService.getArray().length);
     this.paginationService.redirection('/admin/utilisateur');
   }
 
@@ -45,17 +41,17 @@ export class UtilisateurComponent implements OnInit {
     this.display();
   }
 
+  // Permets de changer le nombre d'utilisateur à afficher
   selected(value: any) {
     this.messagesParPage = value;
     this.display();
   }
 
+  // Permets de gérer le bouton suivant et précedent dans la pagination
   paging(value: String) {
     if (value === 'precedent') {
-      console.log(this.pageActuelURL > this.paginationService.getMaxPage());
       if (this.pageActuelURL > this.paginationService.getMinPage()) {
         this.pageActuelURL = this.pageActuelURL - 1;
-        console.log(this.pageActuelURL);
       }
     } else {
       if (this.pageActuelURL < this.paginationService.getMaxPage()) {
@@ -66,7 +62,7 @@ export class UtilisateurComponent implements OnInit {
     this.display();
   }
 
-
+  // Méthode pour supprimer un utilisateur
   deleteUser(utilisateur: Utilisateur) {
     const dialogRef = this.modal.confirm()
       .size('lg')

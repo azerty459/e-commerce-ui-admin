@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild, ElementRef, HostListener} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {Observable} from 'rxjs';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Modal} from 'ngx-modialog/plugins/bootstrap';
@@ -90,11 +89,12 @@ export class DetailUtilisateurComponent implements OnInit {
 
   ngOnInit() {
     this.formEditService.clear();
-    this.getProduit();
+    this.getUser();
     window.addEventListener('scroll', this.scroll, true); // third parameter
   }
 
-  async getProduit() {
+  async getUser() {
+    // Permets de gérer l'affichage des rôles dans les chips
     this.roles = await this.roleService.getAll();
     if (this.roles !== undefined) {
       // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
@@ -103,6 +103,7 @@ export class DetailUtilisateurComponent implements OnInit {
         map(val => this.roles.filter(role => role.nom.toLowerCase().indexOf(val) === 0))
       );
     }
+    //
     const url = this.route.snapshot.routeConfig.path;
     if (url === 'admin/utilisateur/ajouter') {
       this.ajout = true;
@@ -121,8 +122,9 @@ export class DetailUtilisateurComponent implements OnInit {
     }
   }
 
-  comparedProductWithProductModif() {
-    // Si produit modifier est différent de produit
+  // Méthode permettante de comparé l'objet utilisateur avec utilisateurModifier
+  comparedUserWithUserModif() {
+    // Si l'utilisateur modifier est différent de utilisateur
     if (JSON.stringify(this.utilisateur) !== JSON.stringify(this.utilisateurModifie)) {
       this.cacherBoutonAnnulation = false;
       // Permets d'afficher la pop-up "en cours d'édition"
@@ -134,9 +136,9 @@ export class DetailUtilisateurComponent implements OnInit {
     }
   }
 
-  cancelModification(produit: Produit) {
-    // Permet de copier la variable produit dans produitModifier
-    this.utilisateurModifie = JSON.parse(JSON.stringify(produit));
+  cancelModification() {
+    // Permet de copier la variable utilisateur dans utilisateurModifier
+    this.utilisateurModifie = JSON.parse(JSON.stringify(this.utilisateur));
     // Permets de cacher le bouton d'annulation des modifications
     this.cacherBoutonAnnulation = true;
     //  Permets de désactiver la pop-up "en cours d'édition"
@@ -144,16 +146,19 @@ export class DetailUtilisateurComponent implements OnInit {
   }
 
   public saveModification(): void {
-    this.updateProduct();
+    this.updateUser();
   }
 
-  public async updateProduct() {
+  public async updateUser() {
     const retourAPI = await this.utilisateurService.update(this.utilisateurModifie);
     if (retourAPI != null && retourAPI !== undefined) {
+      // Si le retourAPI est un utilisateur
       if (retourAPI.valueOf() instanceof Utilisateur) {
-        // Mets à jour la variable produit et produit modifiée
+        // Mets à jour la variable utilisateur et utilisateur modifiée
         this.utilisateur = retourAPI;
-        this.utilisateurModifie = JSON.parse(JSON.stringify(retourAPI));
+        if (this.utilisateur != null && this.utilisateur !== undefined) {
+          this.utilisateurModifie = JSON.parse(JSON.stringify(retourAPI));
+        }
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.cacherErreur = true;
         this.cacherAlert = false;
@@ -171,18 +176,21 @@ export class DetailUtilisateurComponent implements OnInit {
     }
   }
 
+  // Méthode permettante l'ajout d'une utilisateur
   public async addUser() {
     const retourAPI = await this.utilisateurService.add(this.utilisateurModifie);
+    // Si le retourAPI est un utilisateur
     if (retourAPI.valueOf() instanceof Utilisateur) {
       this.cacherErreur = true;
       this.cacherAlert = false;
-      this.ajout = false;
+      this.ajout = true;
       this.utilisateur = retourAPI;
-      // Permet de copier la variable produit dans produitModifier
+      // Mets à jour la variable utilisateur et utilisateur modifiée
       if (this.utilisateur != null && this.utilisateur !== undefined) {
         this.utilisateurModifie = JSON.parse(JSON.stringify(retourAPI));
       }
       this.message = 'L\'utilisateur a été correctement ajouté';
+      this.router.navigate(['/admin/utilisateur']);
     } else {
       this.cacherErreur = false;
       this.cacherAlert = true;
@@ -190,8 +198,9 @@ export class DetailUtilisateurComponent implements OnInit {
     }
   }
 
-  public deleteProduct(utilisateur: Utilisateur) {
-    // Pop-up gérant la suppression d'un produit
+  // Méthode permettante de gérer la supprésion d'utilisateur
+  public deleteUser(utilisateur: Utilisateur) {
+    // Pop-up gérant la suppression d'un utilisateur
     const dialogRef = this.modal.confirm()
       .size('lg')
       .isBlocking(true)
@@ -206,7 +215,7 @@ export class DetailUtilisateurComponent implements OnInit {
     dialogRef.result
       .then(async () => {
         const supprimer = await this.utilisateurService.delete(this.utilisateur);
-        // Si le produit a été supprimé, on affiche le message
+        // Si l'utilisateur a été supprimé, on affiche le message
         if (supprimer) {
           this.cacherErreur = false;
           this.cacherAlert = true;
@@ -216,16 +225,18 @@ export class DetailUtilisateurComponent implements OnInit {
       // Pour éviter l'erreur de promise dans console.log
       .catch(() => null);
   }
-  //
-  public deleteCategory(categorie: any): void {
+
+  // Supprime une rôle de la liste
+  public deleteRole(categorie: any): void {
     const index = this.utilisateurModifie.roles.indexOf(categorie);
     if (index >= 0) {
       this.utilisateurModifie.roles.splice(index, 1);
-      this.comparedProductWithProductModif();
+      this.comparedUserWithUserModif();
     }
   }
 
-  public addCategory(event: MatAutocompleteSelectedEvent): void {
+  // Permet de rajouter un role dans la chips
+  public addRole(event: MatAutocompleteSelectedEvent): void {
     const retourCategorie = event.option.value;
     this.roleInput.nativeElement.value = '';
     this.choixRoleFormControl.setValue(null);
@@ -241,26 +252,32 @@ export class DetailUtilisateurComponent implements OnInit {
       this.cacherAlert = false;
       this.cacherErreur = true;
       this.utilisateurModifie.roles.push(retourCategorie);
-      this.comparedProductWithProductModif();
+      this.comparedUserWithUserModif();
     } else {
       this.cacherAlert = true;
       this.cacherErreur = false;
-      this.message = 'Cette catégorie est déjà ajoutée.';
+      this.message = 'Ce rôle est déjà ajoutée.';
     }
   }
 
+  // Méthode de retour à la liste des utilisateurs
   public goBack(): void {
     this.router.navigate(['/admin/utilisateur']);
-    this.comparedProductWithProductModif();
+    this.comparedUserWithUserModif();
   }
 
+  // Permets de gérer le bouton 'oeil' dans l'input mot de passe
   public hidePassword(): void {
     if (this.typePassword  === 'password') {
+      // Permets de définir le input de type:
       this.typePassword = 'text';
-      this.classPassword = 'glyphicon glyphicon-eye-open';
-    } else {
-      this.typePassword  = 'password';
+      // Permets de changer la classe de l'icone dans l'input
       this.classPassword = 'glyphicon glyphicon-eye-close';
+    } else {
+      // Permets de définir le input de type:
+      this.typePassword  = 'password';
+      // Permets de changer la classe de l'icone dans l'input
+      this.classPassword = 'glyphicon glyphicon-eye-open';
     }
   }
 
