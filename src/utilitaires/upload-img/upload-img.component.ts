@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
+import {Photo} from "../../../e-commerce-ui-common/models/Photo";
 
 @Component({
   selector: 'app-upload-img',
@@ -17,6 +18,7 @@ export class UploadImgComponent implements OnInit {
 
   ) { }
   @Input() produit: Produit;
+  @Input() photoEnAttente;
   ngOnInit() {
   }
 
@@ -34,15 +36,17 @@ export class UploadImgComponent implements OnInit {
    * @param {File} file
    */
   async uploadEvent(file: File) {
+    this.addPhoto(file);
     this.imgSelected = false;
     this.fileUploadMsg = file.name;
-    const dataAEnvoyer = new FormData();
-    dataAEnvoyer.append('fichier', file);
-    dataAEnvoyer.append('ref', this.produit.ref);
-    const resultatUpload = await this.produitBusiness.ajoutPhoto(dataAEnvoyer);
-    if (resultatUpload) {
-      const produit: Produit = await this.produitBusiness.getProduitByRef(this.produit.ref);
-      this.produit.arrayPhoto = produit.arrayPhoto;
+    console.log(file);
+    const photo = new Photo(0, '././assets/img/1024px-Emblem-question.svg.png', '././assets/img/1024px-Emblem-question.svg.png');
+    photo.file = file;
+    // On ajoute la photo dans la l'arrayPhoto du produit
+    if (this.produit.arrayPhoto.length !== 0) {
+      this.produit.arrayPhoto.push(photo)
+    } else {
+      this.produit.arrayPhoto = [photo]
     }
   }
 
@@ -55,5 +59,12 @@ export class UploadImgComponent implements OnInit {
     this.imgSelected = false;
   }
 
+  /**
+   * Methode permetant d'ajouter une photo dans la liste des photo en attente du component parent
+   * @param {File} file
+   */
+  public addPhoto(file: File): void {
+    this.photoEnAttente.push(file);
+  }
 
 }
