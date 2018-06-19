@@ -13,6 +13,7 @@ import {PreviousRouteBusiness} from '../../../e-commerce-ui-common/business/prev
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {FormEditService} from '../../../e-commerce-ui-common/business/form-edit.service';
+import {Photo} from "../../../e-commerce-ui-common/models/Photo";
 
 @Component({
   selector: 'app-detail-produit',
@@ -59,7 +60,7 @@ export class DetailProduitComponent implements OnInit {
    * Boolean permettant de cacher l'alerte de succès
    * @type {boolean}
    */
-  cacherAlert =  true;
+  cacherAlert = true;
 
   /**
    * Boolean permettant de cacher l'alerte d'erreur
@@ -71,8 +72,12 @@ export class DetailProduitComponent implements OnInit {
    * @type {boolean}
    */
   toolNotFixed = true;
+
+  public photoEnAttenteAjout = [];
+  public photoEnAttenteSupression = [];
   @ViewChild('categorieInput') categorieInput: ElementRef;
-  @ViewChild('toolContainerNotFixed', { read: ElementRef }) toolContainerNotFixed: ElementRef;
+  @ViewChild('toolContainerNotFixed', {read: ElementRef}) toolContainerNotFixed: ElementRef;
+
   constructor(private uploadImg: UploadImgComponent,
               private modal: Modal,
               private formEditService: FormEditService,
@@ -90,10 +95,12 @@ export class DetailProduitComponent implements OnInit {
       this.toolNotFixed = true;
     }
   };
+
   getCurrentOffsetTop(element) {
     const rect = element.nativeElement.getBoundingClientRect();
     return rect.top + window.pageYOffset - document.documentElement.clientTop;
   }
+
   ngOnInit() {
     this.formEditService.clear();
     this.getProduit();
@@ -125,22 +132,14 @@ export class DetailProduitComponent implements OnInit {
         this.router.navigate(['page-404'], {skipLocationChange: true});
       }
       this.produit = retourAPI;
-
-      const localStorageProduitModifier = localStorage.getItem('produitModifier');
-      if (localStorageProduitModifier !== undefined && localStorageProduitModifier != null) {
-        this.produitModifie = JSON.parse(localStorageProduitModifier);
-        localStorage.clear();
-      } else {
-        this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
-      }
+      this.produitModifie = JSON.parse(JSON.stringify(this.produit));
+      console.log(this.produitModifie);
     }
   }
 
   comparedProductWithProductModif() {
-    console.log('Produit :', JSON.parse(JSON.stringify(this.produit)));
-    console.log('Produit Modifié:', JSON.parse(JSON.stringify(this.produitModifie)));
     // Si produit modifier est différent de produit
-    if (JSON.parse(JSON.stringify(this.produit)) !== JSON.parse(JSON.stringify(this.produitModifie))) {
+    if (JSON.stringify(this.produit) !== JSON.stringify(this.produitModifie)) {
       this.cacherBoutonAnnulation = false;
       // Permets d'afficher la pop-up "en cours d'édition"
       this.formEditService.setDirty(true);
@@ -158,6 +157,8 @@ export class DetailProduitComponent implements OnInit {
     this.cacherBoutonAnnulation = true;
     //  Permets de désactiver la pop-up "en cours d'édition"
     this.formEditService.setDirty(false);
+    this.photoEnAttenteAjout = [];
+    this.photoEnAttenteSupression = [];
   }
 
   public saveModification(): void {
@@ -187,6 +188,30 @@ export class DetailProduitComponent implements OnInit {
           ' le nom et le prix HT.';
       }
     }
+    if (this.photoEnAttenteSupression !== undefined) {
+      for (const photo of this.photoEnAttenteSupression) {
+        this.produitBusiness.removePhoto(photo);
+        this.produitModifie.arrayPhoto.splice(this.produitModifie.arrayPhoto.indexOf(photo));
+      }
+      this.photoEnAttenteSupression = [];
+
+    }
+    if (this.photoEnAttenteAjout !== undefined) {
+      for (const photo of this.photoEnAttenteAjout) {
+        const dataAEnvoyer = new FormData();
+        dataAEnvoyer.append('fichier', photo);
+        dataAEnvoyer.append('ref', this.produitModifie.ref);
+        const resultatUpload = await this.produitBusiness.ajoutPhoto(dataAEnvoyer);
+        if (resultatUpload) {
+          const produit: Produit = await this.produitBusiness.getProduitByRef(this.produit.ref);
+          this.produit.arrayPhoto = produit.arrayPhoto;
+          this.produitModifie.arrayPhoto = produit.arrayPhoto;
+          this.photoEnAttenteAjout = [];
+        }
+      }
+    }
+
+
   }
 
   public async addProduct() {
@@ -276,4 +301,18 @@ export class DetailProduitComponent implements OnInit {
   }
 
 
+  /**
+   * Methode permettant d'initialisé la suppression d'une photo qui se fera lors de la sauvegarde
+   * @param {Photo} photo
+   */
+  public removePhoto(photo: Photo): void {
+    if (photo.file !== undefined) {
+      this.photoEnAttenteAjout.splice(this.photoEnAttenteAjout.indexOf(photo.file));
+    }
+    this.produitModifie.arrayPhoto.splice(this.produitModifie.arrayPhoto.indexOf(photo));
+    this.photoEnAttenteSupression.push(photo);
+  }
+
+
 }
+
