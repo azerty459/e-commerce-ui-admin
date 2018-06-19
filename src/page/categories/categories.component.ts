@@ -47,14 +47,14 @@ export class CategoriesComponent implements OnInit {
   }
 
   async affichage() {
-    let page = await this.categorieBusiness.getCategorieByPagination(this.pageActuelURL, this.messagesParPage);
-    if(page != undefined && page != null){
+    const page = await this.categorieBusiness.getCategorieByPagination(this.pageActuelURL, this.messagesParPage);
+    if ( page !== undefined && page != null){
       this.pageActuelURL = page.pageActuelle;
       this.nombreDeCategorie = page.total;
       this.categories = page.tableau;
       this.pageMax = page.pageMax;
-    }else{
-      console.log("Erreur getCategorieByPagination");
+    } else {
+      console.log('Erreur getCategorieByPagination');
     }
     this.redirection();
   }
@@ -73,7 +73,7 @@ export class CategoriesComponent implements OnInit {
   }
 
   pagination(value: String) {
-    if (value === "precedent") {
+    if (value === 'precedent') {
       if (this.pageActuelURL > this.pageMin) {
         this.pageActuelURL = this.pageActuelURL - 1;
       }

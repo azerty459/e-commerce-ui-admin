@@ -32,6 +32,11 @@ import { MaterialModule } from './material.module';
 import { RoutingModule } from './routing.module';
 // DRAG & DROP MODULE
 import { NgDragDropModule } from 'ng-drag-drop';
+import { UtilisateurComponent } from '../page/utilisateur/utilisateur.component';
+import {PaginationService} from "../../e-commerce-ui-common/business/pagination.service";
+import {UtilisateurService} from "../../e-commerce-ui-common/business/utilisateur.service";
+import {DetailUtilisateurComponent} from "../page/detail-utilisateur/detail-utilisateur.component";
+import {RoleService} from "../../e-commerce-ui-common/business/role.service";
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +47,9 @@ import { NgDragDropModule } from 'ng-drag-drop';
     DetailCategorieComponent,
     UploadImgComponent,
     ErreurComponent,
-    ArbreCategorieComponent
+    ArbreCategorieComponent,
+    UtilisateurComponent,
+    DetailUtilisateurComponent
   ],
   imports: [
     RoutingModule, // Utilisation de routing
@@ -65,7 +72,10 @@ import { NgDragDropModule } from 'ng-drag-drop';
     PreviousRouteBusiness,
     ArbreService,
     FormEditService,
-    FormEditGuard
+    FormEditGuard,
+    PaginationService,
+    UtilisateurService,
+    RoleService
   ],
   bootstrap: [AppComponent]
 })

@@ -8,6 +8,8 @@ import {CategoriesComponent} from '../page/categories/categories.component';
 import {ArbreCategorieComponent} from '../page/ArbreCategorie/arbreCategorie.component';
 import {ErreurComponent} from '../page/erreur/erreur.component';
 import {NgModule} from '@angular/core';
+import {UtilisateurComponent} from '../page/utilisateur/utilisateur.component';
+import {DetailUtilisateurComponent} from '../page/detail-utilisateur/detail-utilisateur.component';
 
 const appRoutes: Routes = [
 
@@ -57,6 +59,22 @@ const appRoutes: Routes = [
     path: 'admin/categorie',
     redirectTo: 'admin/categorie/1'
   },
+  //utilisateur
+  {
+    path: 'admin/utilisateur/ajouter',
+    component: DetailUtilisateurComponent,
+    data: { title: 'Ajout utilisateur' }
+  },
+  {
+    path: 'admin/utilisateurs/page/:page',
+    component: UtilisateurComponent,
+    data: { title: 'Gestion des utilisateurs' }
+  },
+  {
+    path: 'admin/utilisateur',
+    redirectTo: 'admin/utilisateurs/page/1'
+  },
+  // arbre
   {
     path: 'admin/arbre',
     component: ArbreCategorieComponent
