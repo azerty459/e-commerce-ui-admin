@@ -112,22 +112,29 @@ export class ArbreCategorieComponent implements OnInit {
 
 
   /**
+     }
    * Methode permettant de supprimer une categorie a partir de sa flat node
    * @param {CategorieFlatNode} node flat node représentant la categorie a supprimer
    * @return {Promise<void>}
    */
   async deleteCategorie(node: CategorieFlatNode) {
     // Modal
+    let bodyString = 'Comfirmez vous la suppresion de la categorie ' + node.nomCategorie + ' - id(' + node.id ;
+    if(this.arbreService.flatNodeMap.get(node).children !== undefined){
+      bodyString = bodyString +  'et de ses categories enfants ?';
+    } else{
+      bodyString = bodyString + '?';
+    }
     const dialogRef = this.modal.confirm()
       .size('lg')
       .isBlocking(true)
       .showClose(false)
       .keyboard(27)
       .title('Suppresion de la catégorie ' + node.nomCategorie + ' - id(' + node.id + ')')
-      .body('Comfirmez vous la supression de la categorie ' + node.nomCategorie + ' - id(' + node.id + ')?')
+      .body(bodyString)
       .okBtn('Comfirmer la suppression')
       .okBtnClass('btn btn-danger')
-      .cancelBtn('Annuler la supression')
+      .cancelBtn('Annuler la suppresion')
       .open();
     dialogRef.result
       .then(async () => {
@@ -223,22 +230,36 @@ export class ArbreCategorieComponent implements OnInit {
    * @returns {Promise<void>}
    */
   async saveNode(node: CategorieFlatNode, nomCategorie: string) {
-    const nestedNode = this.arbreService.flatNodeMap.get(node);
+    console.log(nomCategorie === '');
+    let nestedNode = this.arbreService.flatNodeMap.get(node);
     if (nomCategorie === '') {
       this.nomCategorieIsEmpy = true;
     } else {
       this.nomCategorieIsEmpy = false;
       if (node.idParent) {
         const categorie: Categorie = await this.arbreService.categorieBusiness.ajouterCategorieEnfant(nomCategorie, node.idParent);
-        nestedNode.id = categorie.id;
-        nestedNode.nomCategorie = categorie.nomCat;
+        if (typeof categorie === 'string' || categorie === undefined) {
+          this.nomCategorieIsEmpy = true;
+          this.nomCategorieIsEmpy = true;
+          nestedNode = undefined;
+        } else {
+          nestedNode.id = categorie.id;
+          nestedNode.nomCategorie = categorie.nomCat;
+        }
       } else {
         const categorie: Categorie = await this.arbreService.categorieBusiness.ajouterCategorieParent(nomCategorie);
-        nestedNode.id = categorie.id;
-        nestedNode.nomCategorie = categorie.nomCat;
+        if (typeof categorie === 'string' || categorie === undefined) {
+          this.nomCategorieIsEmpy = true;
+          this.nomCategorieIsEmpy = true;
+          nestedNode = undefined;
+        } else {
+          nestedNode.id = categorie.id;
+          nestedNode.nomCategorie = categorie.nomCat;
+        }
       }
-
-      this.arbreService.updateCategorie(nestedNode!, nomCategorie);
+      if( nestedNode !== undefined ){
+        this.arbreService.updateCategorie(nestedNode!, nomCategorie);
+      }
     }
   }
 
