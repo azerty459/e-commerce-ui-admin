@@ -61,7 +61,7 @@
               </mat-icon>
             </button>
             <!--Div qui contient la node (le nom de la categorie) ainsi que la barre d'outil situé sur sa droite-->
-            <div class="nodeAndTool" draggable [dragData]="node"  (mouseover)="enableToolNode(node)" (mouseout)="disableToolNode(node)" >
+            <div class="nodeAndTool" draggable [dragEnabled]="!node.isInEditMode" [dragData]="node"  (mouseover)="enableToolNode(node)" (mouseout)="disableToolNode(node)" >
               <!-- si la node est en mode edition le click sur cette dernière ne fait rien, sinon le click permet
               de rentrer en mode edition -->
               <div  class="node" *ngIf="!node.isInEditMode" (click)="node.isInEditMode ? null :editCategorieName(node)" >
@@ -75,7 +75,7 @@
               <!-- Div contenant les outils elle apparait quand le boolean node.enableToolNode est vrai-->
               <div class="tool" [hidden]="!node.enableToolNode">
                 <!--Bouton permettant la sortie du mode edition-->
-                <button mat-icon-button (click)="node.isInEditMode=false;node.enableToolNode=false;nomCategorieIsEmpy = false;" *ngIf="node.isInEditMode">
+                <button mat-icon-button (click)="node.nomCategorieModifie=node.nomCategorie;node.isInEditMode=false;node.enableToolNode=false;nomCategorieIsEmpy = false;" *ngIf="node.isInEditMode">
                   <mat-icon class="mat-icon-rtl-mirror" >
                     cancel
                   </mat-icon>
@@ -83,14 +83,14 @@
                 <!--Bouton permettant l'entré en mode edition ainsi que la validation des modification,
                 c'est pour cela qu'on appelle une methode qui se chargera de savoir si il faut entré en mode edition
                 ou bien enregistré les modification -->
-                <button mat-icon-button (click)="editCategorieName(node)" >
-                  <mat-icon class="mat-icon-rtl-mirror">
+                <button mat-icon-button color="primary" (click)="editCategorieName(node)" >
+                  <mat-icon  class="mat-icon-rtl-mirror">
                     <!--Si la node est en edit mode l'icone check apparait sinon l'icone edit apparait-->
                     {{node.isInEditMode ? 'check' : 'edit'}}
                   </mat-icon>
                 </button>
                 <!--Bouton permettant la suppression -->
-                <button mat-icon-button (click)="deleteCategorie(node)" >
+                <button mat-icon-button color="warn" (click)="deleteCategorie(node)" >
                   <mat-icon class="mat-icon-rtl-mirror">
                     delete
 
@@ -109,7 +109,7 @@
               </mat-icon>
             </button>
             <!--Div qui contient la node (le nom de la categorie) ainsi que la barre d'outil situé sur sa droite-->
-            <div class="nodeAndTool"   draggable  [dragData]="node" (mouseover)="enableToolNode(node)" (mouseout)="disableToolNode(node)" >
+            <div class="nodeAndTool"   draggable  [dragEnabled]="!node.isInEditMode" [dragData]="node" (mouseover)="enableToolNode(node)" (mouseout)="disableToolNode(node)" >
               <!-- si la node est en mode edition le click sur cette dernière ne fait rien, sinon le click permet
               de rentrer en mode edition -->
               <div class="node" *ngIf="!node.isInEditMode" (click)="node.isInEditMode ? null :editCategorieName(node)" >
@@ -131,7 +131,7 @@
                 <!--Bouton permettant l'entré en mode edition ainsi que la validation des modification,
                 c'est pour cela qu'on appelle une methode qui se chargera de savoir si il faut entré en mode edition
                 ou bien enregistré les modification -->
-                <button mat-icon-button (click)="editCategorieName(node)">
+                <button mat-icon-button color="primary" (click)="editCategorieName(node)">
                   <mat-icon class="mat-icon-rtl-mirror">
                     <!--Si la node est en edit mode l'icone check apparait sinon l'icone edit apparait-->
                     {{node.isInEditMode ? 'check' : 'edit'}}
@@ -139,7 +139,7 @@
                 </button>
 
                 <!--Bouton permettant la suppression-->
-                <button mat-icon-button (click)="deleteCategorie(node)">
+                <button mat-icon-button color="warn" (click)="deleteCategorie(node)">
                   <mat-icon class="mat-icon-rtl-mirror">
                     delete
                   </mat-icon>
@@ -163,12 +163,12 @@
               </div>
               <div class="tool">
 
-                <button mat-icon-button (click)="cancelAddCategorie(node)">
+                <button mat-icon-button color="warn" (click)="cancelAddCategorie(node)">
                   <mat-icon class="mat-icon-rtl-mirror">
                     cancel
                   </mat-icon>
                 </button>
-                <button mat-button (click)="saveNode(node, itemValue.value)">
+                <button mat-raised-button color="primary" (click)="saveNode(node, itemValue.value)">
                   Enregistrer
                 </button>
               </div>
