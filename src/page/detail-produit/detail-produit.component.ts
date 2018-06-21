@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild, ElementRef, HostListener} from '@angular/c
 import {ActivatedRoute, Router} from '@angular/router';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
-import {MatAutocompleteSelectedEvent} from '@angular/material';
+import {MatAccordion, MatAccordionDisplayMode, MatAutocompleteSelectedEvent} from '@angular/material';
 import {Observable} from 'rxjs';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
@@ -14,6 +14,7 @@ import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {FormEditService} from '../../../e-commerce-ui-common/business/form-edit.service';
 import {Photo} from "../../../e-commerce-ui-common/models/Photo";
+import {EventEmitter} from "selenium-webdriver";
 
 @Component({
   selector: 'app-detail-produit',
@@ -133,7 +134,6 @@ export class DetailProduitComponent implements OnInit {
       }
       this.produit = retourAPI;
       this.produitModifie = JSON.parse(JSON.stringify(this.produit));
-      console.log(this.produitModifie);
     }
   }
 
@@ -295,6 +295,16 @@ export class DetailProduitComponent implements OnInit {
     }
   }
 
+  numberToCommaSeperate(num) {
+    const valeur = num.toString().replace(/\./g,',');
+    console.log(valeur);
+    this.produitModifie.prixHT = parseFloat(valeur);
+  }
+
+  public clearInputChips(): void {
+    this.categorieInput.nativeElement.value = '';
+  }
+
   public goBack(): void {
     this.router.navigate(['/admin/produit']);
     this.comparedProductWithProductModif();
@@ -312,7 +322,6 @@ export class DetailProduitComponent implements OnInit {
     this.produitModifie.arrayPhoto.splice(this.produitModifie.arrayPhoto.indexOf(photo));
     this.photoEnAttenteSupression.push(photo);
   }
-
 
 }
 

@@ -2,7 +2,12 @@
   <mat-toolbar  class="toolContainer">
     <mat-toolbar-row>
       <div class="title">
-        {{ajout ? 'Ajout d\'un produit' : ''+produit?.nom+'-'+produit?.ref }}
+        <div *ngIf="!ajout && produit?.nom.length >= 50; else nonSup">
+          {{produit?.nom.substring(0, 50)}} ... - {{produit?.ref}}
+        </div>
+        <ng-template #nonSup>
+          {{ajout ? 'Ajout d\'un produit' : ''+produit?.nom+' - '+produit?.ref }}
+        </ng-template>
       </div>
     </mat-toolbar-row>
     <mat-toolbar-row>
@@ -35,7 +40,7 @@
                   type="button" class="btn btn-warning pull-right centrer-block"
                   matTooltip="Annuler les modifications" [matTooltipPosition]="'below'">
             <b class="noShow">Annuler</b>
-            <i class="material-icons">settings_backup_restore</i>
+            <i class="material-icons">cancel</i>
           </button>
 
         </div>
@@ -53,7 +58,12 @@
   <mat-toolbar *ngIf="!toolNotFixed" class="toolContainer">
     <mat-toolbar-row>
       <div class="title">
-        {{ajout ? 'Ajout d\'un produit' : ''+produit?.nom+'-'+produit?.ref }}
+        <div *ngIf="!ajout && produit?.nom.length >= 50; else nonSup">
+          {{produit?.nom.substring(0, 50)}} ... - {{produit?.ref}}
+        </div>
+        <ng-template #nonSup>
+          {{ajout ? 'Ajout d\'un produit' : ''+produit?.nom+' - '+produit?.ref }}
+        </ng-template>
       </div>
     </mat-toolbar-row>
     <mat-toolbar-row>
@@ -104,13 +114,13 @@
 
 <div *ngIf="produitModifie">
     <mat-accordion multi="true">
-      <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel #panel1 [expanded]="true">
         <mat-expansion-panel-header>
           <mat-panel-title>
             Details
           </mat-panel-title>
-          <mat-panel-description>
-            <div class="descriptionPanel">Modifier les details du produit</div>
+          <mat-panel-description *ngIf="panel1.expanded === false">
+            <div [class]="panel1.expanded === false ? 'centrerPanel' : ''">Modifier les categories du produit</div>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <form id="formProduit">
@@ -130,15 +140,13 @@
 
             <div class="form-group short-field">
               <label for="prixProduit">Prix HT</label>
-              <input (input)="comparedProductWithProductModif()" id="prixProduit" type="number" min="0"
-                     [(ngModel)]="produitModifie.prixHT" name="prix" class="form-control form-control-lg">
+              <div class="input-group">
+                <input (input)="comparedProductWithProductModif()" id="prixProduit" type="number" min="0" step="0.2"
+                       [(ngModel)]="produitModifie.prixHT" (keydown)="numberToCommaSeperate(produitModifie.prixHT)"
+                       name="prixHT" class="form-control form-control-lg">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-euro"></i></span>
+             </div>
             </div>
-
-            <!--<div class="form-group short-field">-->
-              <!--<label for="autreChamp">Test</label>-->
-              <!--<input id="autreChamp" type="text" [(ngModel)]="produitModifie.prixHT" name="test" class="form-control form-control-lg">-->
-            <!--</div>-->
-
           </div>
           <div class="form-group">
             <label for="descProduit">Description</label>
@@ -148,13 +156,13 @@
         </form>
       </mat-expansion-panel>
 
-      <mat-expansion-panel disabled="{{disabledAjoutCategorie}}">
+      <mat-expansion-panel #panel2 disabled="{{disabledAjoutCategorie}}">
         <mat-expansion-panel-header>
           <mat-panel-title>
             Categories
           </mat-panel-title>
-          <mat-panel-description>
-            <div class="descriptionPanel">Modifier les categories du produit</div>
+          <mat-panel-description *ngIf="panel2.expanded === false">
+            <div [class]="panel2.expanded === false ? 'centrerPanel' : ''">Modifier les categories du produit</div>
           </mat-panel-description>
         </mat-expansion-panel-header>
 
@@ -171,6 +179,7 @@
             <label for="listCategorie"></label>
             <input
               id="listCategorie"
+              (blur)="clearInputChips()"
               placeholder="Écrivez le nom d'une catégorie pour associer votre produit à la catégorie choisie..."
               #categorieInput
               [formControl]="choixCategorieFormControl"
@@ -181,22 +190,22 @@
               [(ngModel)]="inputChoixParent"
             />
           </mat-chip-list>
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addCategory($event)">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="addCategory($event)">
             <mat-option *ngFor="let categorie of categoriesObservable | async" [value]="categorie">
-              {{ categorie.nomCat }}
+              {{ categorie.nomCat}} ({{categorie.chemin}})
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
       </mat-expansion-panel>
 
 
-      <mat-expansion-panel disabled="{{disabledAjoutCategorie}}">
+      <mat-expansion-panel #panel3 disabled="{{disabledAjoutCategorie}}">
         <mat-expansion-panel-header>
           <mat-panel-title>
             Photos
           </mat-panel-title>
-          <mat-panel-description>
-            <div class="descriptionPanel">Gérer les photos</div>
+          <mat-panel-description *ngIf="panel3.expanded === false">
+            <div [class]="panel3.expanded === false ? 'centrerPanel' : ''">Modifier les categories du produit</div>
           </mat-panel-description>
         </mat-expansion-panel-header>
 
