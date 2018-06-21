@@ -7,6 +7,8 @@ import {ArbreService} from '../../../e-commerce-ui-common/business/arbre.service
 import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
 import {Modal} from 'ngx-modialog/plugins/bootstrap';
 import {AfterViewInit} from '@angular/core';
+import {MatSnackBar} from "@angular/material";
+import {AlerteSnackBarComponent} from "../../utilitaires/alerteSnackBar/alerteSnackBar.component";
 
 
 /**
@@ -20,6 +22,7 @@ import {AfterViewInit} from '@angular/core';
 
 
 export class ArbreCategorieComponent implements OnInit {
+  private snackBarRef: any;
   public treeControl: FlatTreeControl<CategorieFlatNode>;
   public treeFlattener: MatTreeFlattener<CategorieNode, CategorieFlatNode>;
   public dataSource: MatTreeFlatDataSource<CategorieNode, CategorieFlatNode>;
@@ -31,7 +34,7 @@ export class ArbreCategorieComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  constructor(private arbreService: ArbreService, private modal: Modal,  private renderer: Renderer2) {
+  constructor(private arbreService: ArbreService, private modal: Modal,  public snackBar: MatSnackBar) {
     this.treeFlattener = new MatTreeFlattener(arbreService.transformerNodeToFlatNode, arbreService.getLevel,
       arbreService.isExpandable, arbreService.getChildren);
     this.treeControl = new FlatTreeControl<CategorieFlatNode>(arbreService.getLevel, arbreService.isExpandable);
@@ -120,7 +123,7 @@ export class ArbreCategorieComponent implements OnInit {
   async deleteCategorie(node: CategorieFlatNode) {
     // Modal
     let bodyString = 'Comfirmez vous la suppresion de la categorie ' + node.nomCategorie + ' - id(' + node.id ;
-    if(this.arbreService.flatNodeMap.get(node).children !== undefined){
+    if (this.arbreService.flatNodeMap.get(node).children !== undefined){
       bodyString = bodyString +  'et de ses categories enfants ?';
     } else{
       bodyString = bodyString + '?';
@@ -163,6 +166,7 @@ export class ArbreCategorieComponent implements OnInit {
    * @param {CategorieFlatNode} node la flat node representant la categorie a supprimer
    */
   public deleteNode(node: CategorieFlatNode) {
+    this.afficherMessageAlerteSupression();
     const arbreService = this.arbreService;
     // Si la flat node possède un parent on la supprimer des enfants de ce parent
     if (node.idParent !== undefined) {
@@ -230,7 +234,6 @@ export class ArbreCategorieComponent implements OnInit {
    * @returns {Promise<void>}
    */
   async saveNode(node: CategorieFlatNode, nomCategorie: string) {
-    console.log(nomCategorie === '');
     let nestedNode = this.arbreService.flatNodeMap.get(node);
     if (nomCategorie === '') {
       this.nomCategorieIsEmpy = true;
@@ -296,7 +299,6 @@ export class ArbreCategorieComponent implements OnInit {
       }
 
     } else {
-      console.log(this.arbreService.data);
       const nodeParent = this.arbreService.flatNodeMap.get(flatNodeParent);
       // On vérifie que le deplacement est autorisé
       if (this.isDropAllowed(flatNode, flatNodeParent)) {
@@ -322,6 +324,14 @@ export class ArbreCategorieComponent implements OnInit {
     flatNode.isInEditMode = false;
   }
 
+  public afficherMessageAlerteSupression(): void {
+
+    this.snackBarRef = this.snackBar.openFromComponent(AlerteSnackBarComponent, {
+      panelClass: ['snackBar'],
+      duration: 5000,
+    });
+    this.snackBarRef.instance.snackBarRefAlerteComponent = this.snackBarRef;
+  }
   /**
    * Methode permettant de vérifie si flaNode est doppable dans flatNodeParent
    * @param {CategorieFlatNode} flatNode
@@ -340,7 +350,6 @@ export class ArbreCategorieComponent implements OnInit {
       return false;
     }
   }
-
 
 }
 

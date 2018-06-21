@@ -37,6 +37,7 @@ import {PaginationService} from "../../e-commerce-ui-common/business/pagination.
 import {UtilisateurService} from "../../e-commerce-ui-common/business/utilisateur.service";
 import {DetailUtilisateurComponent} from "../page/detail-utilisateur/detail-utilisateur.component";
 import {RoleService} from "../../e-commerce-ui-common/business/role.service";
+import {AlerteSnackBarComponent} from "../utilitaires/alerteSnackBar/alerteSnackBar.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,7 +50,8 @@ import {RoleService} from "../../e-commerce-ui-common/business/role.service";
     ErreurComponent,
     ArbreCategorieComponent,
     UtilisateurComponent,
-    DetailUtilisateurComponent
+    DetailUtilisateurComponent,
+    AlerteSnackBarComponent
   ],
   imports: [
     RoutingModule, // Utilisation de routing
@@ -77,6 +79,7 @@ import {RoleService} from "../../e-commerce-ui-common/business/role.service";
     UtilisateurService,
     RoleService
   ],
+  entryComponents: [AlerteSnackBarComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
