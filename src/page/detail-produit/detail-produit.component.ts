@@ -166,6 +166,27 @@ export class DetailProduitComponent implements OnInit {
   }
 
   public async updateProduct() {
+    if (this.photoEnAttenteSupression !== undefined) {
+      for (const photo of this.photoEnAttenteSupression) {
+        console.log(this.photoEnAttenteSupression);
+        this.produitBusiness.removePhoto(photo);
+      }
+      this.photoEnAttenteSupression = [];
+    }
+    if (this.photoEnAttenteAjout !== undefined) {
+      for (const photo of this.photoEnAttenteAjout) {
+        const dataAEnvoyer = new FormData();
+        dataAEnvoyer.append('fichier', photo);
+        dataAEnvoyer.append('ref', this.produitModifie.ref);
+        const resultatUpload = await this.produitBusiness.ajoutPhoto(dataAEnvoyer);
+        if (resultatUpload) {
+          const produit: Produit = await this.produitBusiness.getProduitByRef(this.produit.ref);
+          this.produit.arrayPhoto = produit.arrayPhoto;
+          this.produitModifie.arrayPhoto = produit.arrayPhoto;
+          this.photoEnAttenteAjout = [];
+        }
+      }
+    }
     const retourAPI = await this.produitBusiness.updateProduit(this.produitModifie);
     console.log(retourAPI);
     if (retourAPI != null && retourAPI !== undefined) {
@@ -188,28 +209,7 @@ export class DetailProduitComponent implements OnInit {
           ' le nom et le prix HT.';
       }
     }
-    if (this.photoEnAttenteSupression !== undefined) {
-      for (const photo of this.photoEnAttenteSupression) {
-        console.log(this.photoEnAttenteSupression);
-        this.produitBusiness.removePhoto(photo);
-        this.produitModifie.arrayPhoto.splice(this.produitModifie.arrayPhoto.indexOf(photo),1);
-      }
-      this.photoEnAttenteSupression = [];
-    }
-    if (this.photoEnAttenteAjout !== undefined) {
-      for (const photo of this.photoEnAttenteAjout) {
-        const dataAEnvoyer = new FormData();
-        dataAEnvoyer.append('fichier', photo);
-        dataAEnvoyer.append('ref', this.produitModifie.ref);
-        const resultatUpload = await this.produitBusiness.ajoutPhoto(dataAEnvoyer);
-        if (resultatUpload) {
-          const produit: Produit = await this.produitBusiness.getProduitByRef(this.produit.ref);
-          this.produit.arrayPhoto = produit.arrayPhoto;
-          this.produitModifie.arrayPhoto = produit.arrayPhoto;
-          this.photoEnAttenteAjout = [];
-        }
-      }
-    }
+
 
 
   }
