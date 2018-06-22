@@ -192,7 +192,7 @@ export class DetailProduitComponent implements OnInit {
       for (const photo of this.photoEnAttenteSupression) {
         console.log(this.photoEnAttenteSupression);
         this.produitBusiness.removePhoto(photo);
-        this.produitModifie.arrayPhoto.splice(this.produitModifie.arrayPhoto.indexOf(photo));
+        this.produitModifie.arrayPhoto.splice(this.produitModifie.arrayPhoto.indexOf(photo),1);
       }
       this.photoEnAttenteSupression = [];
     }
