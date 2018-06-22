@@ -142,7 +142,7 @@
               <label for="prixProduit">Prix HT</label>
               <div class="input-group">
                 <input (input)="comparedProductWithProductModif()" id="prixProduit" type="number" min="0" step="0.2"
-                       [(ngModel)]="produitModifie.prixHT" (keydown)="numberToCommaSeperate(produitModifie.prixHT)"
+                       [(ngModel)]="produitModifie.prixHT" (keyup)="numberToCommaSeperate($event)"
                        name="prixHT" class="form-control form-control-lg">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-euro"></i></span>
              </div>

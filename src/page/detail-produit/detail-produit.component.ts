@@ -74,6 +74,8 @@ export class DetailProduitComponent implements OnInit {
    */
   toolNotFixed = true;
 
+  ancienPrixHTModifier: number;
+
   public photoEnAttenteAjout = [];
   public photoEnAttenteSupression = [];
   @ViewChild('categorieInput') categorieInput: ElementRef;
@@ -295,10 +297,12 @@ export class DetailProduitComponent implements OnInit {
     }
   }
 
-  numberToCommaSeperate(num) {
-    const valeur = num.toString().replace(/\./g,',');
-    console.log(valeur);
-    this.produitModifie.prixHT = parseFloat(valeur);
+  numberToCommaSeperate(event) {
+    if (event.key === '.') {
+      this.produitModifie.prixHT =  this.ancienPrixHTModifier;
+    } else {
+      this.ancienPrixHTModifier = this.produitModifie.prixHT;
+    }
   }
 
   public clearInputChips(): void {
