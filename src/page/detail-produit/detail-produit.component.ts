@@ -13,7 +13,7 @@ import {PreviousRouteBusiness} from '../../../e-commerce-ui-common/business/prev
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {FormEditService} from '../../../e-commerce-ui-common/business/form-edit.service';
-import {Photo} from "../../../e-commerce-ui-common/models/Photo";
+import {Photo} from '../../../e-commerce-ui-common/models/Photo';
 
 @Component({
   selector: 'app-detail-produit',
@@ -190,11 +190,11 @@ export class DetailProduitComponent implements OnInit {
     }
     if (this.photoEnAttenteSupression !== undefined) {
       for (const photo of this.photoEnAttenteSupression) {
+        console.log(this.photoEnAttenteSupression);
         this.produitBusiness.removePhoto(photo);
         this.produitModifie.arrayPhoto.splice(this.produitModifie.arrayPhoto.indexOf(photo));
       }
       this.photoEnAttenteSupression = [];
-
     }
     if (this.photoEnAttenteAjout !== undefined) {
       for (const photo of this.photoEnAttenteAjout) {
