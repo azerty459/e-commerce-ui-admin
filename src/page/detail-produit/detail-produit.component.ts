@@ -307,9 +307,10 @@ export class DetailProduitComponent implements OnInit {
    */
   public removePhoto(photo: Photo): void {
     if (photo.file !== undefined) {
-      this.photoEnAttenteAjout.splice(this.photoEnAttenteAjout.indexOf(photo.file));
+      this.photoEnAttenteAjout.splice(this.photoEnAttenteAjout.indexOf(photo.file), 1);
     }
-    this.produitModifie.arrayPhoto.splice(this.produitModifie.arrayPhoto.indexOf(photo));
+    this.produitModifie.arrayPhoto.indexOf(photo);
+    this.produitModifie.arrayPhoto.splice(this.produitModifie.arrayPhoto.indexOf(photo), 1);
     this.photoEnAttenteSupression.push(photo);
   }
 
