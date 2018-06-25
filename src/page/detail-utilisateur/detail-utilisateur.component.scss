@@ -4,7 +4,7 @@ $short-field-min-width: 150px;
 $long-field-width: 35%;
 $long-field-min-width: 200px;
 
-// Couleurs
+// s
 $navbar-color: #F9FAFB;
 
 .flex-container {
@@ -12,8 +12,12 @@ $navbar-color: #F9FAFB;
   flex-wrap: wrap;
   justify-content: flex-start;
 
-  .form-group {
+  .form-group, .input-group {
     margin-right: 1em;
+  }
+
+  .input-group-btn {
+    vertical-align: bottom !important;
   }
 }
 
@@ -59,12 +63,6 @@ $navbar-color: #F9FAFB;
   max-width: 30%;
   min-width: 200px;
   margin: 10px;
-
-  mat-card-subtitle {
-    width: 280px;
-    overflow: hidden;
-  }
-
 }
 .rowPhoto{
   display: flex;
@@ -133,6 +131,4 @@ mat-toolbar{
   border-bottom: 1px groove;
   margin-bottom: 20px;
 }
-.photoTool{
 
-}

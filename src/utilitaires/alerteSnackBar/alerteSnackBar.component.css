@@ -1,0 +1,24 @@
+.restoreButton{
+}
+.alertDiv{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 14px;
+}
+
+.headerIcon{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+.rowContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.buttonIcon{
+  cursor:pointer;
+}

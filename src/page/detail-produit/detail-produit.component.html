@@ -1,48 +1,108 @@
-<h1 *ngIf="ajout">Ajout d'un produit</h1>
+<div #toolContainerNotFixed xmlns="http://www.w3.org/1999/html">
+  <mat-toolbar  class="toolContainer">
+    <mat-toolbar-row>
+      <div class="title">
+        {{ajout ? 'Ajout d\'un produit' : ''+produit?.nom+'-'+produit?.ref }}
+      </div>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+      <div class="toolbar">
+        <div class="leftTool">
+          <i matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip" class="material-icons backArrow"
+             (click)="goBack()">arrow_back</i>
+        </div>
+        <div class="rightTool">
 
-<div *ngIf="!ajout" class="navbar-fixed-top">
-  <h1>{{produit?.nom}} - {{produit?.ref}}</h1>
+          <button type="submit" class="btn btn-success" *ngIf="ajout" (click)="addProduct()">
+            Ajouter le produit
+          </button>
+
+          <button *ngIf="! ajout" (click)="deleteProduct(produit)" type="button"
+                  class="btn btn-danger pull-right centrer-block"
+                  matTooltip="Supprimer ce produit" [matTooltipPosition]="'below'">
+            <b class="noShow">Supprimer</b>
+            <i class="material-icons">delete</i>
+          </button>
+
+          <button *ngIf="! ajout " (click)="saveModification()" type="button" [disabled]="cacherBoutonAnnulation && !photoEnAttenteAjout.length!=0 && !photoEnAttenteSupression.length!=0"
+                  class="btn btn-success pull-right centrer-block"
+                  matTooltip="Enregistrer les modifications" [matTooltipPosition]="'below'">
+            <b class="noShow">Sauvegarder</b>
+            <i class="material-icons">save</i>
+          </button>
+
+          <button *ngIf="! ajout" (click)="cancelModification(produit)" [disabled]="cacherBoutonAnnulation && !photoEnAttenteAjout.length!=0 && !photoEnAttenteSupression.length!=0"
+                  type="button" class="btn btn-warning pull-right centrer-block"
+                  matTooltip="Annuler les modifications" [matTooltipPosition]="'below'">
+            <b class="noShow">Annuler</b>
+            <i class="material-icons">settings_backup_restore</i>
+          </button>
+
+        </div>
+      </div>
+    </mat-toolbar-row>
+    <mat-toolbar-row *ngIf="!cacherAlert || !cacherErreur">
+      <div class="alerteDiv">
+        <div *ngIf="!cacherAlert" class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>
+        <div *ngIf="!cacherErreur" class="alert alert-danger" role="alert" [hidden]="cacherErreur">{{message}}</div>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>
+<div class="navbar-fixed-top">
+  <mat-toolbar *ngIf="!toolNotFixed" class="toolContainer">
+    <mat-toolbar-row>
+      <div class="title">
+        {{ajout ? 'Ajout d\'un produit' : ''+produit?.nom+'-'+produit?.ref }}
+      </div>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+      <div class="toolbar">
+        <div class="leftTool">
+          <i matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip" class="material-icons backArrow"
+             (click)="goBack()">arrow_back</i>
+        </div>
+        <div class="rightTool">
+
+          <button type="submit" class="btn btn-success" *ngIf="ajout" (click)="addProduct()">
+            Ajouter le produit
+          </button>
+
+          <button *ngIf="! ajout" (click)="deleteProduct(produit)" type="button"
+                  class="btn btn-danger pull-right centrer-block"
+                  matTooltip="Supprimer ce produit" [matTooltipPosition]="'below'">
+            <b class="noShow">Supprimer</b>
+            <i class="material-icons">delete</i>
+          </button>
+
+          <button *ngIf="! ajout" (click)="saveModification()" type="button" [disabled]="cacherBoutonAnnulation && !photoEnAttenteSupression.length!=0 && !photoEnAttenteAjout.length!=0 "
+                  class="btn btn-success pull-right centrer-block"
+                  matTooltip="Enregistrer les modifications" [matTooltipPosition]="'below'">
+            <b class="noShow">Sauvegarder</b>
+            <i class="material-icons">save</i>
+          </button>
+
+          <button *ngIf="! ajout" (click)="cancelModification(produit)" [disabled]="cacherBoutonAnnulation"
+                  type="button" class="btn btn-warning pull-right centrer-block"
+                  matTooltip="Annuler les modifications" [matTooltipPosition]="'below'">
+            <b class="noShow">Annuler</b>
+            <i class="material-icons">settings_backup_restore</i>
+          </button>
+
+        </div>
+      </div>
+    </mat-toolbar-row>
+    <mat-toolbar-row *ngIf="!cacherAlert || !cacherErreur">
+      <div class="alerteDiv">
+        <div *ngIf="!cacherAlert" class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>
+        <div *ngIf="!cacherErreur" class="alert alert-danger" role="alert" [hidden]="cacherErreur">{{message}}</div>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
 </div>
 
-<div id="mainContainer">
-  <div *ngIf="!cacherAlert" class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>
-  <div *ngIf="!cacherErreur" class="alert alert-danger" role="alert" [hidden]="cacherErreur">{{message}}</div>
-  <div class="toolbar">
-    <div>
-      <i matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip" class="material-icons backArrow"
-         (click)="goBack()">arrow_back</i>
-    </div>
-    <div>
 
-      <button type="submit" class="btn btn-success" *ngIf="ajout" (click)="addProduct()">
-        Ajouter le produit
-      </button>
-
-      <button *ngIf="! ajout" (click)="deleteProduct(produit)" type="button"
-              class="btn btn-danger pull-right centrer-block"
-              matTooltip="Supprimer ce produit" [matTooltipPosition]="'below'">
-        <b class="noShow">Supprimer</b>
-        <i class="material-icons">delete</i>
-      </button>
-
-      <button *ngIf="! ajout" (click)="saveModification()" type="button" [disabled]="cacherBoutonAnnulation"
-              class="btn btn-success pull-right centrer-block"
-              matTooltip="Enregistrer les modifications" [matTooltipPosition]="'below'">
-        <b class="noShow">Sauvegarder</b>
-        <i class="material-icons">save</i>
-      </button>
-
-      <button *ngIf="! ajout" (click)="cancelModification(produit)" [disabled]="cacherBoutonAnnulation"
-              type="button" class="btn btn-warning pull-right centrer-block"
-              matTooltip="Annuler les modifications" [matTooltipPosition]="'below'">
-        <b class="noShow">Annuler</b>
-        <i class="material-icons">settings_backup_restore</i>
-      </button>
-
-    </div>
-  </div>
-
-  <div *ngIf="produitModifie">
+<div *ngIf="produitModifie">
     <mat-accordion multi="true">
       <mat-expansion-panel [expanded]="true">
         <mat-expansion-panel-header>
@@ -150,7 +210,7 @@
                  alt="produit image"/>
             <mat-card-content>
               <div class="container-fluid">
-                <app-upload-img [produit]="produit" class="center-block" #upload></app-upload-img>
+                <app-upload-img [photoEnAttente]="photoEnAttenteAjout" [produit]="produitModifie" class="center-block" #upload></app-upload-img>
               </div>
             </mat-card-content>
             <mat-card-actions>
@@ -160,10 +220,20 @@
 
         <div class="rowPhoto">
 
-          <mat-card class="col-md-6 photoCard" *ngFor="let photo of produit.arrayPhoto;let i = index">
+          <mat-card class="col-md-6 photoCard" *ngFor="let photo of produitModifie.arrayPhoto;let i = index">
             <mat-card-header>
-              <mat-card-title>Photo n°{{i+1}}</mat-card-title>
-              <mat-card-subtitle>{{photo.urlSimplifie}}</mat-card-subtitle>
+
+              <mat-card-title>
+                <div>Photo n°{{i+1}}</div>
+
+                <div class="photoTool pull-right">
+                  <button mat-icon-button color="warn" class="deletePhotoButton" (click)="removePhoto(photo)">
+                    <mat-icon>clear</mat-icon>
+                  </button>
+                </div>
+
+              </mat-card-title>
+              <mat-card-subtitle>{{photo.nom}}</mat-card-subtitle>
             </mat-card-header>
             <img class="mat-card-image" src="{{photo.url}}" alt="PhotoNumero{{i}}"/>
             <mat-card-content>
@@ -177,7 +247,7 @@
     </mat-accordion>
   </div>
 
-</div>
+
 
 
 

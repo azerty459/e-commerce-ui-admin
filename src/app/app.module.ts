@@ -30,7 +30,14 @@ import { UploadImgComponent } from '../utilitaires/upload-img/upload-img.compone
 
 import { MaterialModule } from './material.module';
 import { RoutingModule } from './routing.module';
-
+// DRAG & DROP MODULE
+import { NgDragDropModule } from 'ng-drag-drop';
+import { UtilisateurComponent } from '../page/utilisateur/utilisateur.component';
+import {PaginationService} from "../../e-commerce-ui-common/business/pagination.service";
+import {UtilisateurService} from "../../e-commerce-ui-common/business/utilisateur.service";
+import {DetailUtilisateurComponent} from "../page/detail-utilisateur/detail-utilisateur.component";
+import {RoleService} from "../../e-commerce-ui-common/business/role.service";
+import {AlerteSnackBarComponent} from "../utilitaires/alerteSnackBar/alerteSnackBar.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +48,10 @@ import { RoutingModule } from './routing.module';
     DetailCategorieComponent,
     UploadImgComponent,
     ErreurComponent,
-    ArbreCategorieComponent
+    ArbreCategorieComponent,
+    UtilisateurComponent,
+    DetailUtilisateurComponent,
+    AlerteSnackBarComponent
   ],
   imports: [
     RoutingModule, // Utilisation de routing
@@ -49,6 +59,7 @@ import { RoutingModule } from './routing.module';
     BrowserModule,
     CovalentFileModule, // Teradata covalent library
     FormsModule,
+    NgDragDropModule.forRoot(), // Drag & drop module
     ReactiveFormsModule,
     ModalModule.forRoot(), // Modal boostrap
     BootstrapModalModule, // Modal boostrap
@@ -63,8 +74,12 @@ import { RoutingModule } from './routing.module';
     PreviousRouteBusiness,
     ArbreService,
     FormEditService,
-    FormEditGuard
+    FormEditGuard,
+    PaginationService,
+    UtilisateurService,
+    RoleService
   ],
+  entryComponents: [AlerteSnackBarComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

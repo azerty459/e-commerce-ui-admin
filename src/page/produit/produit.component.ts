@@ -103,4 +103,5 @@ export class ProduitComponent implements OnInit {
   refreshProductList() {
     this.display();
   }
+
 }

@@ -2,14 +2,24 @@
 
 
 
-
-
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 /*
   Nav bar
  */
 
+.snackBar{
+  min-width: 1000px !important;
+  padding:2px 0px 2px !important;
+  padding-bottom: 14px !important;
+  margin-top: 14px !important;
+  margin-left: 14px !important;
+  margin-right: 14px !important;
+}
+
 a:hover{
+  text-decoration: none;
+}
+a:checked{
   text-decoration: none;
 }
 .toolbar {
@@ -18,7 +28,7 @@ a:hover{
   justify-content: space-between;
 }
 
-.navbar {
+.navbar{
   margin: 0px;
 }
 
@@ -132,6 +142,7 @@ main {
   padding: 20px;
   border-right: 1px solid #eee;
   background-color: #272c33;
+  z-index: 2;
 }
 
 /*
@@ -191,3 +202,5 @@ Requête média pour l'affichage du texte dans les boutons
     display: none;
   }
 }
+
+

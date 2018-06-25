@@ -5,6 +5,8 @@
     </a>
 </div>
 
+
+
 <div class="row">
   <div class="margin card">
     <div class="card-header">
@@ -28,17 +30,11 @@
 </div>
 
 <div class="row">
+
   <div class="margin card">
-    <div class="card-header">
-      <strong>Nombre total de produits: {{nombreDeProduit}}</strong>
-      <span class="text_afficher">Page {{pageActuelURL}} sur {{pageMax}}</span>
-      <div class="toolbar-pagination">
-        <button type="button" class="btn btn-outline-success" (click)="paging('precedent')"><- Précédent
-        </button>
-        <div class="espace"></div>
-        <button type="button" class="btn btn-outline-success" (click)="paging('suivant')">Suivant -></button>
-      </div>
-    </div>
+
+    <ng-container *ngTemplateOutlet="barreNavigation"></ng-container>
+
     <div class="card-body">
       <div class="card-body">
         <div class="table-responsive">
@@ -48,7 +44,7 @@
               <th>Référence</th>
               <th>Nom</th>
               <th>Description</th>
-              <th>Prix HT</th>
+              <th>Prix HT (€)</th>
               <th></th>
               <th></th>
             </tr>
@@ -57,16 +53,16 @@
             <ng-container *ngIf="nombreDeProduit > 0;else pasDeProduit">
               <tr *ngFor="let produit of produits; let i = index">
                 <td><p>{{produit.ref}}</p></td>
-                <td><p>{{produit.nom}}</p></td>
+                <td><p><a [routerLink]="['/admin/produit/detail', produit.ref]">{{produit.nom}}</a></p></td>
                 <td><p>{{produit.description}}</p></td>
                 <td><p>{{produit.prixHT}}</p></td>
                 <td>
                   <a [routerLink]="['/admin/produit/detail', produit.ref]">
-                    <button type="button" class="btn btn-warning centrer-block"><b class="noShow">Modifier</b><i class="material-icons">create</i></button>
+                    <button type="button" class="btn btn-warning centrer-block"><i class="material-icons">create</i></button>
                   </a>
                 </td>
                 <td>
-                  <button type="button" class="btn btn-danger centrer-block" (click)="deleteProduit(produit)"><b class="noShow">Supprimer</b><i class="material-icons">delete</i></button>
+                  <button type="button" class="btn btn-danger centrer-block" (click)="deleteProduit(produit)"><i class="material-icons">delete</i></button>
                 </td>
               </tr>
             </ng-container>
@@ -83,17 +79,26 @@
         </div>
       </div>
     </div>
-    <div class="card-header">
+
+    <div class="card-footer">
+      <ng-container *ngTemplateOutlet="barreNavigation"></ng-container>
       <br>
-      <!--<strong>Nombre total de produits: {{nombreDeProduit}}</strong>-->
-      <!--<div class="toolbar-pagination">-->
-        <!--<div class="toolbar-pagination">-->
-          <!--<button type="button" class="btn btn-outline-success" (click)="pagination('precedent')"><- Précédent-->
-          <!--</button>-->
-          <!--<div class="espace"></div>-->
-          <!--<button type="button" class="btn btn-outline-success" (click)="pagination('suivant')">Suivant -></button>-->
-        <!--</div>-->
-      <!--</div>-->
+
     </div>
   </div>
+
 </div>
+
+
+<!--Template pour la barre de navigation de la liste des produits-->
+<ng-template #barreNavigation>
+  <div class="card-header">
+    <strong>Nombre total de produits: {{nombreDeProduit}}</strong>
+    <span class="text_afficher">Page {{pageActuelURL}} sur {{pageMax}}</span>
+    <div class="toolbar-pagination">
+      <button mat-raised-button type="button" class="navigationButtons" (click)="paging('precedent')"><i class="material-icons">navigate_before</i><span class="noShow">Précédent</span></button>
+      <div class="espace"></div>
+      <button mat-raised-button class="navigationButtons" type="button" (click)="paging('suivant')"><span class="noShow">Suivant</span><i class="material-icons">navigate_next</i></button>
+    </div>
+  </div>
+</ng-template>
