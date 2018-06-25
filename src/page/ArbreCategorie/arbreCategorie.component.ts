@@ -166,7 +166,7 @@ export class ArbreCategorieComponent implements OnInit {
    * @param {CategorieFlatNode} node la flat node representant la categorie a supprimer
    */
   public deleteNode(node: CategorieFlatNode) {
-    this.afficherMessageAlerteSupression();
+    // this.afficherMessageAlerteSupression();
     const arbreService = this.arbreService;
     // Si la flat node possède un parent on la supprimer des enfants de ce parent
     if (node.idParent !== undefined) {
@@ -324,14 +324,14 @@ export class ArbreCategorieComponent implements OnInit {
     flatNode.isInEditMode = false;
   }
 
-  public afficherMessageAlerteSupression(): void {
-
-    this.snackBarRef = this.snackBar.openFromComponent(AlerteSnackBarComponent, {
-      panelClass: ['snackBar'],
-      duration: 5000,
-    });
-    this.snackBarRef.instance.snackBarRefAlerteComponent = this.snackBarRef;
-  }
+  // public afficherMessageAlerteSupression(): void {
+  //
+  //   this.snackBarRef = this.snackBar.openFromComponent(AlerteSnackBarComponent, {
+  //     panelClass: ['snackBar'],
+  //     duration: 5000,
+  //   });
+  //   this.snackBarRef.instance.snackBarRefAlerteComponent = this.snackBarRef;
+  // }
   /**
    * Methode permettant de vérifie si flaNode est doppable dans flatNodeParent
    * @param {CategorieFlatNode} flatNode
