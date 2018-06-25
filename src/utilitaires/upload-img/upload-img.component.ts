@@ -43,7 +43,7 @@ export class UploadImgComponent implements OnInit {
     this.imgSelected = false;
     this.fileUploadMsg = file.name;
     console.log(file);
-    const photo = new Photo(0, '././assets/img/1024px-Emblem-question.svg.png', '././assets/img/1024px-Emblem-question.svg.png');
+    const photo = new Photo(0, '././assets/img/1024px-Emblem-question.svg.png', file.name);
     photo.file = file;
     // On ajoute la photo dans la l'arrayPhoto du produit
     if (this.produit.arrayPhoto.length !== 0) {

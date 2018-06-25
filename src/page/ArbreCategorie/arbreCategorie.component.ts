@@ -323,7 +323,7 @@ export class ArbreCategorieComponent implements OnInit {
     }
     flatNode.isInEditMode = false;
   }
-  //
+
   // public afficherMessageAlerteSupression(): void {
   //
   //   this.snackBarRef = this.snackBar.openFromComponent(AlerteSnackBarComponent, {
