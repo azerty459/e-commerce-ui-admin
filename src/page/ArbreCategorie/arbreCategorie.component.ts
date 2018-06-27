@@ -148,6 +148,8 @@ export class ArbreCategorieComponent implements OnInit {
         if (retourAPI != null && retourAPI !== undefined) {
           // On met à jour le nom de la categorie afficher dans la node concerné
           if (retourAPI) {
+            this.afficherMessageAlerteSupression();
+            this.arbreService.categoriedataBusiness.idLastDeletedCategorie = node.idParent;
             // On supprime la categorie visuelement si la suppression dans la base de donnée est un succès
             this.deleteNode(node);
           } else {
@@ -166,7 +168,6 @@ export class ArbreCategorieComponent implements OnInit {
    * @param {CategorieFlatNode} node la flat node representant la categorie a supprimer
    */
   public deleteNode(node: CategorieFlatNode) {
-    // this.afficherMessageAlerteSupression();
     const arbreService = this.arbreService;
     // Si la flat node possède un parent on la supprimer des enfants de ce parent
     if (node.idParent !== undefined) {
@@ -183,6 +184,7 @@ export class ArbreCategorieComponent implements OnInit {
       arbreService.data.forEach(function (value, index) {
         if (value.id === node.id) {
           arbreService.data.splice(index, 1);
+          arbreService.lastDeletedNode = arbreService.flatNodeMap.get(node);
         }
       });
       if (this.arbreService.data.length === 0) {
@@ -324,14 +326,14 @@ export class ArbreCategorieComponent implements OnInit {
     flatNode.isInEditMode = false;
   }
 
-  // public afficherMessageAlerteSupression(): void {
-  //
-  //   this.snackBarRef = this.snackBar.openFromComponent(AlerteSnackBarComponent, {
-  //     panelClass: ['snackBar'],
-  //     duration: 5000,
-  //   });
-  //   this.snackBarRef.instance.snackBarRefAlerteComponent = this.snackBarRef;
-  // }
+  public afficherMessageAlerteSupression(): void {
+
+    this.snackBarRef = this.snackBar.openFromComponent(AlerteSnackBarComponent, {
+      panelClass: ['snackBar'],
+      duration: 5000,
+    });
+    this.snackBarRef.instance.snackBarRefAlerteComponent = this.snackBarRef;
+  }
   /**
    * Methode permettant de vérifie si flaNode est doppable dans flatNodeParent
    * @param {CategorieFlatNode} flatNode
