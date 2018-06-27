@@ -21,7 +21,6 @@ import { FormEditService } from '../../e-commerce-ui-common/business/form-edit.s
 import { AppComponent } from './app.component';
 import { AccueilComponent } from '../page/accueil/accueil.component';
 import { ProduitComponent } from '../page/produit/produit.component';
-import { CategoriesComponent } from '../page/categories/categories.component';
 import { DetailCategorieComponent } from '../page/detail-categorie/detail-categorie.component';
 import { ErreurComponent } from '../page/erreur/erreur.component';
 import { DetailProduitComponent } from '../page/detail-produit/detail-produit.component';
@@ -30,7 +29,7 @@ import { UploadImgComponent } from '../utilitaires/upload-img/upload-img.compone
 
 import { MaterialModule } from './material.module';
 import { RoutingModule } from './routing.module';
-// DRAG & DROP MODULE
+// DRAG 24& DROP MODULE
 import { NgDragDropModule } from 'ng-drag-drop';
 import { UtilisateurComponent } from '../page/utilisateur/utilisateur.component';
 import {PaginationService} from "../../e-commerce-ui-common/business/pagination.service";
@@ -44,7 +43,6 @@ import {AlerteSnackBarComponent} from "../utilitaires/alerteSnackBar/alerteSnack
     AccueilComponent,
     ProduitComponent,
     DetailProduitComponent,
-    CategoriesComponent,
     DetailCategorieComponent,
     UploadImgComponent,
     ErreurComponent,

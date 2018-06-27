@@ -4,7 +4,6 @@ import {DetailProduitComponent} from '../page/detail-produit/detail-produit.comp
 import {ProduitComponent} from '../page/produit/produit.component';
 import {FormEditGuard} from '../../e-commerce-ui-common/business/guard/form-edit.guard';
 import {DetailCategorieComponent} from '../page/detail-categorie/detail-categorie.component';
-import {CategoriesComponent} from '../page/categories/categories.component';
 import {ArbreCategorieComponent} from '../page/ArbreCategorie/arbreCategorie.component';
 import {ErreurComponent} from '../page/erreur/erreur.component';
 import {NgModule} from '@angular/core';
@@ -45,21 +44,6 @@ const appRoutes: Routes = [
     component: DetailCategorieComponent,
     data: { title: 'Ajout catégorie' }
   },
-  {
-    path: 'admin/categorie/:page',
-    component: CategoriesComponent,
-    data: { title: 'Gestion des catégories' }
-  },
-  {
-    path: 'admin/categorie/detail/:id',
-    component: DetailCategorieComponent,
-    data: { title: 'Détail catégorie'}
-  },
-  {
-    path: 'admin/categorie',
-    redirectTo: 'admin/categorie/1'
-  },
-  //utilisateur
   {
     path: 'admin/utilisateur/ajouter',
     component: DetailUtilisateurComponent,
