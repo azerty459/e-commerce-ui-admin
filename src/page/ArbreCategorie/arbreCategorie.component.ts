@@ -135,9 +135,9 @@ export class ArbreCategorieComponent implements OnInit {
       .keyboard(27)
       .title('Suppresion de la catégorie ' + node.nomCategorie + ' - id(' + node.id + ')')
       .body(bodyString)
-      .okBtn('Comfirmer la suppression')
+      .okBtn('Confirmer la suppression')
       .okBtnClass('btn btn-danger')
-      .cancelBtn('Annuler la suppresion')
+      .cancelBtn('Annuler la suppression')
       .open();
     dialogRef.result
       .then(async () => {
@@ -331,7 +331,6 @@ export class ArbreCategorieComponent implements OnInit {
 
     this.snackBarRef = this.snackBar.openFromComponent(AlerteSnackBarComponent, {
       panelClass: ['snackBar'],
-      duration: 5000,
     });
     this.snackBarRef.instance.snackBarRefAlerteComponent = this.snackBarRef;
   }
