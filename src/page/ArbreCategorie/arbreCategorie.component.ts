@@ -178,13 +178,14 @@ export class ArbreCategorieComponent implements OnInit {
           nodeParent = value;
         }
       });
+      arbreService.lastDeletedParentnode = nodeParent;
       arbreService.deleteChild(nodeParent, nodeEnfant);
     } else {
       // la node n'a pas de parent on la supprime des data
+      arbreService.lastDeletedParentnode = undefined;
       arbreService.data.forEach(function (value, index) {
         if (value.id === node.id) {
           arbreService.data.splice(index, 1);
-          arbreService.lastDeletedNode = arbreService.flatNodeMap.get(node);
         }
       });
       if (this.arbreService.data.length === 0) {
