@@ -29,7 +29,7 @@ import { UploadImgComponent } from '../utilitaires/upload-img/upload-img.compone
 
 import { MaterialModule } from './material.module';
 import { RoutingModule } from './routing.module';
-// DRAG 24& DROP MODULE
+// DRAG & DROP MODULE
 import { NgDragDropModule } from 'ng-drag-drop';
 import { UtilisateurComponent } from '../page/utilisateur/utilisateur.component';
 import {PaginationService} from "../../e-commerce-ui-common/business/pagination.service";
@@ -37,9 +37,11 @@ import {UtilisateurService} from "../../e-commerce-ui-common/business/utilisateu
 import {DetailUtilisateurComponent} from "../page/detail-utilisateur/detail-utilisateur.component";
 import {RoleService} from "../../e-commerce-ui-common/business/role.service";
 import {AlerteSnackBarComponent} from "../utilitaires/alerteSnackBar/alerteSnackBar.component";
+import {LoginComponent} from "../page/login/login.component";
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
     AccueilComponent,
     ProduitComponent,
     DetailProduitComponent,

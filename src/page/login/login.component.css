@@ -1,0 +1,129 @@
+
+img.bg {
+  /* Set rules to fill background */
+  min-height: 100%;
+  min-width: 1024px;
+
+  /* Set up proportionate scaling */
+  width: 100%;
+  height: auto;
+  z-index: -999;
+  /* Set up positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+@media screen and (max-width: 1024px) { /* Specific to this particular image */
+  img.bg {
+    left: 50%;
+    margin-left: -512px;   /* 50% */
+  }
+}
+
+.mainContainer{
+  text-rendering: optimizeLegibility;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: row;
+}
+.splash-screen,.sidebarLogin{
+  /*font*/
+  -webkit-text-size-adjust: 100%!important;
+  font-family: Roboto,'Helvetica Neue',Arial,sans-serif !important;
+  line-height: 1.4!important;
+  letter-spacing: -.1px!important;
+}
+.splash-screen{
+  display: flex;
+  flex: 11;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.contentSplashScreen{
+  flex: 1;
+  height: 80%;
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
+}
+.ecommerceLogo{
+  flex:1 ;
+}
+.ecommerceDescription{
+  flex: 3;
+}
+.titre{
+  color: #fff;
+  font-size: 42px;
+  font-weight: 300;
+  line-height: 1;
+}
+.description{
+  padding-top: 16px;
+  font-size: 14px;
+  max-width: 600px;
+  color: rgba(255,255,255,.54);
+}
+
+/* Side bar*/
+.sidebarLogin{
+  padding: 128px 48px 48px;
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  background-image: initial;
+  background-position-x: initial;
+  background-position-y: initial;
+  background-size: initial;
+  background-repeat-x: initial;
+  background-repeat-y: initial;
+  background-attachment: initial;
+  background-origin: initial;
+  background-clip: initial;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 8px 10px -5px rgba(0,0,0,.2), 0 16px 24px 2px rgba(0,0,0,.14), 0 6px 30px 5px rgba(0,0,0,.12);
+}
+contentSideBar{
+  display: flex;
+  flex: 1;
+  height: 60%;
+}
+.sideBarTitle{
+  font-size: 21px;
+  text-transform: uppercase;
+}
+.loginForm{
+  padding-top: 32px;
+  display: flex;
+  flex-direction: column;
+}
+.optionSupplementaire{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content:center;
+  flex-direction: row;
+}
+.optionLien{
+  text-align: end;
+  flex: 1;
+}
+.option{
+  flex: 1;
+}
+
+mat-form-field{
+  font-size: 17px;
+  font-weight: 400;
+}
+.noAccount{
+  display: flex;
+  flex-direction: column;
+}
+
+

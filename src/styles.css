@@ -6,7 +6,6 @@
 /*
   Nav bar
  */
-
 .snackBar{
   min-width: 700px !important;
   padding:2px 0px 2px !important;
@@ -30,7 +29,9 @@ a:checked{
   margin: 10px 0px 10px 0;
   justify-content: space-between;
 }
-
+label {
+  font-weight: 500 !important;
+}
 .navbar{
   margin: 0px;
 }

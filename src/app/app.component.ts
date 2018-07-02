@@ -11,7 +11,7 @@ import {PreviousRouteBusiness} from "../../e-commerce-ui-common/business/previou
 })
 
 export class AppComponent implements OnInit {
-
+  public isLogged = false;
   constructor(
     private previousRouteBusiness: PreviousRouteBusiness,
     private router: Router,
