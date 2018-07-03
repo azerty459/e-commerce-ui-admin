@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
@@ -29,7 +29,7 @@ import { UploadImgComponent } from '../utilitaires/upload-img/upload-img.compone
 
 import { MaterialModule } from './material.module';
 import { RoutingModule } from './routing.module';
-// DRAG 24& DROP MODULE
+// DRAG & DROP MODULE
 import { NgDragDropModule } from 'ng-drag-drop';
 import { UtilisateurComponent } from '../page/utilisateur/utilisateur.component';
 import {PaginationService} from "../../e-commerce-ui-common/business/pagination.service";
@@ -37,9 +37,13 @@ import {UtilisateurService} from "../../e-commerce-ui-common/business/utilisateu
 import {DetailUtilisateurComponent} from "../page/detail-utilisateur/detail-utilisateur.component";
 import {RoleService} from "../../e-commerce-ui-common/business/role.service";
 import {AlerteSnackBarComponent} from "../utilitaires/alerteSnackBar/alerteSnackBar.component";
+import {LoginComponent} from "../page/login/login.component";
+import {AuthDataService} from "../../e-commerce-ui-common/business/data/auth-data.service";
+import {AuthInterceptor} from "../../e-commerce-ui-common/utilitaires/AuthInterceptor";
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
     AccueilComponent,
     ProduitComponent,
     DetailProduitComponent,
@@ -75,7 +79,10 @@ import {AlerteSnackBarComponent} from "../utilitaires/alerteSnackBar/alerteSnack
     FormEditGuard,
     PaginationService,
     UtilisateurService,
-    RoleService
+    RoleService,
+    AuthDataService,
+    AuthInterceptor,
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
   ],
   entryComponents: [AlerteSnackBarComponent],
   bootstrap: [AppComponent]
