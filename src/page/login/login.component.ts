@@ -2,6 +2,9 @@
  * @title Arbre avec FlatNode
  */
 import {Component, OnInit} from '@angular/core';
+import {AuthDataService} from '../../../e-commerce-ui-common/business/data/auth-data.service';
+import {Utilisateur} from '../../../e-commerce-ui-common/models/Utilisateur';
+import {MessageAlerte} from "../../../e-commerce-ui-common/models/MessageAlerte";
 
 @Component({
   selector: 'app-login',
@@ -11,10 +14,20 @@ import {Component, OnInit} from '@angular/core';
 
 
 export class LoginComponent implements OnInit {
-  ngOnInit(): void {
+  public utilisateur: Utilisateur = this.authData.utilisateur;
+  public messageAlerte: MessageAlerte = this.authData.messageAlerte;
+  constructor(private authData: AuthDataService) {
   }
-
-  constructor() {
+  ngOnInit(): void {
+    this.utilisateur.email = '';
+    this.utilisateur.mdp = '';
+  }
+  public signIn() {
+    if (this.utilisateur.email === '' || this.utilisateur.mdp === '') {
+      console.log('champs vide');
+    } else {
+      this.authData.signIn();
+    }
   }
 }
 

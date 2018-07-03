@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
@@ -38,6 +38,8 @@ import {DetailUtilisateurComponent} from "../page/detail-utilisateur/detail-util
 import {RoleService} from "../../e-commerce-ui-common/business/role.service";
 import {AlerteSnackBarComponent} from "../utilitaires/alerteSnackBar/alerteSnackBar.component";
 import {LoginComponent} from "../page/login/login.component";
+import {AuthDataService} from "../../e-commerce-ui-common/business/data/auth-data.service";
+import {AuthInterceptor} from "../../e-commerce-ui-common/utilitaires/AuthInterceptor";
 @NgModule({
   declarations: [
     AppComponent,
@@ -77,7 +79,10 @@ import {LoginComponent} from "../page/login/login.component";
     FormEditGuard,
     PaginationService,
     UtilisateurService,
-    RoleService
+    RoleService,
+    AuthDataService,
+    AuthInterceptor,
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
   ],
   entryComponents: [AlerteSnackBarComponent],
   bootstrap: [AppComponent]

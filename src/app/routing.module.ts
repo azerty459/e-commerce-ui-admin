@@ -9,7 +9,7 @@ import {ErreurComponent} from '../page/erreur/erreur.component';
 import {NgModule} from '@angular/core';
 import {UtilisateurComponent} from '../page/utilisateur/utilisateur.component';
 import {DetailUtilisateurComponent} from '../page/detail-utilisateur/detail-utilisateur.component';
-import {LoginComponent} from "../page/login/login.component";
+import {LoginComponent} from '../page/login/login.component';
 
 const appRoutes: Routes = [
 

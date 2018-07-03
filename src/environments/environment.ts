@@ -6,6 +6,7 @@
 export const environment = {
   production: false,
   api_url: 'http://localhost:8888/graphql',
+  api_login_url: 'http://localhost:8888/graphql/login',
   api_rest_upload_url: 'http://localhost:8888/upload',
   api_rest_download_url: 'http://localhost:8888/fichier/'
 };

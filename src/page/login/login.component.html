@@ -13,27 +13,28 @@
     </div>
   </div>
   <div class="sidebarLogin">
-    <div class="contentSideBar">
-
-    </div>
-    <div class="sideBarTitle">
-      Connectez-vous à votre compte
-    </div>
-    <div class="loginForm">
-      <mat-form-field>
-        <input matInput placeholder="Identifiant" >
-      </mat-form-field>
-
-      <mat-form-field>
-          <input matInput placeholder="Mot de passe" [type]="hide ? 'text' : 'password'">
-          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-      </mat-form-field>
-
-      <div class="optionSupplementaire">
-        <div class="option"><mat-checkbox>Se souvenir de moi</mat-checkbox></div>
-        <div class="optionLien"><a>mot de passe oublié?</a></div>
+    <div class="DashboardcontentSideBar">
+      <div class="sideBarTitle">
+        Connectez-vous à votre compte
       </div>
-      <button mat-raised-button color="primary">Se connecter</button>
+      <div *ngIf="messageAlerte.message" class="messageAlerte">{{messageAlerte.message}}</div>
+      <div class="loginForm">
+        <mat-form-field>
+          <input matInput placeholder="Email" [(ngModel)]="utilisateur.email" >
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Mot de passe" [type]="hide ? 'text' : 'password'" [(ngModel)]="utilisateur.mdp">
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </mat-form-field>
+
+        <div class="optionSupplementaire">
+          <div class="option"><mat-checkbox disabled>Se souvenir de moi</mat-checkbox></div>
+          <div class="optionLien"><a>mot de passe oublié?</a></div>
+        </div>
+        <button [disabled]="utilisateur.mdp ==='' || utilisateur.email ===''" mat-raised-button color="primary" (click)="signIn()">Se connecter</button>
+
+      </div>
 
     </div>
 

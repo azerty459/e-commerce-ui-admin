@@ -1,6 +1,14 @@
-<div *ngIf="isLogged" class="container-fluid">
-  <div class="row contenu">
-    <nav class="col-sm-2 col-md-2 hidden-xs-down bg-faded sidebar">
+<div class="container-fluid">
+  <div  class="row contenu">
+    <nav *ngIf="token.token !== undefined" class="col-sm-2 col-md-2 hidden-xs-down bg-faded sidebar">
+      <div class="navTool">
+        <button (click)="goHome()" mat-icon-button>
+          <mat-icon class="white-icon" aria-label="Example icon-button with a heart icon">home</mat-icon>
+        </button>
+        <button (click)="logout()" mat-icon-button>
+          <mat-icon class="white-icon" aria-label="Example icon-button with a heart icon">exit_to_app</mat-icon>
+        </button>
+      </div>
       <ul id="sidebarnav">
         <li> <a routerLink="/admin/produit" routerLinkActive="active"><i class="mdi mdi-gauge"></i><span class="hide-menu">Produit</span></a>
         </li>
@@ -10,16 +18,9 @@
         </li>
       </ul>
     </nav>
-    <main class="col-sm-10 offset-sm-2 col-md-12 offset-md-1 pt-2">
+    <main [class]="token.token !== undefined ? 'col-sm-10 offset-sm-2 col-md-12 offset-md-1 pt-2' : 'col-sm-12  col-md-12 noPadding'" class="col-sm-10 offset-sm-2 col-md-12 offset-md-1 pt-2">
       <router-outlet></router-outlet>
     </main>
   </div>
 </div>
 
-<div *ngIf="!isLogged" class="container-fluid">
-  <div class="row contenu">
-    <main class="col-sm-12  col-md-12 noPadding">
-      <router-outlet></router-outlet>
-    </main>
-  </div>
-</div>
