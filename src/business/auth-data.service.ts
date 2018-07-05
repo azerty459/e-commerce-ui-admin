@@ -16,7 +16,6 @@ export class AuthDataService {
   constructor(private http: HttpClient, private _router: Router) {
     if (sessionStorage.getItem('AuthToken') !== null && sessionStorage.getItem('AuthToken') !== undefined) {
       this.token.token = sessionStorage.getItem('AuthToken');
-      this._router.navigate(['/admin']);
     }
   }
   public async signIn() {
@@ -57,11 +56,20 @@ export class AuthDataService {
   }
 
   public isLogged() {
+    let token;
+    if (this.token === undefined || this.token.token) {
+      token = sessionStorage.getItem('AuthToken');
+      if(token === null){
+        token = 0;
+      }
+    } else {
+      token = this.token.token;
+    }
     // On récupère l'objet Observable retourné par la requête post
     if (this.utilisateur === undefined) {
       // TODO erreur
     }
-    const postResult = this.http.post(environment.api_login_url, { query: 'mutation {isLogged(token:"' + this.token.token + '")}'});
+    const postResult = this.http.post(environment.api_login_url, { query: 'mutation {isLogged(token:"' + token + '")}'});
     // On créer une promesse
     const promise = new Promise<any>((resolve) => {
       postResult
@@ -69,6 +77,7 @@ export class AuthDataService {
         .toPromise()
         .then(
           response => {
+            console.log(response);
             if (response.valueOf()['isLogged'] !== undefined) {
               resolve(response.valueOf()['isLogged']);
             } else {

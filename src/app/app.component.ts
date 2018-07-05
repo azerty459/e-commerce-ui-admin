@@ -24,9 +24,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    if (this.token.token === undefined) {
-      this.router.navigate(['/admin/login']);
-    } else if (!(await this.authData.isLogged())) {
+    if (!(await this.authData.isLogged())) {
       this.authData.logout();
     }
     // Permet de changer le titre de la page autamatiquement en fonction du data title du rounting dans app.module.ts
@@ -42,6 +40,7 @@ export class AppComponent implements OnInit {
       .subscribe((event) => this.titleService.setTitle(event['title']));
   }
   public goHome() {
+
     this.router.navigate(['/admin']);
   }
   public logout() {
