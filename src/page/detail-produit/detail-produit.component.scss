@@ -12,8 +12,12 @@ $navbar-color: #F9FAFB;
   flex-wrap: wrap;
   justify-content: flex-start;
 
-  .form-group {
+  .form-group, .input-group {
     margin-right: 1em;
+  }
+
+  .input-group-btn {
+    vertical-align: bottom !important;
   }
 }
 
@@ -51,6 +55,10 @@ $navbar-color: #F9FAFB;
 }
 .descriptionPanel{
   margin: auto;
+}
+.centrerPanel{
+  margin: 0;
+  text-align: center;
 }
 .mat-form-field-wrapper {
   width: 100%;

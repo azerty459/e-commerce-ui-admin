@@ -96,6 +96,7 @@ export class DetailUtilisateurComponent implements OnInit {
   async getUser() {
     // Permets de gérer l'affichage des rôles dans les chips
     this.roles = await this.roleService.getAll();
+    console.log( this.roles );
     if (this.roles !== undefined) {
       // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
       this.roleObservable = this.choixRoleFormControl.valueChanges.pipe(

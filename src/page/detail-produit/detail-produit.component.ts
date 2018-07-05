@@ -13,7 +13,7 @@ import {PreviousRouteBusiness} from '../../../e-commerce-ui-common/business/prev
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {FormEditService} from '../../../e-commerce-ui-common/business/form-edit.service';
-import {Photo} from '../../../e-commerce-ui-common/models/Photo';
+import {Photo} from "../../../e-commerce-ui-common/models/Photo";
 
 @Component({
   selector: 'app-detail-produit',
@@ -72,6 +72,8 @@ export class DetailProduitComponent implements OnInit {
    * @type {boolean}
    */
   toolNotFixed = true;
+
+  ancienPrixHTModifier: number;
 
   public photoEnAttenteAjout = [];
   public photoEnAttenteSupression = [];
@@ -293,6 +295,18 @@ export class DetailProduitComponent implements OnInit {
       this.cacherErreur = false;
       this.message = 'Cette catégorie est déjà ajoutée.';
     }
+  }
+
+  numberToCommaSeperate(event) {
+    if (event.key === '.') {
+      this.produitModifie.prixHT =  this.ancienPrixHTModifier;
+    } else {
+      this.ancienPrixHTModifier = this.produitModifie.prixHT;
+    }
+  }
+
+  public clearInputChips(): void {
+    this.categorieInput.nativeElement.value = '';
   }
 
   public goBack(): void {
