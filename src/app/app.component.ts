@@ -3,7 +3,7 @@ import {Component, ElementRef, OnChanges, OnInit, ViewChild} from '@angular/core
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import {PreviousRouteBusiness} from "../../e-commerce-ui-common/business/previous-route.service";
-import {AuthDataService} from "../../e-commerce-ui-common/business/data/auth-data.service";
+import {AuthDataService} from "../business/auth-data.service";
 import {Token} from "../../e-commerce-ui-common/models/Token";
 import {AuthInterceptor} from "../../e-commerce-ui-common/utilitaires/AuthInterceptor";
 @Component({

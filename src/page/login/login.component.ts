@@ -2,7 +2,7 @@
  * @title Arbre avec FlatNode
  */
 import {Component, OnInit} from '@angular/core';
-import {AuthDataService} from '../../../e-commerce-ui-common/business/data/auth-data.service';
+import {AuthDataService} from '../../business/auth-data.service';
 import {Utilisateur} from '../../../e-commerce-ui-common/models/Utilisateur';
 import {MessageAlerte} from "../../../e-commerce-ui-common/models/MessageAlerte";
 

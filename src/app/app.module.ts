@@ -38,8 +38,10 @@ import {DetailUtilisateurComponent} from "../page/detail-utilisateur/detail-util
 import {RoleService} from "../../e-commerce-ui-common/business/role.service";
 import {AlerteSnackBarComponent} from "../utilitaires/alerteSnackBar/alerteSnackBar.component";
 import {LoginComponent} from "../page/login/login.component";
-import {AuthDataService} from "../../e-commerce-ui-common/business/data/auth-data.service";
+import {AuthDataService} from "../business/auth-data.service";
 import {AuthInterceptor} from "../../e-commerce-ui-common/utilitaires/AuthInterceptor";
+import {FiltreService} from "../../e-commerce-ui-common/business/filtre.service";
+import {ProduiDataService} from "../../e-commerce-ui-common/business/data/produitData.service";
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,6 +53,7 @@ import {AuthInterceptor} from "../../e-commerce-ui-common/utilitaires/AuthInterc
     UploadImgComponent,
     ErreurComponent,
     ArbreCategorieComponent,
+
     UtilisateurComponent,
     DetailUtilisateurComponent,
     AlerteSnackBarComponent
@@ -71,6 +74,7 @@ import {AuthInterceptor} from "../../e-commerce-ui-common/utilitaires/AuthInterc
   ],
   providers: [
     ProduitBusiness,
+    ProduiDataService,
     CategorieBusinessService,
     UploadImgComponent,
     PreviousRouteBusiness,
@@ -81,6 +85,7 @@ import {AuthInterceptor} from "../../e-commerce-ui-common/utilitaires/AuthInterc
     UtilisateurService,
     RoleService,
     AuthDataService,
+    FiltreService,
     AuthInterceptor,
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
   ],
