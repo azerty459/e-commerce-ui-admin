@@ -16,6 +16,7 @@ import {MessageAlerte} from "../../../e-commerce-ui-common/models/MessageAlerte"
 export class LoginComponent implements OnInit {
   public utilisateur: Utilisateur = this.authData.utilisateur;
   public messageAlerte: MessageAlerte = this.authData.messageAlerte;
+  public hide = true;
   constructor(private authData: AuthDataService) {
   }
   ngOnInit(): void {
