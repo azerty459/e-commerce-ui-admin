@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
@@ -21,7 +21,6 @@ import { FormEditService } from '../../e-commerce-ui-common/business/form-edit.s
 import { AppComponent } from './app.component';
 import { AccueilComponent } from '../page/accueil/accueil.component';
 import { ProduitComponent } from '../page/produit/produit.component';
-import { CategoriesComponent } from '../page/categories/categories.component';
 import { DetailCategorieComponent } from '../page/detail-categorie/detail-categorie.component';
 import { ErreurComponent } from '../page/erreur/erreur.component';
 import { DetailProduitComponent } from '../page/detail-produit/detail-produit.component';
@@ -38,17 +37,23 @@ import {UtilisateurService} from "../../e-commerce-ui-common/business/utilisateu
 import {DetailUtilisateurComponent} from "../page/detail-utilisateur/detail-utilisateur.component";
 import {RoleService} from "../../e-commerce-ui-common/business/role.service";
 import {AlerteSnackBarComponent} from "../utilitaires/alerteSnackBar/alerteSnackBar.component";
+import {LoginComponent} from "../page/login/login.component";
+import {AuthDataService} from "../business/auth-data.service";
+import {AuthInterceptor} from "../../e-commerce-ui-common/utilitaires/AuthInterceptor";
+import {FiltreService} from "../../e-commerce-ui-common/business/filtre.service";
+import {ProduiDataService} from "../../e-commerce-ui-common/business/data/produitData.service";
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
     AccueilComponent,
     ProduitComponent,
     DetailProduitComponent,
-    CategoriesComponent,
     DetailCategorieComponent,
     UploadImgComponent,
     ErreurComponent,
     ArbreCategorieComponent,
+
     UtilisateurComponent,
     DetailUtilisateurComponent,
     AlerteSnackBarComponent
@@ -69,6 +74,7 @@ import {AlerteSnackBarComponent} from "../utilitaires/alerteSnackBar/alerteSnack
   ],
   providers: [
     ProduitBusiness,
+    ProduiDataService,
     CategorieBusinessService,
     UploadImgComponent,
     PreviousRouteBusiness,
@@ -77,7 +83,11 @@ import {AlerteSnackBarComponent} from "../utilitaires/alerteSnackBar/alerteSnack
     FormEditGuard,
     PaginationService,
     UtilisateurService,
-    RoleService
+    RoleService,
+    AuthDataService,
+    FiltreService,
+    AuthInterceptor,
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
   ],
   entryComponents: [AlerteSnackBarComponent],
   bootstrap: [AppComponent]

@@ -1,0 +1,43 @@
+<img class="bg" src="../../assets/img/dark-material-bg.jpg"/>
+<div class="mainContainer">
+  <div class="splash-screen">
+    <div class="contentSplashScreen">
+      <div class="ecommerceLogo">
+        <img  class="logo" height="128px" width="131px"  src="../../assets/img/icon.png" alt="logo"/>
+      </div>
+      <div class="ecommerceDescription">
+        <div class="titre">Bienvenue sur E-COMMERCE admin ! </div>
+        <div class="description"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ullamcorper nisl erat, vel convallis elit fermentum pellentesque. Sed mollis velit facilisis facilisis viverra.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sidebarLogin">
+    <div class="DashboardcontentSideBar">
+      <div class="sideBarTitle">
+        Connectez-vous à votre compte
+      </div>
+      <div *ngIf="messageAlerte.message" class="messageAlerte">{{messageAlerte.message}}</div>
+      <div class="loginForm">
+        <mat-form-field>
+          <input matInput placeholder="Email" [(ngModel)]="utilisateur.email" >
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Mot de passe" [type]="hide ? 'text' : 'password'" [(ngModel)]="utilisateur.mdp">
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </mat-form-field>
+
+        <div class="optionSupplementaire">
+          <div class="option"><mat-checkbox disabled>Se souvenir de moi</mat-checkbox></div>
+          <div class="optionLien"><a>mot de passe oublié?</a></div>
+        </div>
+        <button [disabled]="utilisateur.mdp ==='' || utilisateur.email ===''" mat-raised-button color="primary" (click)="signIn()">Se connecter</button>
+
+      </div>
+
+    </div>
+
+
+  </div>
+</div>

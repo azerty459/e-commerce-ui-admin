@@ -4,7 +4,7 @@ import {
   MatGridListModule,
   MatToolbarModule,
   MatSnackBarModule,
-  MatIconModule, MatInputModule, MatRadioModule, MatTooltipModule, MatTreeModule, MatListModule,
+  MatIconModule, MatInputModule, MatRadioModule, MatTooltipModule, MatTreeModule, MatListModule, MatCheckboxModule,
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 const angularMaterial = [
@@ -24,6 +24,7 @@ const angularMaterial = [
   MatExpansionModule, // angular material expans
   MatTooltipModule, // Tool tip angular material
   BrowserAnimationsModule, // utilisation des animations de angular material
+  MatCheckboxModule, // Checkbox
 
 
 ];

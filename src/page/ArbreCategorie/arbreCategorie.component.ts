@@ -122,7 +122,7 @@ export class ArbreCategorieComponent implements OnInit {
    */
   async deleteCategorie(node: CategorieFlatNode) {
     // Modal
-    let bodyString = 'Comfirmez vous la suppresion de la categorie ' + node.nomCategorie + ' - id(' + node.id ;
+    let bodyString = 'Comfirmez vous la suppresion de la categorie ' + node.nomCategorie + ' - id (' + node.id + ')' ;
     if (this.arbreService.flatNodeMap.get(node).children !== undefined){
       bodyString = bodyString +  'et de ses categories enfants ?';
     } else{
@@ -133,11 +133,11 @@ export class ArbreCategorieComponent implements OnInit {
       .isBlocking(true)
       .showClose(false)
       .keyboard(27)
-      .title('Suppresion de la catégorie ' + node.nomCategorie + ' - id(' + node.id + ')')
+      .title('Suppresion de la catégorie ' + node.nomCategorie + ' - id (' + node.id + ')')
       .body(bodyString)
-      .okBtn('Comfirmer la suppression')
+      .okBtn('Confirmer la suppression')
       .okBtnClass('btn btn-danger')
-      .cancelBtn('Annuler la suppresion')
+      .cancelBtn('Annuler la suppression')
       .open();
     dialogRef.result
       .then(async () => {
@@ -148,6 +148,8 @@ export class ArbreCategorieComponent implements OnInit {
         if (retourAPI != null && retourAPI !== undefined) {
           // On met à jour le nom de la categorie afficher dans la node concerné
           if (retourAPI) {
+            this.afficherMessageAlerteSupression();
+            this.arbreService.categoriedataBusiness.idLastDeletedCategorie = node.idParent;
             // On supprime la categorie visuelement si la suppression dans la base de donnée est un succès
             this.deleteNode(node);
           } else {
@@ -166,7 +168,6 @@ export class ArbreCategorieComponent implements OnInit {
    * @param {CategorieFlatNode} node la flat node representant la categorie a supprimer
    */
   public deleteNode(node: CategorieFlatNode) {
-    // this.afficherMessageAlerteSupression();
     const arbreService = this.arbreService;
     // Si la flat node possède un parent on la supprimer des enfants de ce parent
     if (node.idParent !== undefined) {
@@ -177,9 +178,11 @@ export class ArbreCategorieComponent implements OnInit {
           nodeParent = value;
         }
       });
+      arbreService.lastDeletedParentnode = nodeParent;
       arbreService.deleteChild(nodeParent, nodeEnfant);
     } else {
       // la node n'a pas de parent on la supprime des data
+      arbreService.lastDeletedParentnode = undefined;
       arbreService.data.forEach(function (value, index) {
         if (value.id === node.id) {
           arbreService.data.splice(index, 1);
@@ -324,14 +327,13 @@ export class ArbreCategorieComponent implements OnInit {
     flatNode.isInEditMode = false;
   }
 
-  // public afficherMessageAlerteSupression(): void {
-  //
-  //   this.snackBarRef = this.snackBar.openFromComponent(AlerteSnackBarComponent, {
-  //     panelClass: ['snackBar'],
-  //     duration: 5000,
-  //   });
-  //   this.snackBarRef.instance.snackBarRefAlerteComponent = this.snackBarRef;
-  // }
+  public afficherMessageAlerteSupression(): void {
+
+    this.snackBarRef = this.snackBar.openFromComponent(AlerteSnackBarComponent, {
+      panelClass: ['snackBar'],
+    });
+    this.snackBarRef.instance.snackBarRefAlerteComponent = this.snackBarRef;
+  }
   /**
    * Methode permettant de vérifie si flaNode est doppable dans flatNodeParent
    * @param {CategorieFlatNode} flatNode
