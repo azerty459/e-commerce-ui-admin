@@ -298,10 +298,17 @@ export class DetailProduitComponent implements OnInit {
   }
 
   numberToCommaSeperate(event) {
-    if (event.key === '.') {
-      this.produitModifie.prixHT =  this.ancienPrixHTModifier;
-    } else {
-      this.ancienPrixHTModifier = this.produitModifie.prixHT;
+    // if (event.key === '.') {
+    //   this.produitModifie.prixHT =  this.ancienPrixHTModifier;
+    // } else {
+    //   this.ancienPrixHTModifier = this.produitModifie.prixHT;
+    // }
+    const pattern = /^[0-9,]+$/;
+    let inputChar = String.fromCharCode(event.charCode);
+    console.log(!pattern.test(inputChar));
+    if (!pattern.test(inputChar)) {
+      // invalid character, prevent input
+      event.preventDefault();
     }
   }
 
