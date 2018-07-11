@@ -193,11 +193,11 @@
           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="addCategory($event)">
             <mat-option *ngFor="let categorie of categoriesObservable | async" [value]="categorie">
               {{ categorie.nomCat}}
-              (
+              {{categorie.chemin[0] ? '(' : ''}}
               <span *ngFor="let categorieDuChemin of categorie.chemin; let i = index">
                  < {{categorieDuChemin.nom}}
               </span>
-              )
+              {{categorie.chemin[0] ? ')' : ''}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>

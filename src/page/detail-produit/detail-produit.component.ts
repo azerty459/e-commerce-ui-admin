@@ -115,7 +115,7 @@ export class DetailProduitComponent implements OnInit {
       // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
       this.categoriesObservable = this.choixCategorieFormControl.valueChanges.pipe(
         startWith(''),
-        map(val => this.categories.filter(categorie => categorie.nomCat.toLowerCase().indexOf(val) === 0))
+        map(val => this.categories.filter(categorie => categorie.nomCat.toLowerCase().indexOf(val.toLowerCase()) === 0))
       );
     }
     const url = this.route.snapshot.routeConfig.path;
@@ -245,11 +245,11 @@ export class DetailProduitComponent implements OnInit {
       .isBlocking(true)
       .showClose(false)
       .keyboard(27)
-      .title('Suppresion de ' + produit.nom + ' - ' + produit.ref)
-      .body('Comfirmez vous la supression de ' + produit.nom + ' - ' + produit.ref + '?')
+      .title('Suppression de ' + produit.nom + ' - ' + produit.ref)
+      .body('Comfirmez vous la suppression de ' + produit.nom + ' - ' + produit.ref + '?')
       .okBtn('Comfirmer la suppression')
       .okBtnClass('btn btn-danger')
-      .cancelBtn('Annuler la supression')
+      .cancelBtn('Annuler la suppression')
       .open();
     dialogRef.result
       .then(async () => {
