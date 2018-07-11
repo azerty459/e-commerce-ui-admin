@@ -335,6 +335,16 @@ export class DetailProduitComponent implements OnInit {
     this.photoEnAttenteSupression.push(photo);
   }
 
+  /**
+   * Methode permettant d'initialisé la suppression d'une photo qui se fera lors de la sauvegarde
+   * @param {Photo} photo
+   */
+  public favPhoto(photo: Photo): void {
+    this.produitModifie.photoPrincipale.id = photo.id;
+    this.produitModifie.photoPrincipale.url = photo.url;
+    this.produitModifie.photoPrincipale.nom = photo.nom;
+    this.comparedProductWithProductModif();
+  }
 
 }
 
