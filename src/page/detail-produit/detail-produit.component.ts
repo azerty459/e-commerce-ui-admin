@@ -14,7 +14,7 @@ import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {FormEditService} from '../../../e-commerce-ui-common/business/form-edit.service';
 import {Photo} from "../../../e-commerce-ui-common/models/Photo";
-
+import { environment } from '../../environments/environment';
 @Component({
   selector: 'app-detail-produit',
   templateUrl: './detail-produit.component.html',
@@ -25,6 +25,7 @@ export class DetailProduitComponent implements OnInit {
   public selectable = true;
   public removable = true;
   public addOnBlur = true;
+  public environment = environment;
   public positionBeforeTooltip = 'before';
   public positionAfterTooltip = 'after';
   // Enter, comma
