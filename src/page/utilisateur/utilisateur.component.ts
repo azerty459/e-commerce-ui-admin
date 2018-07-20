@@ -69,11 +69,11 @@ export class UtilisateurComponent implements OnInit {
       .isBlocking(true)
       .showClose(false)
       .keyboard(27)
-      .title('Suppresion de ' + utilisateur.email + ' - ' + utilisateur.id)
-      .body('Comfirmez vous la supression de ' + utilisateur.email + ' - ' + utilisateur.id + '?')
+      .title('Suppression de ' + utilisateur.email + ' - ' + utilisateur.id)
+      .body('Comfirmez vous la suppression de ' + utilisateur.email + ' - ' + utilisateur.id + '?')
       .okBtn('Comfirmer la suppression')
       .okBtnClass('btn btn-danger')
-      .cancelBtn('Annuler la supression')
+      .cancelBtn('Annuler la suppression')
       .open();
     dialogRef.result
       .then(async() => {

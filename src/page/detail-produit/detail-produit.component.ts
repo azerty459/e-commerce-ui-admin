@@ -14,7 +14,7 @@ import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {FormEditService} from '../../../e-commerce-ui-common/business/form-edit.service';
 import {Photo} from "../../../e-commerce-ui-common/models/Photo";
-
+import { environment } from '../../environments/environment';
 @Component({
   selector: 'app-detail-produit',
   templateUrl: './detail-produit.component.html',
@@ -25,6 +25,7 @@ export class DetailProduitComponent implements OnInit {
   public selectable = true;
   public removable = true;
   public addOnBlur = true;
+  public environment = environment;
   public positionBeforeTooltip = 'before';
   public positionAfterTooltip = 'after';
   // Enter, comma
@@ -115,7 +116,7 @@ export class DetailProduitComponent implements OnInit {
       // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
       this.categoriesObservable = this.choixCategorieFormControl.valueChanges.pipe(
         startWith(''),
-        map(val => this.categories.filter(categorie => categorie.nomCat.toLowerCase().indexOf(val) === 0))
+        map(val => this.categories.filter(categorie => categorie.nomCat.toLowerCase().indexOf(val.toLowerCase()) === 0))
       );
     }
     const url = this.route.snapshot.routeConfig.path;
@@ -170,8 +171,11 @@ export class DetailProduitComponent implements OnInit {
   public async updateProduct() {
     if (this.photoEnAttenteSupression !== undefined) {
       for (const photo of this.photoEnAttenteSupression) {
-        console.log(this.photoEnAttenteSupression);
-        this.produitBusiness.removePhoto(photo);
+        await this.produitBusiness.removePhoto(photo);
+        if (photo.id === this.produitModifie.photoPrincipale.id){
+          this.produitModifie.photoPrincipale.id = 0;
+          this.produit.photoPrincipale.id =0;
+        }
       }
       this.photoEnAttenteSupression = [];
     }
@@ -245,11 +249,11 @@ export class DetailProduitComponent implements OnInit {
       .isBlocking(true)
       .showClose(false)
       .keyboard(27)
-      .title('Suppresion de ' + produit.nom + ' - ' + produit.ref)
-      .body('Comfirmez vous la supression de ' + produit.nom + ' - ' + produit.ref + '?')
+      .title('Suppression de ' + produit.nom + ' - ' + produit.ref)
+      .body('Comfirmez vous la suppression de ' + produit.nom + ' - ' + produit.ref + '?')
       .okBtn('Comfirmer la suppression')
       .okBtnClass('btn btn-danger')
-      .cancelBtn('Annuler la supression')
+      .cancelBtn('Annuler la suppression')
       .open();
     dialogRef.result
       .then(async () => {
@@ -298,14 +302,8 @@ export class DetailProduitComponent implements OnInit {
   }
 
   numberToCommaSeperate(event) {
-    // if (event.key === '.') {
-    //   this.produitModifie.prixHT =  this.ancienPrixHTModifier;
-    // } else {
-    //   this.ancienPrixHTModifier = this.produitModifie.prixHT;
-    // }
     const pattern = /^[0-9,]+$/;
-    let inputChar = String.fromCharCode(event.charCode);
-    console.log(!pattern.test(inputChar));
+    const inputChar = String.fromCharCode(event.charCode);
     if (!pattern.test(inputChar)) {
       // invalid character, prevent input
       event.preventDefault();
@@ -335,6 +333,16 @@ export class DetailProduitComponent implements OnInit {
     this.photoEnAttenteSupression.push(photo);
   }
 
+  /**
+   * Methode permettant de transformer la photo en photo principale du produit
+   * @param {Photo} photo la photo qui va devenir principale
+   */
+  public favPhoto(photo: Photo): void {
+    this.produitModifie.photoPrincipale.id = photo.id;
+    this.produitModifie.photoPrincipale.url = photo.url;
+    this.produitModifie.photoPrincipale.nom = photo.nom;
+    this.comparedProductWithProductModif();
+  }
 
 }
 

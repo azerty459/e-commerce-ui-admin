@@ -207,11 +207,11 @@ export class DetailUtilisateurComponent implements OnInit {
       .isBlocking(true)
       .showClose(false)
       .keyboard(27)
-      .title('Suppresion de ' + utilisateur.id + ' - ' + utilisateur.email)
-      .body('Comfirmez vous la supression de ' + utilisateur.id + ' - ' + utilisateur.email + '?')
+      .title('Suppression de ' + utilisateur.id + ' - ' + utilisateur.email)
+      .body('Comfirmez vous la suppression de ' + utilisateur.id + ' - ' + utilisateur.email + '?')
       .okBtn('Comfirmer la suppression')
       .okBtnClass('btn btn-danger')
-      .cancelBtn('Annuler la supression')
+      .cancelBtn('Annuler la suppression')
       .open();
     dialogRef.result
       .then(async () => {

@@ -32,12 +32,12 @@ $navbar-color: #F9FAFB;
 }
 
 .navbar-fixed-top {
-  left:15.3%;
-  width: 84%;
+  left: 14%;
+  width: 85%;
   //audessus du main endessous du navbar de gauche
-  z-index:1;
-  min-width: 500px;
+  z-index:3;
   right: 0;
+  margin-right: 15px;
 }
 
 #message {
@@ -64,15 +64,23 @@ $navbar-color: #F9FAFB;
   width: 100%;
 }
 .photoCard{
-  max-width: 30%;
+
   min-width: 200px;
   margin: 10px;
 
   mat-card-subtitle {
     width: 280px;
+    padding-bottom: 24px;
     overflow: hidden;
   }
 
+}
+img{
+
+  max-width: 400px;
+}
+mat-card{
+  max-width: 400px;
 }
 .rowPhoto{
   display: flex;
@@ -111,7 +119,7 @@ $navbar-color: #F9FAFB;
   margin-top: 20px;
 }
 
-@media only screen and (max-width: 740px) {
+@media only screen and (max-width: 1000px) {
   .toolbar {
     margin: 50px 0px 10px 0;
   }

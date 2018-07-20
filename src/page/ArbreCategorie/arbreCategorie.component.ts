@@ -122,9 +122,9 @@ export class ArbreCategorieComponent implements OnInit {
    */
   async deleteCategorie(node: CategorieFlatNode) {
     // Modal
-    let bodyString = 'Comfirmez vous la suppresion de la categorie ' + node.nomCategorie + ' - id (' + node.id + ')' ;
+    let bodyString = 'Comfirmez vous la suppression de la categorie ' + node.nomCategorie + ' - id (' + node.id + ')' ;
     if (this.arbreService.flatNodeMap.get(node).children !== undefined){
-      bodyString = bodyString +  'et de ses categories enfants ?';
+      bodyString = bodyString +  ' et de ses categories enfants ?';
     } else{
       bodyString = bodyString + '?';
     }
@@ -133,7 +133,7 @@ export class ArbreCategorieComponent implements OnInit {
       .isBlocking(true)
       .showClose(false)
       .keyboard(27)
-      .title('Suppresion de la catégorie ' + node.nomCategorie + ' - id (' + node.id + ')')
+      .title('Suppression de la catégorie ' + node.nomCategorie + ' - id (' + node.id + ')')
       .body(bodyString)
       .okBtn('Confirmer la suppression')
       .okBtnClass('btn btn-danger')

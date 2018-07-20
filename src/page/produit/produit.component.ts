@@ -84,11 +84,11 @@ export class ProduitComponent implements OnInit {
       .isBlocking(true)
       .showClose(false)
       .keyboard(27)
-      .title('Suppresion de ' + produit.nom + ' - ' + produit.ref)
-      .body('Comfirmez vous la supression de ' + produit.nom + ' - ' + produit.ref + '?')
+      .title('Suppression de ' + produit.nom + ' - ' + produit.ref)
+      .body('Comfirmez vous la suppression de ' + produit.nom + ' - ' + produit.ref + '?')
       .okBtn('Comfirmer la suppression')
       .okBtnClass('btn btn-danger')
-      .cancelBtn('Annuler la supression')
+      .cancelBtn('Annuler la suppression')
       .open();
     dialogRef.result
       .then(async() => {
