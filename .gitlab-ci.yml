@@ -16,7 +16,7 @@ build_dev:
     
     - ssh-keyscan -t rsa git.nextoo.fr >> ~/.ssh/known_hosts
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    - perl -i -p -e 's|https://(.*?)/nextoo-academy/|git@\1:|g' .gitmodules
+    - perl -i -p -e 's|https://(.*?)/|git@\1:|g' .gitmodules
     
     - git submodule sync
     - git submodule update --init --recursive
