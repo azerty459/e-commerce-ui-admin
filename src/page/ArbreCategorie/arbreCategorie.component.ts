@@ -9,6 +9,7 @@ import {Modal} from 'ngx-modialog/plugins/bootstrap';
 import {AfterViewInit} from '@angular/core';
 import {MatSnackBar} from "@angular/material";
 import {AlerteSnackBarComponent} from "../../utilitaires/alerteSnackBar/alerteSnackBar.component";
+import {forEach} from "@angular/router/src/utils/collection";
 
 
 /**
@@ -183,11 +184,22 @@ export class ArbreCategorieComponent implements OnInit {
     } else {
       // la node n'a pas de parent on la supprime des data
       arbreService.lastDeletedParentnode = undefined;
-      arbreService.data.forEach(function (value, index) {
-        if (value.id === node.id) {
-          arbreService.data.splice(index, 1);
-        }
-      });
+      if(node.id === undefined ){
+        arbreService.data.some(function (value, index) {
+          if (value.id === node.id) {
+            console.log('1');
+            arbreService.data.splice(index, 1);
+            return true;
+          }
+        });
+      } else{
+        arbreService.data.forEach(function (value, index) {
+          if (value.id === node.id) {
+            console.log(arbreService.data);
+            arbreService.data.splice(index, 1);
+          }
+        });
+      }
       if (this.arbreService.data.length === 0) {
         this.arbreService.hasCategories = false;
       }
