@@ -250,8 +250,6 @@ export class DetailUtilisateurComponent implements OnInit {
       }
     }
     if (trouver === false) {
-      this.cacherAlert = false;
-      this.cacherErreur = true;
       this.utilisateurModifie.roles.push(retourCategorie);
       this.comparedUserWithUserModif();
     } else {
@@ -273,12 +271,12 @@ export class DetailUtilisateurComponent implements OnInit {
       // Permets de définir le input de type:
       this.typePassword = 'text';
       // Permets de changer la classe de l'icone dans l'input
-      this.classPassword = 'glyphicon glyphicon-eye-close';
+      this.classPassword = 'glyphicon glyphicon-eye-open';
     } else {
       // Permets de définir le input de type:
       this.typePassword  = 'password';
       // Permets de changer la classe de l'icone dans l'input
-      this.classPassword = 'glyphicon glyphicon-eye-open';
+      this.classPassword = 'glyphicon glyphicon-eye-close';
     }
   }
 

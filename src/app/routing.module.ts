@@ -67,7 +67,7 @@ const appRoutes: Routes = [
   },
   // arbre
   {
-    path: 'admin/arbre',
+    path: 'admin/categorie',
     component: ArbreCategorieComponent
   },
 

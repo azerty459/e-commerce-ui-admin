@@ -15,7 +15,8 @@
 
           <button type="submit" class="btn btn-success centrer-block" *ngIf="ajout"
                   matTooltip="Ajouter l'utilisateur" [matTooltipPosition]="'below'" (click)="addUser()">
-            <i class="material-icons">add</i>
+            <b class="noShow">Sauvegarder</b>
+            <i class="material-icons">save</i>
           </button>
 
           <button *ngIf="! ajout" (click)="deleteUser(utilisateur)" type="button"
@@ -31,6 +32,7 @@
             <b class="noShow">Sauvegarder</b>
             <i class="material-icons">save</i>
           </button>
+
 
           <button *ngIf="! ajout" (click)="cancelModification(utilisateur)" [disabled]="cacherBoutonAnnulation"
                   type="button" class="btn btn-warning pull-right centrer-block"
@@ -118,7 +120,7 @@
         <form id="formUtilisateur">
           <div class="flex-container">
 
-            <div class="form-group long-field">
+            <div class="input-group long-field">
               <label for="emailUtilisateur">Email</label>
               <input (input)="comparedUserWithUserModif()" id="emailUtilisateur" type="text"
                      [(ngModel)]="utilisateurModifie.email"

@@ -14,8 +14,8 @@ export class AuthDataService {
   public token: Token = new Token(this.utilisateur);
   public messageAlerte: MessageAlerte = new MessageAlerte();
   constructor(private http: HttpClient, private _router: Router) {
-    if (sessionStorage.getItem('AuthToken') !== null && sessionStorage.getItem('AuthToken') !== undefined) {
-      this.token.token = sessionStorage.getItem('AuthToken');
+    if (localStorage.getItem('AuthToken') !== null && localStorage.getItem('AuthToken') !== undefined) {
+      this.token.token = localStorage.getItem('AuthToken');
     }
   }
   public async signIn() {
@@ -25,7 +25,7 @@ export class AuthDataService {
     } else if (response['signinUtilisateur'] !== undefined) {
       this.messageAlerte.message = '';
       this.token.token = response['signinUtilisateur'].token.token;
-      sessionStorage.setItem('AuthToken', this.token.token);
+      localStorage.setItem('AuthToken', this.token.token);
       this._router.navigate(['/admin']);
     }
   }
@@ -58,7 +58,7 @@ export class AuthDataService {
   public isLogged() {
     let token;
     if (this.token === undefined || this.token.token) {
-      token = sessionStorage.getItem('AuthToken');
+      token = localStorage.getItem('AuthToken');
       if(token === null){
         token = 0;
       }
@@ -94,7 +94,7 @@ export class AuthDataService {
     this.utilisateur.mdp = null;
     this.token.token = undefined;
     this.token.utilisateur = new Utilisateur(null, null, null, null, null, null);
-    sessionStorage.removeItem('AuthToken');
+    localStorage.removeItem('AuthToken');
     this._router.navigate(['/admin/login']);
   }
 }
