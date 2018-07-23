@@ -1,5 +1,5 @@
 [submodule "e-commerce-ui-common"]
 	path = e-commerce-ui-common
-	url = https://git.nextoo.fr/nextoo-academy/e-commerce-ui-common.git
+	url = ../e-commerce-ui-common.git
 [submodule "DbConnector"]
 	branch = sprint2
