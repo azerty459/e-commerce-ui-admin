@@ -14,7 +14,7 @@ build_dev:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     
-    - ssh-keyscan -t rsa git.nextoo.fr >> ~/.ssh/known_hosts
+    - ssh-keyscan -t rsa git.nextoo.fr/nextoo-academy >> ~/.ssh/known_hosts
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - perl -i -p -e 's|https://(.*?)/|git@\1:|g' .gitmodules
     
