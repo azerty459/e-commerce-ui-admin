@@ -184,22 +184,12 @@ export class ArbreCategorieComponent implements OnInit {
     } else {
       // la node n'a pas de parent on la supprime des data
       arbreService.lastDeletedParentnode = undefined;
-      if(node.id === undefined ){
-        arbreService.data.some(function (value, index) {
-          if (value.id === node.id) {
-            console.log('1');
-            arbreService.data.splice(index, 1);
-            return true;
-          }
-        });
-      } else{
-        arbreService.data.forEach(function (value, index) {
-          if (value.id === node.id) {
-            console.log(arbreService.data);
-            arbreService.data.splice(index, 1);
-          }
-        });
-      }
+      arbreService.data.forEach(function (value, index) {
+        if (value.id === node.id) {
+          console.log(arbreService.data);
+          arbreService.data.splice(index, 1);}
+      });
+
       if (this.arbreService.data.length === 0) {
         this.arbreService.hasCategories = false;
       }
@@ -233,7 +223,9 @@ export class ArbreCategorieComponent implements OnInit {
 
     // Une nodeParent null signifie qu'on se trouve au niveau 0
     if (nodeParent === null) {
-      this.arbreService.insertItem(null, <CategorieNode>{nomCategorie: ''});
+      // on utilise un timestamp afin de pouvoir identifier la node afin de pouvoir eventuellement supprimer la node
+      this.arbreService.insertItem(null, <CategorieNode>{id: ''+-Date.now(), nomCategorie: ''});
+      console.log(<CategorieNode>{id: ''+-Date.now(), nomCategorie: ''});
     } else {
       const nodeParentFlat = this.arbreService.flatNodeMap.get(nodeParent);
       this.arbreService.insertItem(nodeParentFlat!, <CategorieNode>{nomCategorie: ''});
