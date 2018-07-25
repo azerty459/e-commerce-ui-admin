@@ -173,8 +173,8 @@ export class DetailProduitComponent implements OnInit {
       for (const photo of this.photoEnAttenteSupression) {
         await this.produitBusiness.removePhoto(photo);
         if (photo.id === this.produitModifie.photoPrincipale.id){
-          this.produitModifie.photoPrincipale.id = 0;
-          this.produit.photoPrincipale.id =0;
+          (<Photo>this.produitModifie.photoPrincipale).id = 0;
+          (<Photo>this.produit.photoPrincipale).id =0;
         }
       }
       this.photoEnAttenteSupression = [];
@@ -338,9 +338,9 @@ export class DetailProduitComponent implements OnInit {
    * @param {Photo} photo la photo qui va devenir principale
    */
   public favPhoto(photo: Photo): void {
-    this.produitModifie.photoPrincipale.id = photo.id;
-    this.produitModifie.photoPrincipale.url = photo.url;
-    this.produitModifie.photoPrincipale.nom = photo.nom;
+    (<Photo>this.produitModifie.photoPrincipale).id = photo.id;
+    (<Photo>this.produitModifie.photoPrincipale).url = photo.url;
+    (<Photo>this.produitModifie.photoPrincipale).nom = photo.nom;
     this.comparedProductWithProductModif();
   }
 
