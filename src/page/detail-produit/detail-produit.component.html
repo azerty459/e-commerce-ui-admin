@@ -1,61 +1,13 @@
-<div #toolContainerNotFixed xmlns="http://www.w3.org/1999/html">
+<div #spacer xmlns="http://www.w3.org/1999/html">
   <mat-toolbar  class="toolContainer">
     <mat-toolbar-row>
-      <div class="title">
-        <div *ngIf="!ajout && produit?.nom.length >= 50; else nonSup">
-          {{produit?.nom.substring(0, 50)}} ... - {{produit?.ref}}
-        </div>
-        <ng-template #nonSup>
-          {{ajout ? 'Ajout d\'un produit' : ''+produit?.nom+' - '+produit?.ref }}
-        </ng-template>
-      </div>
     </mat-toolbar-row>
     <mat-toolbar-row>
-      <div class="toolbar">
-        <div class="leftTool">
-          <i matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip" class="material-icons backArrow"
-             (click)="goBack()">arrow_back</i>
-        </div>
-        <div class="rightTool">
-
-          <button type="submit" class="btn btn-success" *ngIf="ajout" (click)="addProduct()">
-            Ajouter le produit
-          </button>
-
-          <button *ngIf="! ajout" (click)="deleteProduct(produit)" type="button"
-                  class="btn btn-danger pull-right centrer-block"
-                  matTooltip="Supprimer ce produit" [matTooltipPosition]="'below'">
-            <b class="noShow">Supprimer</b>
-            <i class="material-icons">delete</i>
-          </button>
-
-          <button *ngIf="! ajout " (click)="saveModification()" type="button" [disabled]="cacherBoutonAnnulation && !photoEnAttenteAjout.length!=0 && !photoEnAttenteSupression.length!=0"
-                  class="btn btn-success pull-right centrer-block"
-                  matTooltip="Enregistrer les modifications" [matTooltipPosition]="'below'">
-            <b class="noShow">Sauvegarder</b>
-            <i class="material-icons">save</i>
-          </button>
-
-          <button *ngIf="! ajout" (click)="cancelModification(produit)" [disabled]="cacherBoutonAnnulation && !photoEnAttenteAjout.length!=0 && !photoEnAttenteSupression.length!=0"
-                  type="button" class="btn btn-warning pull-right centrer-block"
-                  matTooltip="Annuler les modifications" [matTooltipPosition]="'below'">
-            <b class="noShow">Annuler</b>
-            <i class="material-icons">cancel</i>
-          </button>
-
-        </div>
-      </div>
-    </mat-toolbar-row>
-    <mat-toolbar-row *ngIf="!cacherAlert || !cacherErreur">
-      <div class="alerteDiv">
-        <div *ngIf="!cacherAlert" class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>
-        <div *ngIf="!cacherErreur" class="alert alert-danger" role="alert" [hidden]="cacherErreur">{{message}}</div>
-      </div>
     </mat-toolbar-row>
   </mat-toolbar>
 </div>
 <div class="navbar-fixed-top">
-  <mat-toolbar *ngIf="!toolNotFixed" class="toolContainer">
+  <mat-toolbar  class="toolContainer">
     <mat-toolbar-row>
       <div class="title">
         <div *ngIf="!ajout && produit?.nom.length >= 50; else nonSup">

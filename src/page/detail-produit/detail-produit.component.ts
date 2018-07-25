@@ -79,7 +79,7 @@ export class DetailProduitComponent implements OnInit {
   public photoEnAttenteAjout = [];
   public photoEnAttenteSupression = [];
   @ViewChild('categorieInput') categorieInput: ElementRef;
-  @ViewChild('toolContainerNotFixed', {read: ElementRef}) toolContainerNotFixed: ElementRef;
+  @ViewChild('spacer', {read: ElementRef}) spacer: ElementRef;
 
   constructor(private uploadImg: UploadImgComponent,
               private modal: Modal,
@@ -92,9 +92,9 @@ export class DetailProduitComponent implements OnInit {
   }
 
   scroll = (): void => {
-    if (this.getCurrentOffsetTop(this.toolContainerNotFixed) !== 0 && this.toolNotFixed) {
+    if (this.getCurrentOffsetTop(this.spacer) !== 0 && this.toolNotFixed) {
       this.toolNotFixed = false;
-    } else if (this.getCurrentOffsetTop(this.toolContainerNotFixed) === 0 && !this.toolNotFixed) {
+    } else if (this.getCurrentOffsetTop(this.spacer) === 0 && !this.toolNotFixed) {
       this.toolNotFixed = true;
     }
   };

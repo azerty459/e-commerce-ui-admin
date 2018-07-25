@@ -33,7 +33,6 @@ $navbar-color: #F9FAFB;
 
 .navbar-fixed-top {
   left: 14%;
-  width: 85%;
   //audessus du main endessous du navbar de gauche
   z-index:3;
   right: 0;
@@ -121,14 +120,23 @@ mat-card{
 
 @media only screen and (max-width: 1000px) {
   .toolbar {
-    margin: 50px 0px 10px 0;
+  }
+  .title{
+    font-size: 1em !important;
+  }
+  .btn{
+    font-size: 0.75em !important;
+  }
+  .mat-toolbar-row{
+    height: 35px !important;
   }
   .navbar-fixed-top{
-    display:none;
+    margin-left:0;
+    left: 0;
+    width: 100%;
   }
 }
 .toolbar{
-  min-width: 500px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -151,4 +159,7 @@ mat-toolbar{
 }
 .photoTool{
 
+}
+.clearBoth{
+  clear:both;
 }
