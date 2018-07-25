@@ -39,7 +39,7 @@ export class DetailUtilisateurComponent implements OnInit {
   public cacherBoutonAnnulation = true;
 
   /**
-   * Observable d'un tableau d'objets de categories
+   * Observable d'un tableau d'objets de role
    */
   public roleObservable: Observable<Role[]>;
 
@@ -96,7 +96,6 @@ export class DetailUtilisateurComponent implements OnInit {
   async getUser() {
     // Permets de gérer l'affichage des rôles dans les chips
     this.roles = await this.roleService.getAll();
-    console.log( this.roles );
     if (this.roles !== undefined) {
       // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
       this.roleObservable = this.choixRoleFormControl.valueChanges.pipe(
@@ -108,8 +107,11 @@ export class DetailUtilisateurComponent implements OnInit {
     const url = this.route.snapshot.routeConfig.path;
     if (url === 'admin/utilisateur/ajouter') {
       this.ajout = true;
-      this.utilisateurModifie = new Utilisateur(null, null, null, null, null, []);
-      this.utilisateur = new Utilisateur(null, null, null, null, null, []);
+      this.utilisateurModifie = new Utilisateur(null, null, null, null, null);
+      this.utilisateurModifie.role =  new Role(0,"");
+
+      this.utilisateur = new Utilisateur(null, null, null, null, null);
+      this.utilisateur.role =  new Role(0,"");
     } else {
       // La modification ce n'est pas en fait
       // this.ajout = false;
@@ -228,29 +230,25 @@ export class DetailUtilisateurComponent implements OnInit {
   }
 
   // Supprime une rôle de la liste
-  public deleteRole(categorie: any): void {
-    const index = this.utilisateurModifie.roles.indexOf(categorie);
-    if (index >= 0) {
-      this.utilisateurModifie.roles.splice(index, 1);
-      this.comparedUserWithUserModif();
-    }
+  public deleteRole(role: any): void {
+   this.utilisateurModifie.role = new Role(0,"");
   }
 
   // Permet de rajouter un role dans la chips
   public addRole(event: MatAutocompleteSelectedEvent): void {
-    const retourCategorie = event.option.value;
+    const retourRole = event.option.value;
     this.roleInput.nativeElement.value = '';
     this.choixRoleFormControl.setValue(null);
-    const categories = this.utilisateurModifie.roles;
+    const role = this.utilisateurModifie.role;
     let trouver = false;
-    for (const categorie of categories) {
-      if (categorie.id === retourCategorie.id) {
+    for (const categorie of role) {
+      if (categorie.id === retourRole.id) {
         trouver = true;
         break;
       }
     }
     if (trouver === false) {
-      this.utilisateurModifie.roles.push(retourCategorie);
+      this.utilisateurModifie.role=retourRole;
       this.comparedUserWithUserModif();
     } else {
       this.cacherAlert = true;

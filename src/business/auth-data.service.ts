@@ -10,7 +10,7 @@ import {MessageAlerte} from "../../e-commerce-ui-common/models/MessageAlerte";
 @Injectable()
 
 export class AuthDataService {
-  public utilisateur: Utilisateur = new Utilisateur(null, null, null, null, null, null);
+  public utilisateur: Utilisateur = new Utilisateur(null, null, null, null, null);
   public token: Token = new Token(this.utilisateur);
   public messageAlerte: MessageAlerte = new MessageAlerte();
   constructor(private http: HttpClient, private _router: Router) {
@@ -93,7 +93,7 @@ export class AuthDataService {
     this.utilisateur.email = null;
     this.utilisateur.mdp = null;
     this.token.token = undefined;
-    this.token.utilisateur = new Utilisateur(null, null, null, null, null, null);
+    this.token.utilisateur = new Utilisateur(null, null, null, null, null);
     localStorage.removeItem('AuthToken');
     this._router.navigate(['/admin/login']);
   }
