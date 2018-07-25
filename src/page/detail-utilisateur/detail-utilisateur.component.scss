@@ -4,7 +4,7 @@ $short-field-min-width: 150px;
 $long-field-width: 35%;
 $long-field-min-width: 200px;
 
-// s
+// Couleurs
 $navbar-color: #F9FAFB;
 
 .flex-container {
@@ -32,12 +32,11 @@ $navbar-color: #F9FAFB;
 }
 
 .navbar-fixed-top {
-  left:15.3%;
-  width: 84%;
+  left: 14%;
   //audessus du main endessous du navbar de gauche
-  z-index:1;
-  min-width: 500px;
+  z-index:3;
   right: 0;
+  margin-right: 15px;
 }
 
 #message {
@@ -56,13 +55,31 @@ $navbar-color: #F9FAFB;
 .descriptionPanel{
   margin: auto;
 }
+.centrerPanel{
+  margin: 0;
+  text-align: center;
+}
 .mat-form-field-wrapper {
   width: 100%;
 }
 .photoCard{
-  max-width: 30%;
+
   min-width: 200px;
   margin: 10px;
+
+  mat-card-subtitle {
+    width: 280px;
+    padding-bottom: 24px;
+    overflow: hidden;
+  }
+
+}
+img{
+
+  max-width: 400px;
+}
+mat-card{
+  max-width: 400px;
 }
 .rowPhoto{
   display: flex;
@@ -101,16 +118,25 @@ $navbar-color: #F9FAFB;
   margin-top: 20px;
 }
 
-@media only screen and (max-width: 740px) {
+@media only screen and (max-width: 1000px) {
   .toolbar {
-    margin: 50px 0px 10px 0;
+  }
+  .title{
+    font-size: 1em !important;
+  }
+  .btn{
+    font-size: 0.75em !important;
+  }
+  .mat-toolbar-row{
+    height: 35px !important;
   }
   .navbar-fixed-top{
-    display:none;
+    margin-left:0;
+    left: 0;
+    width: 100%;
   }
 }
 .toolbar{
-  min-width: 500px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -131,4 +157,6 @@ mat-toolbar{
   border-bottom: 1px groove;
   margin-bottom: 20px;
 }
+.photoTool{
 
+}

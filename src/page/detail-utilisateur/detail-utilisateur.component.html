@@ -1,60 +1,19 @@
 <div  #toolContainerNotFixed>
   <mat-toolbar  class="toolContainer">
     <mat-toolbar-row>
-      <div class="title">
-        {{ajout ? 'Ajout d\'un utilisateur' : ''+utilisateur?.email+' - '+utilisateur?.id }}
-      </div>
+
     </mat-toolbar-row>
     <mat-toolbar-row>
-      <div class="toolbar">
-        <div class="leftTool">
-          <i matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip" class="material-icons backArrow"
-             (click)="goBack()">arrow_back</i>
-        </div>
-        <div class="rightTool">
 
-          <button type="submit" class="btn btn-success centrer-block" *ngIf="ajout"
-                  matTooltip="Ajouter l'utilisateur" [matTooltipPosition]="'below'" (click)="addUser()">
-            <b class="noShow">Sauvegarder</b>
-            <i class="material-icons">save</i>
-          </button>
-
-          <button *ngIf="! ajout" (click)="deleteUser(utilisateur)" type="button"
-                  class="btn btn-danger pull-right centrer-block"
-                  matTooltip="Supprimer cet utilisateur" [matTooltipPosition]="'below'">
-            <b class="noShow">Supprimer</b>
-            <i class="material-icons">delete</i>
-          </button>
-
-          <button *ngIf="! ajout" (click)="saveModification()" type="button" [disabled]="cacherBoutonAnnulation"
-                  class="btn btn-success pull-right centrer-block"
-                  matTooltip="Enregistrer les modifications" [matTooltipPosition]="'below'">
-            <b class="noShow">Sauvegarder</b>
-            <i class="material-icons">save</i>
-          </button>
-
-
-          <button *ngIf="! ajout" (click)="cancelModification(utilisateur)" [disabled]="cacherBoutonAnnulation"
-                  type="button" class="btn btn-warning pull-right centrer-block"
-                  matTooltip="Annuler les modifications" [matTooltipPosition]="'below'">
-            <b class="noShow">Annuler</b>
-            <i class="material-icons">settings_backup_restore</i>
-          </button>
-
-        </div>
-      </div>
     </mat-toolbar-row>
     <mat-toolbar-row *ngIf="!cacherAlert || !cacherErreur">
-      <div class="alerteDiv">
-        <div *ngIf="!cacherAlert" class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>
-        <div *ngIf="!cacherErreur" class="alert alert-danger" role="alert" [hidden]="cacherErreur">{{message}}</div>
-      </div>
     </mat-toolbar-row>
+
   </mat-toolbar>
 </div>
 
 <div class="navbar-fixed-top">
-  <mat-toolbar *ngIf="!toolNotFixed" class="toolContainer">
+  <mat-toolbar class="toolContainer">
     <mat-toolbar-row>
       <div class="title">
         {{ajout ? 'Ajout d\'utilisateur' : ''+utilisateur?.email+' - '+utilisateur?.id }}
