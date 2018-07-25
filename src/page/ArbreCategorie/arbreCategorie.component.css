@@ -60,7 +60,7 @@ margin-left: 20px;
   margin-bottom: 50px;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: flex-start;
   width: 100%;
   border-bottom-style:groove;
   border-bottom-width: 1px;

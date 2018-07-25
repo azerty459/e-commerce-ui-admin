@@ -19,6 +19,7 @@
     <mat-card class="arbreCard">
       <mat-card-header>
         <div class="toolTree">
+          <button  mat-icon-button (click)="openAll()"><mat-icon>{{opened ? 'expand_more' : 'chevron_right'}}</mat-icon></button>
           <button  mat-icon-button (click)="addNewItem(null)"><mat-icon>add</mat-icon></button>
           <button mat-icon-button (click)="enableFilter()" [matTooltipPosition]="'before'"
                   matTooltip="Afficher les filtres">

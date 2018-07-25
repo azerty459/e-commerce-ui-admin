@@ -23,7 +23,8 @@ import {forEach} from "@angular/router/src/utils/collection";
 
 
 export class ArbreCategorieComponent implements OnInit {
-  private snackBarRef: any;
+  public snackBarRef: any;
+  public opened = false;
   public treeControl: FlatTreeControl<CategorieFlatNode>;
   public treeFlattener: MatTreeFlattener<CategorieNode, CategorieFlatNode>;
   public dataSource: MatTreeFlatDataSource<CategorieNode, CategorieFlatNode>;
@@ -356,6 +357,16 @@ export class ArbreCategorieComponent implements OnInit {
       return false;
     }
   }
-
+  public openAll(){
+    console.log(this.opened);
+    if(this.opened === false ){
+      this.opened = true;
+      this.treeControl.expandAll();
+    }
+    else{
+      this.opened = false;
+      this.treeControl.collapseAll();
+    }
+  }
 }
 
