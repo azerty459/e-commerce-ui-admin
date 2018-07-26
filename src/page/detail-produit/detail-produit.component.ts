@@ -329,7 +329,7 @@ export class DetailProduitComponent implements OnInit {
       this.cacherErreur = false;
       this.message = 'Cette catégorie est déjà ajoutée.';
     }
-  }
+  }d’une voiture, payable chaque année. Ce tarif est en fonction
 
   numberToCommaSeperate(event) {
     const pattern = /^[0-9,]+$/;
