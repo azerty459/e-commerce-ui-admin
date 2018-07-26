@@ -135,10 +135,27 @@ export class DetailProduitComponent implements OnInit {
         this.router.navigate(['page-404'], {skipLocationChange: true});
       }
       this.produit = retourAPI;
+      // gestion dimension photo
+      console.log(this.produit);
+      for(const index in this.produit.arrayPhoto){
+        let img = await this.getDataImg(this.produit.arrayPhoto[index].url+'_1080x1024');
+        this.produit.arrayPhoto[index].imgHeight = img.height;
+        this.produit.arrayPhoto[index].imgWidth = img.width;
+      }
       this.produitModifie = JSON.parse(JSON.stringify(this.produit));
       console.log(this.produitModifie);
     }
   }
+
+  public async getDataImg(url): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = url;
+    });
+  }
+
 
   comparedProductWithProductModif() {
     // Si produit modifier est différent de produit
@@ -153,8 +170,13 @@ export class DetailProduitComponent implements OnInit {
     }
   }
 
-  cancelModification(produit: Produit) {
+  async cancelModification(produit: Produit) {
     // Permet de copier la variable produit dans produitModifier
+    for(const index in this.produit.arrayPhoto){
+      let img = await this.getDataImg(this.produit.arrayPhoto[index].url+'_1080x1024');
+      this.produit.arrayPhoto[index].imgHeight = img.height;
+      this.produit.arrayPhoto[index].imgWidth = img.width;
+    }
     this.produitModifie = JSON.parse(JSON.stringify(produit));
     // Permets de cacher le bouton d'annulation des modifications
     this.cacherBoutonAnnulation = true;
@@ -199,6 +221,11 @@ export class DetailProduitComponent implements OnInit {
       if (retourAPI.valueOf() instanceof Produit) {
         // Mets à jour la variable produit et produit modifiée
         this.produit = retourAPI;
+        for(const index in this.produit.arrayPhoto){
+          let img = await this.getDataImg(this.produit.arrayPhoto[index].url+'_1080x1024');
+          this.produit.arrayPhoto[index].imgHeight = img.height;
+          this.produit.arrayPhoto[index].imgWidth = img.width;
+        }
         this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.cacherErreur = true;
@@ -230,6 +257,11 @@ export class DetailProduitComponent implements OnInit {
       this.produit = retourAPI;
       // Permet de copier la variable produit dans produitModifier
       if (this.produit != null && this.produit !== undefined) {
+        for(const index in this.produit.arrayPhoto){
+          let img = await this.getDataImg(this.produit.arrayPhoto[index].url+'_1080x1024');
+          this.produit.arrayPhoto[index].imgHeight = img.height;
+          this.produit.arrayPhoto[index].imgWidth = img.width;
+        }
         this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
       }
       this.message = 'Votre produit a été correctement ajouté';
@@ -290,8 +322,6 @@ export class DetailProduitComponent implements OnInit {
       }
     }
     if (trouver === false) {
-      this.cacherAlert = false;
-      this.cacherErreur = true;
       this.produitModifie.arrayCategorie.push(retourCategorie);
       this.comparedProductWithProductModif();
     } else {

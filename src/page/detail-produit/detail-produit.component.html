@@ -187,11 +187,13 @@
 
               </mat-card-title>
               <mat-card-subtitle>{{photo.nom}}</mat-card-subtitle>
+
             </mat-card-header>
 
             <mat-card-content>
               <img class="mat-card-image" src="{{!photo.url.startsWith(environment.api_rest_download_url) ? photo.url : photo.url+'_1080x1024'}}" alt="PhotoNumero{{i}}"/>
             </mat-card-content>
+            <mat-card-subtitle *ngIf="photo.imgHeight != undefined">dimension : {{photo.imgWidth+' x '+photo.imgHeight}}</mat-card-subtitle>
             <mat-card-actions>
             </mat-card-actions>
           </mat-card>
@@ -200,7 +202,7 @@
           <mat-card class="col-md-6 photoCard">
             <mat-card-header>
               <mat-card-title>Upload</mat-card-title>
-              <mat-card-subtitle>C'est ici pour ajouter une nouvelle photo !</mat-card-subtitle>
+              <mat-card-subtitle>taille maximale 1 Mo</mat-card-subtitle>
             </mat-card-header>
             <img *ngIf="upload.imgSelected" class="mat-card-image" src="../../assets/img/1024px-Emblem-question.svg.png"
                  alt="produit image"/>
