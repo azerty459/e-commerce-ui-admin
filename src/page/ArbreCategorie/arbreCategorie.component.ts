@@ -357,16 +357,6 @@ export class ArbreCategorieComponent implements OnInit {
       return false;
     }
   }
-  public openAll(){
-    console.log(this.opened);
-    if(this.opened === false ){
-      this.opened = true;
-      this.treeControl.expandAll();
-    }
-    else{
-      this.opened = false;
-      this.treeControl.collapseAll();
-    }
-  }
+
 }
 

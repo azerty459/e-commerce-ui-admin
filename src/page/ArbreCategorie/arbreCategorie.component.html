@@ -19,14 +19,18 @@
     <mat-card class="arbreCard">
       <mat-card-header>
         <div class="toolTree">
-          <button  mat-icon-button (click)="openAll()"><mat-icon>{{opened ? 'expand_more' : 'chevron_right'}}</mat-icon></button>
-          <button  mat-icon-button (click)="addNewItem(null)"><mat-icon>add</mat-icon></button>
-          <button mat-icon-button (click)="enableFilter()" [matTooltipPosition]="'before'"
+          <button  mat-icon-button (click)="addNewItem(null)" [matTooltipPosition]="'below'"
+                   matTooltip="Ajouter une categorie"><mat-icon>playlist_add</mat-icon></button>
+          <button mat-icon-button (click)="enableFilter()" [matTooltipPosition]="'below'"
                   matTooltip="Afficher les filtres">
             <mat-icon class="mat-icon-rtl-mirror">
              filter_list
             </mat-icon>
           </button>
+          <button  mat-icon-button (click)="treeControl.expandAll()" matTooltip="Ouvrir l'arbre" [matTooltipPosition]="'below'"><mat-icon>
+            add</mat-icon></button>
+          <button  mat-icon-button (click)="treeControl.collapseAll()" matTooltip="Fermer l'abre" [matTooltipPosition]="'below'"><mat-icon>close</mat-icon></button>
+
         </div>
 
       </mat-card-header>
