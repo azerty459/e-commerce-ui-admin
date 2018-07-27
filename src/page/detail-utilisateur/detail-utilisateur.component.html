@@ -125,34 +125,11 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
 
-        <mat-form-field class="demo-chip-list">
-          <mat-chip-list #chipList>
-            <mat-chip
-              *ngFor="let role of utilisateurModifie.roles"
-              [selectable]="selectable"
-              [removable]="removable"
-              (removed)="deleteRole(role)">
-              {{role.nom}}
-              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-            </mat-chip>
-            <label for="listRole"></label>
-            <input
-              id="listRole"
-              placeholder="Écrivez le nom d'une catégorie pour associer votre produit à la catégorie choisie..."
-              #roleInput
-              [formControl]="choixRoleFormControl"
-              [matAutocomplete]="auto"
-              [matChipInputFor]="chipList"
-              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-              [matChipInputAddOnBlur]="addOnBlur"
-              [(ngModel)]="inputChoixParent"
-            />
-          </mat-chip-list>
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addRole($event)">
-            <mat-option *ngFor="let role of roleObservable | async" [value]="role">
-              {{ role.nom }}
-            </mat-option>
-          </mat-autocomplete>
+        <mat-form-field>
+          <mat-label>role</mat-label>
+          <mat-select [(ngModel)]="utilisateurModifie.role.nom">
+            <mat-option *ngFor="let role of roles" [value]="role.nom">{{role.nom}}</mat-option>
+          </mat-select>
         </mat-form-field>
       </mat-expansion-panel>
     </mat-accordion>
