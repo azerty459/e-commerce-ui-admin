@@ -5,10 +5,12 @@ import {
   MatToolbarModule,
   MatSnackBarModule,
   MatIconModule, MatInputModule, MatRadioModule, MatTooltipModule, MatTreeModule, MatListModule, MatCheckboxModule,
+  MatSelectModule,
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 const angularMaterial = [
   MatCardModule,
+  MatSelectModule,
   MatSnackBarModule,
   MatToolbarModule, // angular tool bar
   MatListModule, // angular list

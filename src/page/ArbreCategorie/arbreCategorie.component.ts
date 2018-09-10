@@ -9,6 +9,7 @@ import {Modal} from 'ngx-modialog/plugins/bootstrap';
 import {AfterViewInit} from '@angular/core';
 import {MatSnackBar} from "@angular/material";
 import {AlerteSnackBarComponent} from "../../utilitaires/alerteSnackBar/alerteSnackBar.component";
+import {forEach} from "@angular/router/src/utils/collection";
 
 
 /**
@@ -22,7 +23,8 @@ import {AlerteSnackBarComponent} from "../../utilitaires/alerteSnackBar/alerteSn
 
 
 export class ArbreCategorieComponent implements OnInit {
-  private snackBarRef: any;
+  public snackBarRef: any;
+  public opened = false;
   public treeControl: FlatTreeControl<CategorieFlatNode>;
   public treeFlattener: MatTreeFlattener<CategorieNode, CategorieFlatNode>;
   public dataSource: MatTreeFlatDataSource<CategorieNode, CategorieFlatNode>;
@@ -185,9 +187,10 @@ export class ArbreCategorieComponent implements OnInit {
       arbreService.lastDeletedParentnode = undefined;
       arbreService.data.forEach(function (value, index) {
         if (value.id === node.id) {
-          arbreService.data.splice(index, 1);
-        }
+          console.log(arbreService.data);
+          arbreService.data.splice(index, 1);}
       });
+
       if (this.arbreService.data.length === 0) {
         this.arbreService.hasCategories = false;
       }
@@ -221,7 +224,9 @@ export class ArbreCategorieComponent implements OnInit {
 
     // Une nodeParent null signifie qu'on se trouve au niveau 0
     if (nodeParent === null) {
-      this.arbreService.insertItem(null, <CategorieNode>{nomCategorie: ''});
+      // on utilise un timestamp afin de pouvoir identifier la node afin de pouvoir eventuellement supprimer la node
+      this.arbreService.insertItem(null, <CategorieNode>{id: ''+-Date.now(), nomCategorie: ''});
+      console.log(<CategorieNode>{id: ''+-Date.now(), nomCategorie: ''});
     } else {
       const nodeParentFlat = this.arbreService.flatNodeMap.get(nodeParent);
       this.arbreService.insertItem(nodeParentFlat!, <CategorieNode>{nomCategorie: ''});

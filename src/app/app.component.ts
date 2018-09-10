@@ -6,6 +6,8 @@ import {PreviousRouteBusiness} from "../../e-commerce-ui-common/business/previou
 import {AuthDataService} from "../business/auth-data.service";
 import {Token} from "../../e-commerce-ui-common/models/Token";
 import {AuthInterceptor} from "../../e-commerce-ui-common/utilitaires/AuthInterceptor";
+import {Categorie} from "../../e-commerce-ui-common/models/Categorie";
+import {Modal} from "ngx-modialog/plugins/bootstrap";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,6 +17,7 @@ import {AuthInterceptor} from "../../e-commerce-ui-common/utilitaires/AuthInterc
 export class AppComponent implements OnInit {
   public token: Token = this.authData.token;
   constructor(
+    private modal: Modal,
     private authInterceptor: AuthInterceptor,
     private authData: AuthDataService,
     private previousRouteBusiness: PreviousRouteBusiness,
@@ -44,6 +47,20 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/admin']);
   }
   public logout() {
-    this.authData.logout();
+    const dialogRef = this.modal.confirm()
+      .size('lg')
+      .isBlocking(true)
+      .showClose(false)
+      .keyboard(27)
+      .title('Deconnexion')
+      .body("Etes vous certain de vouloir vous deconnecter?")
+      .okBtn('Se deconnecter')
+      .okBtnClass('btn btn-danger')
+      .cancelBtn('Rester connecter')
+      .open();
+    dialogRef.result.then(async () => {
+      this.authData.logout();
+    }).catch(() => null); // Pour éviter l'erreur de promise dans console.log)
   }
+
 }

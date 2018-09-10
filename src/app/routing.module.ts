@@ -3,7 +3,6 @@ import {AccueilComponent} from '../page/accueil/accueil.component';
 import {DetailProduitComponent} from '../page/detail-produit/detail-produit.component';
 import {ProduitComponent} from '../page/produit/produit.component';
 import {FormEditGuard} from '../../e-commerce-ui-common/business/guard/form-edit.guard';
-import {DetailCategorieComponent} from '../page/detail-categorie/detail-categorie.component';
 import {ArbreCategorieComponent} from '../page/ArbreCategorie/arbreCategorie.component';
 import {ErreurComponent} from '../page/erreur/erreur.component';
 import {NgModule} from '@angular/core';
@@ -45,12 +44,6 @@ const appRoutes: Routes = [
     path: 'admin/produit',
     redirectTo: 'admin/produit/1'
   },
-  // categorie
-  {
-    path: 'admin/categorie/ajouter',
-    component: DetailCategorieComponent,
-    data: { title: 'Ajout catégorie' }
-  },
   {
     path: 'admin/utilisateur/ajouter',
     component: DetailUtilisateurComponent,
@@ -67,7 +60,7 @@ const appRoutes: Routes = [
   },
   // arbre
   {
-    path: 'admin/arbre',
+    path: 'admin/categorie',
     component: ArbreCategorieComponent
   },
 

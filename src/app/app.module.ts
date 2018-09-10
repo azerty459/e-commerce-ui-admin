@@ -1,32 +1,25 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-
 import { ModalModule } from 'ngx-modialog';
 import { BootstrapModalModule } from 'ngx-modialog/plugins/bootstrap';
 import { CovalentFileModule } from '@covalent/core/file';
-
 import { BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import { CollapseModule } from 'ngx-bootstrap';
-
 import { PreviousRouteBusiness } from '../../e-commerce-ui-common/business/previous-route.service';
 import { ProduitBusiness } from '../../e-commerce-ui-common/business/produit.service';
 import { CategorieBusinessService } from '../../e-commerce-ui-common/business/categorie.service';
 import { ArbreService } from '../../e-commerce-ui-common/business/arbre.service';
 import { FormEditGuard } from '../../e-commerce-ui-common/business/guard/form-edit.guard';
 import { FormEditService } from '../../e-commerce-ui-common/business/form-edit.service';
-
 import { AppComponent } from './app.component';
 import { AccueilComponent } from '../page/accueil/accueil.component';
 import { ProduitComponent } from '../page/produit/produit.component';
-import { DetailCategorieComponent } from '../page/detail-categorie/detail-categorie.component';
 import { ErreurComponent } from '../page/erreur/erreur.component';
 import { DetailProduitComponent } from '../page/detail-produit/detail-produit.component';
 import {ArbreCategorieComponent} from '../page/ArbreCategorie/arbreCategorie.component';
 import { UploadImgComponent } from '../utilitaires/upload-img/upload-img.component';
-
 import { MaterialModule } from './material.module';
 import { RoutingModule } from './routing.module';
 // DRAG & DROP MODULE
@@ -49,7 +42,6 @@ import {ProduiDataService} from "../../e-commerce-ui-common/business/data/produi
     AccueilComponent,
     ProduitComponent,
     DetailProduitComponent,
-    DetailCategorieComponent,
     UploadImgComponent,
     ErreurComponent,
     ArbreCategorieComponent,
