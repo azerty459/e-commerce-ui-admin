@@ -108,7 +108,7 @@
         </form>
       </mat-expansion-panel>
 
-      <mat-expansion-panel #panel2 disabled="{{disabledAjoutCategorie}}">
+      <mat-expansion-panel #panel2 disabled="{{disabledSecondaryPanels}}">
         <mat-expansion-panel-header>
           <mat-panel-title>
             Categories
@@ -155,14 +155,53 @@
         </mat-form-field>
       </mat-expansion-panel>
 
+      <mat-expansion-panel #panel3 disabled="{{disabledSecondaryPanels}}">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Caractéristiques
+          </mat-panel-title>
+          <mat-panel-description *ngIf="panel3.expanded === false">
+            <div [class]="panel3.expanded === false ? 'centrerPanel' : ''">Modifier les caractéristiques du produit</div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <!-- Permet de charger quand on ouvre le panel et pas avant
+        <ng-template matExpansionPanelContent>
+          Some deferred content
+        </ng-template>
+        -->
+        <form>
+          <mat-form-field>
+            <mat-select *ngIf="this.selectInCaracField" placeholder="Caractéristique existante" [(ngModel)]="this.caracSelected" name="labelCarac">
+              <mat-option *ngFor="let carac of caracteristiques" [value]="carac">
+                {{carac.label | titlecase}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-      <mat-expansion-panel #panel3 disabled="{{disabledAjoutCategorie}}">
+          <mat-form-field>
+            <input matInput placeholder="Valeur" [(ngModel)]="this.inputNewCaracValue" name="valueCarac">
+          </mat-form-field>
+
+          <button mat-icon-button>
+            <mat-icon (click)="this.addCaracteristiqueToProduit()">add</mat-icon>
+          </button>
+        </form>
+
+        <mat-list>
+          <mat-list-item *ngFor="let caracLabel of getCaracteristiquesUpdated(this.produitModifie.mapCaracteristique)">
+            {{caracLabel.label}} : {{produitModifie.mapCaracteristique.get(caracLabel)}}
+          </mat-list-item>
+        </mat-list>
+
+      </mat-expansion-panel>
+
+      <mat-expansion-panel #panel4 disabled="{{disabledSecondaryPanels}}">
         <mat-expansion-panel-header>
           <mat-panel-title>
             Photos
           </mat-panel-title>
-          <mat-panel-description *ngIf="panel3.expanded === false">
-            <div [class]="panel3.expanded === false ? 'centrerPanel' : ''">Modifier les categories du produit</div>
+          <mat-panel-description *ngIf="panel4.expanded === false">
+            <div [class]="panel4.expanded === false ? 'centrerPanel' : ''">Modifier les categories du produit</div>
           </mat-panel-description>
         </mat-expansion-panel-header>
 

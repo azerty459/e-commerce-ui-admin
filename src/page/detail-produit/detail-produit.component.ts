@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef, HostListener} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
@@ -13,8 +13,11 @@ import {PreviousRouteBusiness} from '../../../e-commerce-ui-common/business/prev
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {FormEditService} from '../../../e-commerce-ui-common/business/form-edit.service';
-import {Photo} from "../../../e-commerce-ui-common/models/Photo";
-import { environment } from '../../environments/environment';
+import {Photo} from '../../../e-commerce-ui-common/models/Photo';
+import {environment} from '../../environments/environment';
+import {Caracteristique} from '../../../e-commerce-ui-common/models/Caracteristique';
+import {CaracteristiqueService} from '../../../e-commerce-ui-common/business/caracteristique.service';
+
 @Component({
   selector: 'app-detail-produit',
   templateUrl: './detail-produit.component.html',
@@ -34,7 +37,7 @@ export class DetailProduitComponent implements OnInit {
   public ajout: boolean;
   public produit: Produit;
   public produitModifie: Produit;
-  public disabledAjoutCategorie: boolean;
+  public disabledSecondaryPanels: boolean;
 
   /**
    * Boolean permettant de savoir si le bouton d'annulation dans la toolbar doit être cacher ou non
@@ -51,6 +54,16 @@ export class DetailProduitComponent implements OnInit {
    * Tableau contenant toutes les catégories
    */
   public categories: Categorie[];
+
+  /**
+   * Objet caractéristique selectionné dans le select du field Caractéristiques
+   */
+  public caracSelected: Caracteristique;
+
+  /**
+   * Tableau contenant toutes les caracteristiques
+   */
+  public caracteristiques: Caracteristique[];
 
   /**
    * Form contrôle permettant de gérer la liste déroulante pour la recherche intelligente
@@ -88,6 +101,7 @@ export class DetailProduitComponent implements OnInit {
               private route: ActivatedRoute,
               private produitBusiness: ProduitBusiness,
               private categorieBusiness: CategorieBusinessService,
+              private caracteristiqueService: CaracteristiqueService,
               private router: Router) {
   }
 
@@ -112,6 +126,28 @@ export class DetailProduitComponent implements OnInit {
 
   async getProduit() {
     this.categories = await this.categorieBusiness.getAllCategories();
+
+
+    // TODO tableau des caracteristiques à vider avant le subscribe, juste pour le test
+    const c1 = new Caracteristique();
+    const c2 = new Caracteristique();
+    const c3 = new Caracteristique();
+    c1.id = 1;
+    c1.label = 'Editeur';
+    c2.id = 2;
+    c2.label = 'Langue';
+    c3.id = 3;
+    c3.label = 'Dimensions du produit';
+    this.caracteristiques = [c1, c2, c3];
+    // TODO fin du mock
+
+    this.caracteristiqueService.getAllCaracteristiques().subscribe(
+      carac => this.caracteristiques.push(carac),
+      error => console.log(error.message)
+    );
+
+    this.caracteristiques = [c1, c2, c3];
+
     if (this.categories !== undefined) {
       // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
       this.categoriesObservable = this.choixCategorieFormControl.valueChanges.pipe(
@@ -124,10 +160,10 @@ export class DetailProduitComponent implements OnInit {
       this.ajout = true;
       this.produitModifie = new Produit(null, null, null, null, []);
       this.produit = new Produit(null, null, null, null, []);
-      this.disabledAjoutCategorie = true;
+      this.disabledSecondaryPanels = true;
     } else {
       this.ajout = false;
-      this.disabledAjoutCategorie = false;
+      this.disabledSecondaryPanels = false;
       const refProduit = this.route.snapshot.paramMap.get('id');
       const retourAPI = await this.produitBusiness.getProduitByRef(refProduit);
 
@@ -137,8 +173,8 @@ export class DetailProduitComponent implements OnInit {
       this.produit = retourAPI;
       // gestion dimension photo
       console.log(this.produit);
-      for(const index in this.produit.arrayPhoto){
-        let img = await this.getDataImg(this.produit.arrayPhoto[index].url+'_1080x1024');
+      for (const index in this.produit.arrayPhoto) {
+        let img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
         this.produit.arrayPhoto[index].imgHeight = img.height;
         this.produit.arrayPhoto[index].imgWidth = img.width;
       }
@@ -172,8 +208,8 @@ export class DetailProduitComponent implements OnInit {
 
   async cancelModification(produit: Produit) {
     // Permet de copier la variable produit dans produitModifier
-    for(const index in this.produit.arrayPhoto){
-      let img = await this.getDataImg(this.produit.arrayPhoto[index].url+'_1080x1024');
+    for (const index in this.produit.arrayPhoto) {
+      let img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
       this.produit.arrayPhoto[index].imgHeight = img.height;
       this.produit.arrayPhoto[index].imgWidth = img.width;
     }
@@ -194,9 +230,9 @@ export class DetailProduitComponent implements OnInit {
     if (this.photoEnAttenteSupression !== undefined) {
       for (const photo of this.photoEnAttenteSupression) {
         await this.produitBusiness.removePhoto(photo);
-        if (photo.id === this.produitModifie.photoPrincipale.id){
+        if (photo.id === this.produitModifie.photoPrincipale.id) {
           (<Photo>this.produitModifie.photoPrincipale).id = 0;
-          (<Photo>this.produit.photoPrincipale).id =0;
+          (<Photo>this.produit.photoPrincipale).id = 0;
         }
       }
       this.photoEnAttenteSupression = [];
@@ -221,8 +257,8 @@ export class DetailProduitComponent implements OnInit {
       if (retourAPI.valueOf() instanceof Produit) {
         // Mets à jour la variable produit et produit modifiée
         this.produit = retourAPI;
-        for(const index in this.produit.arrayPhoto){
-          let img = await this.getDataImg(this.produit.arrayPhoto[index].url+'_1080x1024');
+        for (const index in this.produit.arrayPhoto) {
+          let img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
           this.produit.arrayPhoto[index].imgHeight = img.height;
           this.produit.arrayPhoto[index].imgWidth = img.width;
         }
@@ -244,7 +280,6 @@ export class DetailProduitComponent implements OnInit {
     }
 
 
-
   }
 
   public async addProduct() {
@@ -252,20 +287,20 @@ export class DetailProduitComponent implements OnInit {
     if (retourAPI.valueOf() instanceof Produit) {
       this.cacherErreur = true;
       this.cacherAlert = false;
-      this.disabledAjoutCategorie = false;
+      this.disabledSecondaryPanels = false;
       this.ajout = false;
       this.produit = retourAPI;
       // Permet de copier la variable produit dans produitModifier
       if (this.produit != null && this.produit !== undefined) {
-        for(const index in this.produit.arrayPhoto){
-          let img = await this.getDataImg(this.produit.arrayPhoto[index].url+'_1080x1024');
+        for (const index in this.produit.arrayPhoto) {
+          let img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
           this.produit.arrayPhoto[index].imgHeight = img.height;
           this.produit.arrayPhoto[index].imgWidth = img.width;
         }
         this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
       }
       this.message = 'Votre produit a été correctement ajouté';
-      this.disabledAjoutCategorie = false;
+      this.disabledSecondaryPanels = false;
     } else {
       this.cacherErreur = false;
       this.cacherAlert = true;
@@ -372,6 +407,14 @@ export class DetailProduitComponent implements OnInit {
     (<Photo>this.produitModifie.photoPrincipale).url = photo.url;
     (<Photo>this.produitModifie.photoPrincipale).nom = photo.nom;
     this.comparedProductWithProductModif();
+  }
+
+  /**
+   * Renvoie un tableau des clés d'une map.
+   * @param map la map dont on veut extraire les clés.
+   */
+  public getCaracteristiquesUpdated() {
+    return Array.from(this.produitModifie.mapCaracteristique.keys());
   }
 
 }
