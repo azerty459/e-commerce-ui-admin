@@ -160,3 +160,32 @@ mat-toolbar{
 .photoTool{
 
 }
+
+.red {
+  color: red;
+}
+
+#caracDiv {
+  display: flex;
+  align-items: center;
+}
+
+#caracDiv > div {
+  margin-right: 5%;
+}
+
+#caracDiv mat-form-field {
+  min-width: 100%;
+}
+
+#caracDiv mat-form-field:first-child {
+  //margin-right: 5%;
+}
+
+#caracListItem {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-grow: 1;
+}
+

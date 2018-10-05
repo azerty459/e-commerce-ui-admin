@@ -35,6 +35,7 @@ import {AuthDataService} from "../business/auth-data.service";
 import {AuthInterceptor} from "../../e-commerce-ui-common/utilitaires/AuthInterceptor";
 import {FiltreService} from "../../e-commerce-ui-common/business/filtre.service";
 import {ProduiDataService} from "../../e-commerce-ui-common/business/data/produitData.service";
+import {CaracteristiqueDataService} from '../../e-commerce-ui-common/business/data/caracteristique-data.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -68,6 +69,7 @@ import {ProduiDataService} from "../../e-commerce-ui-common/business/data/produi
     ProduitBusiness,
     ProduiDataService,
     CategorieBusinessService,
+    CaracteristiqueDataService,
     UploadImgComponent,
     PreviousRouteBusiness,
     ArbreService,

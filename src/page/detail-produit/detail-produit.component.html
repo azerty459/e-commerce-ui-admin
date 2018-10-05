@@ -139,7 +139,6 @@
               [matChipInputFor]="chipList"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               [matChipInputAddOnBlur]="addOnBlur"
-              [(ngModel)]="inputChoixParent"
             />
           </mat-chip-list>
           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="addCategory($event)">
@@ -155,7 +154,7 @@
         </mat-form-field>
       </mat-expansion-panel>
 
-      <mat-expansion-panel #panel3 disabled="{{disabledSecondaryPanels}}">
+      <mat-expansion-panel #panel3 disabled="{{disabledSecondaryPanels}}" id="caracPanel">
         <mat-expansion-panel-header>
           <mat-panel-title>
             Caractéristiques
@@ -169,27 +168,54 @@
           Some deferred content
         </ng-template>
         -->
-        <form>
-          <mat-form-field>
-            <mat-select *ngIf="this.selectInCaracField" placeholder="Caractéristique existante" [(ngModel)]="this.caracSelected" name="labelCarac">
-              <mat-option *ngFor="let carac of caracteristiques" [value]="carac">
-                {{carac.label | titlecase}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+        <div id="caracDiv">
+          <div>
+            <form>
+              <mat-form-field>
+                <mat-select [formControl]="choixCaracteristiqueFormControl"
+                            placeholder="Caractéristique existante"
+                            name="labelCarac">
+                  <mat-option *ngFor="let carac of caracteristiques" [value]="carac">
+                    {{carac.label | titlecase}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
 
-          <mat-form-field>
-            <input matInput placeholder="Valeur" [(ngModel)]="this.inputNewCaracValue" name="valueCarac">
-          </mat-form-field>
+              <mat-form-field>
+                <input matInput [formControl]="inputCaracteristiqueFormControl" placeholder="Valeur" name="valueCarac">
+              </mat-form-field>
+            </form>
+          </div>
 
-          <button mat-icon-button>
-            <mat-icon (click)="this.addCaracteristiqueToProduit()">add</mat-icon>
-          </button>
-        </form>
+          <div>
+            <button mat-stroked-button
+                    matTooltip="Ajouter caractéristique"
+                    [matTooltipPosition]="'below'"
+                    (click)="addCaracteristiqueToProduit()">
+              <mat-icon>add</mat-icon>
+              Ajouter
+            </button>
+          </div>
+        </div>
+
 
         <mat-list>
-          <mat-list-item *ngFor="let caracLabel of getCaracteristiquesUpdated(this.produitModifie.mapCaracteristique)">
-            {{caracLabel.label}} : {{produitModifie.mapCaracteristique.get(caracLabel)}}
+          <mat-list-item *ngFor="let carac of getCaracteristiquesUpdated()">
+            <div id="caracListItem">
+              <div>
+                {{carac.label}} : {{produitModifie.mapCaracteristique.get(carac)}}
+              </div>
+              <div>
+                <button mat-stroked-button
+                        matTooltip="Supprimer caractéristique"
+                        [matTooltipPosition]="'below'"
+                        (click)="deleteCaracteristiqueToProduit(carac)">
+                  <mat-icon>remove</mat-icon>
+                  Supprimer
+                </button>
+              </div>
+            </div>
+
           </mat-list-item>
         </mat-list>
 

@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
-import {MatAutocompleteSelectedEvent} from '@angular/material';
+import {MatAutocompleteSelectedEvent, MatSnackBar} from '@angular/material';
 import {Observable} from 'rxjs';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
@@ -11,12 +11,13 @@ import {CategorieBusinessService} from '../../../e-commerce-ui-common/business/c
 import {UploadImgComponent} from '../../utilitaires/upload-img/upload-img.component';
 import {PreviousRouteBusiness} from '../../../e-commerce-ui-common/business/previous-route.service';
 import {map, startWith} from 'rxjs/operators';
-import {FormControl} from '@angular/forms';
+import {FormControl, ValidationErrors, Validators} from '@angular/forms';
 import {FormEditService} from '../../../e-commerce-ui-common/business/form-edit.service';
 import {Photo} from '../../../e-commerce-ui-common/models/Photo';
 import {environment} from '../../environments/environment';
 import {Caracteristique} from '../../../e-commerce-ui-common/models/Caracteristique';
-import {CaracteristiqueService} from '../../../e-commerce-ui-common/business/caracteristique.service';
+import {CaracteristiqueDataService} from '../../../e-commerce-ui-common/business/data/caracteristique-data.service';
+import {uniqueCaracValidator} from './ValidateUniqueCaracteristique';
 
 @Component({
   selector: 'app-detail-produit',
@@ -66,9 +67,21 @@ export class DetailProduitComponent implements OnInit {
   public caracteristiques: Caracteristique[];
 
   /**
-   * Form contrôle permettant de gérer la liste déroulante pour la recherche intelligente
+   * FormControl permettant de gérer la liste déroulante pour la recherche intelligente
    */
   public choixCategorieFormControl: FormControl = new FormControl();
+
+  /**
+   * FormControl du select du field caractéristiques
+   */
+  public choixCaracteristiqueFormControl: FormControl = new FormControl();
+
+  /**
+   * FormControl du select du field caractéristiques
+   */
+  public inputCaracteristiqueFormControl: FormControl = new FormControl()
+
+  public addCaracIsValid: boolean = true;
 
   /**
    * Boolean permettant de cacher l'alerte de succès
@@ -81,13 +94,12 @@ export class DetailProduitComponent implements OnInit {
    * @type {boolean}
    */
   cacherErreur = true;
+
   /**
    * indique que la toolbar est en position fixed
    * @type {boolean}
    */
   toolNotFixed = true;
-
-  ancienPrixHTModifier: number;
 
   public photoEnAttenteAjout = [];
   public photoEnAttenteSupression = [];
@@ -101,7 +113,8 @@ export class DetailProduitComponent implements OnInit {
               private route: ActivatedRoute,
               private produitBusiness: ProduitBusiness,
               private categorieBusiness: CategorieBusinessService,
-              private caracteristiqueService: CaracteristiqueService,
+              private caracteristiqueDataService: CaracteristiqueDataService,
+              public snackBar: MatSnackBar,
               private router: Router) {
   }
 
@@ -127,7 +140,6 @@ export class DetailProduitComponent implements OnInit {
   async getProduit() {
     this.categories = await this.categorieBusiness.getAllCategories();
 
-
     // TODO tableau des caracteristiques à vider avant le subscribe, juste pour le test
     const c1 = new Caracteristique();
     const c2 = new Caracteristique();
@@ -139,12 +151,13 @@ export class DetailProduitComponent implements OnInit {
     c3.id = 3;
     c3.label = 'Dimensions du produit';
     this.caracteristiques = [c1, c2, c3];
+    this.choixCaracteristiqueFormControl.setValue(c1);
     // TODO fin du mock
 
-    this.caracteristiqueService.getAllCaracteristiques().subscribe(
+    /*this.caracteristiqueDataService.getAllCaracteristiques().subscribe(
       carac => this.caracteristiques.push(carac),
       error => console.log(error.message)
-    );
+    );*/
 
     this.caracteristiques = [c1, c2, c3];
 
@@ -158,8 +171,8 @@ export class DetailProduitComponent implements OnInit {
     const url = this.route.snapshot.routeConfig.path;
     if (url === 'admin/produit/ajouter') {
       this.ajout = true;
-      this.produitModifie = new Produit(null, null, null, null, []);
       this.produit = new Produit(null, null, null, null, []);
+      this.produit.mapCaracteristique.set(c1, 'salut');
       this.disabledSecondaryPanels = true;
     } else {
       this.ajout = false;
@@ -172,14 +185,12 @@ export class DetailProduitComponent implements OnInit {
       }
       this.produit = retourAPI;
       // gestion dimension photo
-      console.log(this.produit);
       for (const index in this.produit.arrayPhoto) {
-        let img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
+        const img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
         this.produit.arrayPhoto[index].imgHeight = img.height;
         this.produit.arrayPhoto[index].imgWidth = img.width;
       }
-      this.produitModifie = JSON.parse(JSON.stringify(this.produit));
-      console.log(this.produitModifie);
+      this.produitModifie = Object.assign({}, this.produit);
     }
   }
 
@@ -213,7 +224,7 @@ export class DetailProduitComponent implements OnInit {
       this.produit.arrayPhoto[index].imgHeight = img.height;
       this.produit.arrayPhoto[index].imgWidth = img.width;
     }
-    this.produitModifie = JSON.parse(JSON.stringify(produit));
+    this.produitModifie = Object.assign({}, this.produit);
     // Permets de cacher le bouton d'annulation des modifications
     this.cacherBoutonAnnulation = true;
     //  Permets de désactiver la pop-up "en cours d'édition"
@@ -252,7 +263,6 @@ export class DetailProduitComponent implements OnInit {
       }
     }
     const retourAPI = await this.produitBusiness.updateProduit(this.produitModifie);
-    console.log(retourAPI);
     if (retourAPI != null && retourAPI !== undefined) {
       if (retourAPI.valueOf() instanceof Produit) {
         // Mets à jour la variable produit et produit modifiée
@@ -262,7 +272,7 @@ export class DetailProduitComponent implements OnInit {
           this.produit.arrayPhoto[index].imgHeight = img.height;
           this.produit.arrayPhoto[index].imgWidth = img.width;
         }
-        this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
+        this.produitModifie = Object.assign({}, retourAPI);
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.cacherErreur = true;
         this.cacherAlert = false;
@@ -297,7 +307,7 @@ export class DetailProduitComponent implements OnInit {
           this.produit.arrayPhoto[index].imgHeight = img.height;
           this.produit.arrayPhoto[index].imgWidth = img.width;
         }
-        this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
+        this.produitModifie = Object.assign({}, retourAPI);
       }
       this.message = 'Votre produit a été correctement ajouté';
       this.disabledSecondaryPanels = false;
@@ -415,6 +425,42 @@ export class DetailProduitComponent implements OnInit {
    */
   public getCaracteristiquesUpdated() {
     return Array.from(this.produitModifie.mapCaracteristique.keys());
+  }
+
+  /**
+   * Ajoute une caractéristique au produit modifié uniquement si la caractéristique est inexistante.
+   */
+  public addCaracteristiqueToProduit() {
+    const caracChose: Caracteristique = this.choixCaracteristiqueFormControl.value;
+    const valueCaracChose: string = this.inputCaracteristiqueFormControl.value;
+    if (valueCaracChose === '' || valueCaracChose === undefined || valueCaracChose === null) {
+      this.openSnackBar('Valeur incorrecte !');
+    }
+    else if (this.produitModifie.mapCaracteristique.get(caracChose) === undefined) {
+      this.produitModifie.mapCaracteristique.set(caracChose, valueCaracChose);
+      this.addCaracIsValid = true;
+    } else {
+      this.addCaracIsValid = false;
+      this.openSnackBar('Caractéristique déjà existante pour ce produit !');
+    }
+  }
+
+  /**
+   * Supprime une caractéristique au produit modifié uniquement si la caractéristique est existante.
+   */
+  public deleteCaracteristiqueToProduit(carac: Caracteristique) {
+    this.produitModifie.mapCaracteristique.delete(carac);
+  }
+
+  /**
+   * Affiche le snackbar qui affiche un message d'erreur si l'ajout d'une caractéristique est impossible
+   */
+
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, 'Fermer', {
+      duration: 2500
+    });
   }
 
 }
