@@ -9,6 +9,7 @@ import {NgModule} from '@angular/core';
 import {UtilisateurComponent} from '../page/utilisateur/utilisateur.component';
 import {DetailUtilisateurComponent} from '../page/detail-utilisateur/detail-utilisateur.component';
 import {LoginComponent} from '../page/login/login.component';
+import {CaracteristiqueComponent} from '../page/caracteristique/caracteristique.component';
 
 const appRoutes: Routes = [
 
@@ -62,6 +63,10 @@ const appRoutes: Routes = [
   {
     path: 'admin/categorie',
     component: ArbreCategorieComponent
+  },
+  {
+    path: 'admin/caracteristique',
+    component: CaracteristiqueComponent
   },
 
   {

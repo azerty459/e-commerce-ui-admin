@@ -17,7 +17,6 @@ import {Photo} from '../../../e-commerce-ui-common/models/Photo';
 import {environment} from '../../environments/environment';
 import {Caracteristique} from '../../../e-commerce-ui-common/models/Caracteristique';
 import {CaracteristiqueDataService} from '../../../e-commerce-ui-common/business/data/caracteristique-data.service';
-import {uniqueCaracValidator} from './ValidateUniqueCaracteristique';
 
 @Component({
   selector: 'app-detail-produit',
@@ -114,7 +113,7 @@ export class DetailProduitComponent implements OnInit {
               private produitBusiness: ProduitBusiness,
               private categorieBusiness: CategorieBusinessService,
               private caracteristiqueDataService: CaracteristiqueDataService,
-              public snackBar: MatSnackBar,
+              private snackBar: MatSnackBar,
               private router: Router) {
   }
 
@@ -161,6 +160,7 @@ export class DetailProduitComponent implements OnInit {
 
     this.caracteristiques = [c1, c2, c3];
 
+
     if (this.categories !== undefined) {
       // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
       this.categoriesObservable = this.choixCategorieFormControl.valueChanges.pipe(
@@ -172,7 +172,6 @@ export class DetailProduitComponent implements OnInit {
     if (url === 'admin/produit/ajouter') {
       this.ajout = true;
       this.produit = new Produit(null, null, null, null, []);
-      this.produit.mapCaracteristique.set(c1, 'salut');
       this.disabledSecondaryPanels = true;
     } else {
       this.ajout = false;
@@ -184,6 +183,7 @@ export class DetailProduitComponent implements OnInit {
         this.router.navigate(['page-404'], {skipLocationChange: true});
       }
       this.produit = retourAPI;
+      console.log(this.produit);
       // gestion dimension photo
       for (const index in this.produit.arrayPhoto) {
         const img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');

@@ -36,6 +36,7 @@ import {AuthInterceptor} from "../../e-commerce-ui-common/utilitaires/AuthInterc
 import {FiltreService} from "../../e-commerce-ui-common/business/filtre.service";
 import {ProduiDataService} from "../../e-commerce-ui-common/business/data/produitData.service";
 import {CaracteristiqueDataService} from '../../e-commerce-ui-common/business/data/caracteristique-data.service';
+import { CaracteristiqueComponent } from '../page/caracteristique/caracteristique.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,10 +47,10 @@ import {CaracteristiqueDataService} from '../../e-commerce-ui-common/business/da
     UploadImgComponent,
     ErreurComponent,
     ArbreCategorieComponent,
-
     UtilisateurComponent,
     DetailUtilisateurComponent,
-    AlerteSnackBarComponent
+    AlerteSnackBarComponent,
+    CaracteristiqueComponent
   ],
   imports: [
     RoutingModule, // Utilisation de routing
