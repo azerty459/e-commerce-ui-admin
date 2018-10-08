@@ -100,6 +100,8 @@ export class DetailProduitComponent implements OnInit {
    */
   toolNotFixed = true;
 
+  ancienPrixHTModifier: number;
+
   public photoEnAttenteAjout = [];
   public photoEnAttenteSupression = [];
   @ViewChild('categorieInput') categorieInput: ElementRef;
@@ -171,6 +173,7 @@ export class DetailProduitComponent implements OnInit {
     const url = this.route.snapshot.routeConfig.path;
     if (url === 'admin/produit/ajouter') {
       this.ajout = true;
+      this.produitModifie = new Produit(null, null, null, null, []);
       this.produit = new Produit(null, null, null, null, []);
       this.disabledSecondaryPanels = true;
     } else {
