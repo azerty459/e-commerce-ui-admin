@@ -63,12 +63,20 @@ export class CaracteristiqueComponent implements OnInit {
     if (newCaracteristiqueLabel === '') {
       return;
     }
-    if (this.isNewCaracsteristique(newCaracteristiqueLabel)) {
-      const newCaracteristique: Caracteristique = new Caracteristique();
-      // TODO à changer, comment générer l'id ?
-      newCaracteristique.id = this.caracteristiquesModifiees[this.caracteristiquesModifiees.length - 1].id - 1;
-      newCaracteristique.label = this.inputNewCaracteristiqueFormControl.value;
-      this.caracteristiquesModifiees.push(newCaracteristique)
+
+    const newCaracteristique: Caracteristique = new Caracteristique();
+    // TODO à changer, comment générer l'id ?
+    newCaracteristique.id = this.caracteristiquesModifiees[this.caracteristiquesModifiees.length - 1].id;
+    newCaracteristique.label = newCaracteristiqueLabel;
+    if (this.isNewCaracsteristique(newCaracteristique)) {
+      this.caracteristiquesModifiees.push(newCaracteristique);
+
+      // TODO supprimer cela et envoyer la reqûete au backend uniquement quand on clique sur sauvegarder
+      this.caracteristiqueDataService.addCaracteristique(newCaracteristique)
+        .subscribe(
+          onSuccess => console.log('ca marche !'),
+          onError => console.log('ca marche pas :(')
+        );
     } else {
       this.openSnackBar('Caractéristique déjà existante !');
     }
@@ -78,12 +86,12 @@ export class CaracteristiqueComponent implements OnInit {
    * Vérifie si la caractéristique existe deja. Renvoie true si c'est le cas, false sinon.
    */
 
-  private isNewCaracsteristique(newCaracteristiqueLabel: string) {
+  private isNewCaracsteristique(newCaracteristique: Caracteristique) {
     const caracLabels: string[] = []
     this.caracteristiquesModifiees.forEach(
       k => caracLabels.push(k.label)
     );
-    return !caracLabels.includes(newCaracteristiqueLabel);
+    return !caracLabels.includes(newCaracteristique.label);
   }
 
   public removeCaracteristique(carac: Caracteristique) {
