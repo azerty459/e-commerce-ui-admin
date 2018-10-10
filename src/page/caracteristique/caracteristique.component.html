@@ -2,51 +2,46 @@
 
 <mat-card>
 
-  <!--bouttons update et reset-->
-  <div>
-    <!--[disabled]="cacherBoutonAnnulation"-->
-    <button (click)="updateCaracteristiques()" type="button"
-            class="btn btn-success pull-right centrer-block"
-            matTooltip="Enregistrer les modifications" [matTooltipPosition]="'below'">
-      <b class="noShow">Sauvegarder</b>
-      <i class="material-icons">save</i>
-    </button>
-
-    <!--[disabled]="cacherBoutonAnnulation"-->
-    <button *ngIf="!ajout" (click)="resetCaracteristiques()"
-            type="button" class="btn btn-warning pull-right centrer-block"
-            matTooltip="Annuler les modifications" [matTooltipPosition]="'below'">
-      <b class="noShow">Annuler</b>
-      <i class="material-icons">settings_backup_restore</i>
-    </button>
-  </div>
-
   <!--Fields modifications des caractéristiques-->
-  <div>
-    <form>
-      <mat-form-field>
-        <input matInput [formControl]="inputNewCaracteristiqueFormControl" placeholder="Nouvelle Caractéristique" name="valueNewCarac">
-      </mat-form-field>
-    </form>
-    <button mat-stroked-button
-            (click)="createCaracteristique()">
-      <mat-icon>add</mat-icon>
-      Créer
-    </button>
+  <div id="addCaracDiv">
+    <div>
+      <form>
+        <mat-form-field>
+          <input matInput [formControl]="inputNewCaracteristiqueFormControl" placeholder="Nouvelle Caractéristique" name="valueNewCarac">
+        </mat-form-field>
+      </form>
+    </div>
+
+    <div>
+      <button mat-icon-button>
+        <mat-icon (click)="createCaracteristique()">
+          add
+        </mat-icon>
+      </button>
+    </div>
   </div>
 
   <mat-list>
-    <mat-list-item *ngFor="let carac of this.caracteristiquesModifiees">
-      <div class="caracListItem">
+    <mat-list-item *ngFor="let carac of this.caracteristiques">
+      <div (mouseover)="activateButtons(carac)" (mouseout)="unactivateButtons(carac)" class="caracListItem">
         <div>
           {{carac.label}}
         </div>
-        <div>
-          <button mat-stroked-button
-                  (click)="removeCaracteristique(carac)">
-            <mat-icon>remove</mat-icon>
-            Supprimer
-          </button>
+
+        <div [hidden]="!this.caracteristiquesActivatedButtons.get(carac)" class="caracButtonsHiddenSwitch">
+          <div class="caracButtonsFlex">
+            <div>
+              <button mat-icon-button>
+                <mat-icon color="primary">edit</mat-icon>
+              </button>
+            </div>
+
+            <div>
+              <button mat-icon-button (click)="removeCaracteristique(carac)">
+                <mat-icon color="warn">delete</mat-icon>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 

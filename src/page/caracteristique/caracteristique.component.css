@@ -1,7 +1,13 @@
 .caracListItem {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-grow: 1;
 }
 
+.caracButtonsFlex {
+  display: flex;
+}
+
+#addCaracDiv {
+  display: flex;
+  align-items: center;
+}

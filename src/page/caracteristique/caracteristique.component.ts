@@ -15,8 +15,7 @@ export class CaracteristiqueComponent implements OnInit {
   constructor(
     private caracteristiqueDataService: CaracteristiqueDataService,
     private snackBar: MatSnackBar
-  ) {
-  }
+  ) {}
 
   /**
    * Liste des caractéristiques
@@ -24,16 +23,21 @@ export class CaracteristiqueComponent implements OnInit {
   public caracteristiques: Caracteristique[] = [];
 
   /**
-   * Liste des caractéristiques modifiées
-   */
-  public caracteristiquesModifiees: Caracteristique[] = [];
-
-  /**
    * FormControl lié à l'input qui permet d'ajouter une nouvelle caractéristique
    */
   public inputNewCaracteristiqueFormControl: FormControl = new FormControl();
 
+  /**
+   * Map des catégories : clé => caractéristique, valeur => booléen (correspondant à l'activation ou non des boutons)
+   */
+  public caracteristiquesActivatedButtons: Map<Caracteristique, boolean> = new Map<Caracteristique, boolean>();
+
   ngOnInit() {
+    this.reload();
+  }
+
+  public reload() {
+    /*
     const c1 = new Caracteristique();
     const c2 = new Caracteristique();
     const c3 = new Caracteristique();
@@ -44,14 +48,21 @@ export class CaracteristiqueComponent implements OnInit {
     c3.id = 3;
     c3.label = 'Dimensions du produit';
     this.caracteristiques = [c1, c2, c3];
-    this.caracteristiquesModifiees = this.caracteristiques.slice();
-
-    // TODO décommenter la partie du bas + supprimer la partie du haut lorsque le service caracteristiqueDataService sera implémenté correctement
-    /*
-    this.caracteristiqueDataService.getAllCaracteristiques()
-      .map(carac => this.caracteristiques.push(carac))
-      .subscribe();
+    this.caracteristiquesActivatedButtons.set(c1, false);
+    this.caracteristiquesActivatedButtons.set(c2, false);
+    this.caracteristiquesActivatedButtons.set(c3, false);
     */
+
+
+    this.caracteristiqueDataService.getAll()
+      .map(carac => {
+        console.log('hey');
+        console.log(carac);
+        this.caracteristiques.push(carac);
+        this.caracteristiquesActivatedButtons.set(carac, true);
+      })
+      .subscribe();
+
   }
 
   /**
@@ -65,17 +76,18 @@ export class CaracteristiqueComponent implements OnInit {
     }
 
     const newCaracteristique: Caracteristique = new Caracteristique();
-    // TODO à changer, comment générer l'id ?
-    newCaracteristique.id = this.caracteristiquesModifiees[this.caracteristiquesModifiees.length - 1].id;
     newCaracteristique.label = newCaracteristiqueLabel;
     if (this.isNewCaracsteristique(newCaracteristique)) {
-      this.caracteristiquesModifiees.push(newCaracteristique);
-
-      // TODO supprimer cela et envoyer la reqûete au backend uniquement quand on clique sur sauvegarder
       this.caracteristiqueDataService.addCaracteristique(newCaracteristique)
         .subscribe(
-          onSuccess => console.log('ca marche !'),
-          onError => console.log('ca marche pas :(')
+          onSuccess => {
+            console.log(onSuccess);
+            this.reload();
+          },
+            onError => {
+            console.log(onError);
+            this.openSnackBar('Une erreur serveur s\'est produite.');
+          }
         );
     } else {
       this.openSnackBar('Caractéristique déjà existante !');
@@ -88,35 +100,43 @@ export class CaracteristiqueComponent implements OnInit {
 
   private isNewCaracsteristique(newCaracteristique: Caracteristique) {
     const caracLabels: string[] = []
-    this.caracteristiquesModifiees.forEach(
+    this.caracteristiques.forEach(
       k => caracLabels.push(k.label)
     );
-    return !caracLabels.includes(newCaracteristique.label);
+    return !caracLabels.includes(newCaracteristique.label.toLowerCase());
   }
+
+  /**
+   * Supprime une caractéristique existante.
+   * @param carac
+   */
 
   public removeCaracteristique(carac: Caracteristique) {
-    this.caracteristiquesModifiees = this.caracteristiquesModifiees.filter(item => item !== carac);
-  }
-
-  public updateCaracteristiques() {
-    // TODO décommenter lorsque le service sera implémenté
-    /*
-    this.caracteristiqueDataService.updateCaracteristiques(this.caracteristiquesModified)
+    this.caracteristiqueDataService.deleteCaracteristique(carac)
       .subscribe(
-        onSuccess => this.caracteristiques = this.caracteristiquesModifiees.slice(),
-        onError => console.log(onError.message)
-     );
-     */
+        onSuccess => {
+          console.log(onSuccess);
+          this.reload();
+        },
+        onError => {
+          console.log(onError);
+          this.openSnackBar('Une erreur serveur s\'est produite.');
+        }
+      );
   }
 
-  public resetCaracteristiques() {
-    this.caracteristiquesModifiees = this.caracteristiques.slice();
-  }
-
-  openSnackBar(message: string) {
+  private openSnackBar(message: string) {
     this.snackBar.open(message, 'Fermer', {
       duration: 2500
     });
+  }
+
+  public activateButtons(carac: Caracteristique) {
+    this.caracteristiquesActivatedButtons.set(carac, true);
+  }
+
+  public unactivateButtons(carac: Caracteristique) {
+    this.caracteristiquesActivatedButtons.set(carac, false);
   }
 
 }
