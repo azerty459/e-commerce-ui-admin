@@ -51,19 +51,14 @@ export class DetailProduitComponent implements OnInit {
   public categoriesObservable: Observable<Categorie[]>;
 
   /**
-   * Tableau contenant toutes les catégories
+   * Tableau contenant toutes les catégories existantes (associés ou non au produit)
    */
   public categories: Categorie[];
 
   /**
-   * Objet caractéristique selectionné dans le select du field Caractéristiques
+   * Tableau contenant toutes les caracteristiques existantes (associés ou non au produit)
    */
-  public caracSelected: Caracteristique;
-
-  /**
-   * Tableau contenant toutes les caracteristiques
-   */
-  public caracteristiques: Caracteristique[];
+  public caracteristiques: Caracteristique[] = [];
 
   /**
    * FormControl permettant de gérer la liste déroulante pour la recherche intelligente
@@ -79,8 +74,6 @@ export class DetailProduitComponent implements OnInit {
    * FormControl du select du field caractéristiques
    */
   public inputCaracteristiqueFormControl: FormControl = new FormControl()
-
-  public addCaracIsValid: boolean = true;
 
   /**
    * Boolean permettant de cacher l'alerte de succès
@@ -139,32 +132,17 @@ export class DetailProduitComponent implements OnInit {
   }
 
   async getProduit() {
+    // Obtenir toutes les catégories existantes (associées ou non à un produit)
     this.categories = await this.categorieBusiness.getAllCategories();
 
-    // TODO tableau des caracteristiques à vider avant le subscribe, juste pour le test
-    const c1 = new Caracteristique();
-    const c2 = new Caracteristique();
-    const c3 = new Caracteristique();
-    c1.id = 1;
-    c1.label = 'Editeur';
-    c2.id = 2;
-    c2.label = 'Langue';
-    c3.id = 3;
-    c3.label = 'Dimensions du produit';
-    this.caracteristiques = [c1, c2, c3];
-    this.choixCaracteristiqueFormControl.setValue(c1);
-    // TODO fin du mock
-
-    /*this.caracteristiqueDataService.getAllCaracteristiques().subscribe(
+    // Obtenir toutes les caractéristiques existantes (associées ou non à un produit)
+    this.caracteristiqueDataService.getAll().subscribe(
       carac => this.caracteristiques.push(carac),
       error => console.log(error.message)
-    );*/
+    );
 
-    this.caracteristiques = [c1, c2, c3];
-
-
+    // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
     if (this.categories !== undefined) {
-      // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
       this.categoriesObservable = this.choixCategorieFormControl.valueChanges.pipe(
         startWith(''),
         map(val => this.categories.filter(categorie => categorie.nomCat.toLowerCase().indexOf(val.toLowerCase()) === 0))
@@ -173,8 +151,8 @@ export class DetailProduitComponent implements OnInit {
     const url = this.route.snapshot.routeConfig.path;
     if (url === 'admin/produit/ajouter') {
       this.ajout = true;
-      this.produitModifie = new Produit(null, null, null, null, []);
-      this.produit = new Produit(null, null, null, null, []);
+      this.produitModifie = new Produit();
+      this.produit = new Produit();
       this.disabledSecondaryPanels = true;
     } else {
       this.ajout = false;
@@ -423,8 +401,7 @@ export class DetailProduitComponent implements OnInit {
   }
 
   /**
-   * Renvoie un tableau des clés d'une map.
-   * @param map la map dont on veut extraire les clés.
+   * Renvoie un tableau des clés de la map mapCaracteristique du produitModifie.
    */
   public getCaracteristiquesUpdated() {
     return Array.from(this.produitModifie.mapCaracteristique.keys());
@@ -434,18 +411,25 @@ export class DetailProduitComponent implements OnInit {
    * Ajoute une caractéristique au produit modifié uniquement si la caractéristique est inexistante.
    */
   public addCaracteristiqueToProduit() {
-    const caracChose: Caracteristique = this.choixCaracteristiqueFormControl.value;
-    const valueCaracChose: string = this.inputCaracteristiqueFormControl.value;
-    if (valueCaracChose === '' || valueCaracChose === undefined || valueCaracChose === null) {
+    const caracChosen: Caracteristique = this.choixCaracteristiqueFormControl.value;
+    const valueCaracChosen: string = this.inputCaracteristiqueFormControl.value;
+    if (valueCaracChosen === '' || valueCaracChosen === undefined || valueCaracChosen === null) {
       this.openSnackBar('Valeur incorrecte !');
-    }
-    else if (this.produitModifie.mapCaracteristique.get(caracChose) === undefined) {
-      this.produitModifie.mapCaracteristique.set(caracChose, valueCaracChose);
-      this.addCaracIsValid = true;
     } else {
-      this.addCaracIsValid = false;
+      this.produitModifie.mapCaracteristique.set(caracChosen, valueCaracChosen);
+    }
+    // TODO choix sur la fonction de supression d'un produit (choix 2 ici) :
+    // 1) bouton edition/supression comme sur la page caractéristiques
+    // 2) écrasement lors de l'ajout d'une valeur sur une caractéristique déjà existante
+
+    // choix 1 :
+    /*
+    else if (this.produitModifie.mapCaracteristique.get(caracChosen) === undefined) {
+      this.produitModifie.mapCaracteristique.set(caracChosen, valueCaracChosen);
+    } else {
       this.openSnackBar('Caractéristique déjà existante pour ce produit !');
     }
+    */
   }
 
   /**

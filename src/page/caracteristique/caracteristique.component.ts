@@ -32,41 +32,31 @@ export class CaracteristiqueComponent implements OnInit {
    */
   public caracteristiquesActivatedButtons: Map<Caracteristique, boolean> = new Map<Caracteristique, boolean>();
 
+  /**
+   * A la naissance du composant :
+   * - reload les données
+   */
   ngOnInit() {
     this.reload();
   }
 
+  /**
+   * Fonction de reload qui permet de clear la data + refaire les appels REST
+   */
   public reload() {
-    /*
-    const c1 = new Caracteristique();
-    const c2 = new Caracteristique();
-    const c3 = new Caracteristique();
-    c1.id = 1;
-    c1.label = 'Editeur';
-    c2.id = 2;
-    c2.label = 'Langue';
-    c3.id = 3;
-    c3.label = 'Dimensions du produit';
-    this.caracteristiques = [c1, c2, c3];
-    this.caracteristiquesActivatedButtons.set(c1, false);
-    this.caracteristiquesActivatedButtons.set(c2, false);
-    this.caracteristiquesActivatedButtons.set(c3, false);
-    */
-
-
+    this.caracteristiques = [];
+    this.caracteristiquesActivatedButtons.clear();
     this.caracteristiqueDataService.getAll()
       .map(carac => {
-        console.log('hey');
-        console.log(carac);
         this.caracteristiques.push(carac);
-        this.caracteristiquesActivatedButtons.set(carac, true);
+        this.caracteristiquesActivatedButtons.set(carac, false);
       })
       .subscribe();
-
   }
 
   /**
-   * Crée une caractéristique avec le label égal à la valeur de l'input. Cette valeur ne doit pas être nulle et la valeur ne dois pas déjà exister.
+   * Crée une caractéristique avec le label égal à la valeur de l'input = le label.
+   * Ce label ne doit pas être nul et il ne doit pas déjà exister.
    */
 
   public createCaracteristique(): void {
@@ -81,27 +71,25 @@ export class CaracteristiqueComponent implements OnInit {
       this.caracteristiqueDataService.addCaracteristique(newCaracteristique)
         .subscribe(
           onSuccess => {
-            console.log(onSuccess);
             this.reload();
           },
             onError => {
-            console.log(onError);
-            this.openSnackBar('Une erreur serveur s\'est produite.');
-          }
-        );
+              this.openSnackBar('Une erreur serveur s\'est produite.');
+              this.reload();
+          });
     } else {
       this.openSnackBar('Caractéristique déjà existante !');
     }
   }
 
   /**
-   * Vérifie si la caractéristique existe deja. Renvoie true si c'est le cas, false sinon.
+   * Vérifie si la caractéristique existe deja (non sensible à la casse et aux espaces). Renvoie true si c'est le cas, false sinon.
    */
 
   private isNewCaracsteristique(newCaracteristique: Caracteristique) {
     const caracLabels: string[] = []
     this.caracteristiques.forEach(
-      k => caracLabels.push(k.label)
+      k => caracLabels.push(k.label.trim().toLowerCase())
     );
     return !caracLabels.includes(newCaracteristique.label.toLowerCase());
   }
@@ -125,16 +113,30 @@ export class CaracteristiqueComponent implements OnInit {
       );
   }
 
+  /**
+   * Affiche un snackbar Angular Material 2
+   * @param message Message à afficher dans le snackbar
+   */
   private openSnackBar(message: string) {
     this.snackBar.open(message, 'Fermer', {
       duration: 2500
     });
   }
 
+  /**
+   * Active les bouttons associés à la caractéristique en paramètre.
+   * Méthode appelée lors d'un mouseover sur la caractéristique
+   * @param carac la caractéristique associée au bouttons à afficher
+   */
   public activateButtons(carac: Caracteristique) {
     this.caracteristiquesActivatedButtons.set(carac, true);
   }
 
+  /**
+   * Désactive les bouttons associés à la caractéristique en paramètre.
+   * Méthode appelée lors d'un mouseout sur la caractéristique
+   * @param carac la caractéristique associée au bouttons à cacher
+   */
   public unactivateButtons(carac: Caracteristique) {
     this.caracteristiquesActivatedButtons.set(carac, false);
   }
