@@ -87,7 +87,7 @@ export class CaracteristiqueComponent implements OnInit {
    */
 
   private isNewCaracsteristique(newCaracteristique: Caracteristique) {
-    const caracLabels: string[] = []
+    const caracLabels: string[] = [];
     this.caracteristiques.forEach(
       k => caracLabels.push(k.label.trim().toLowerCase())
     );

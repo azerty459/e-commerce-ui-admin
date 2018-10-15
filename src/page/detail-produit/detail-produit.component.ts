@@ -17,6 +17,7 @@ import {Photo} from '../../../e-commerce-ui-common/models/Photo';
 import {environment} from '../../environments/environment';
 import {Caracteristique} from '../../../e-commerce-ui-common/models/Caracteristique';
 import {CaracteristiqueDataService} from '../../../e-commerce-ui-common/business/data/caracteristique-data.service';
+import {CaracteristiqueAssociated} from '../../../e-commerce-ui-common/models/CaracteristiqueAssociated';
 
 @Component({
   selector: 'app-detail-produit',
@@ -177,7 +178,7 @@ export class DetailProduitComponent implements OnInit {
 
   public async getDataImg(url): Promise<any> {
     return new Promise((resolve, reject) => {
-      let img = new Image();
+      const img = new Image();
       img.onload = () => resolve(img);
       img.onerror = reject;
       img.src = url;
@@ -201,7 +202,7 @@ export class DetailProduitComponent implements OnInit {
   async cancelModification(produit: Produit) {
     // Permet de copier la variable produit dans produitModifier
     for (const index in this.produit.arrayPhoto) {
-      let img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
+      const img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
       this.produit.arrayPhoto[index].imgHeight = img.height;
       this.produit.arrayPhoto[index].imgWidth = img.width;
     }
@@ -219,6 +220,7 @@ export class DetailProduitComponent implements OnInit {
   }
 
   public async updateProduct() {
+    // photo delete
     if (this.photoEnAttenteSupression !== undefined) {
       for (const photo of this.photoEnAttenteSupression) {
         await this.produitBusiness.removePhoto(photo);
@@ -229,6 +231,8 @@ export class DetailProduitComponent implements OnInit {
       }
       this.photoEnAttenteSupression = [];
     }
+
+    // photo ajout
     if (this.photoEnAttenteAjout !== undefined) {
       for (const photo of this.photoEnAttenteAjout) {
         const dataAEnvoyer = new FormData();
@@ -243,13 +247,15 @@ export class DetailProduitComponent implements OnInit {
         }
       }
     }
+
+    // autres modifs
     const retourAPI = await this.produitBusiness.updateProduit(this.produitModifie);
     if (retourAPI != null && retourAPI !== undefined) {
       if (retourAPI.valueOf() instanceof Produit) {
         // Mets à jour la variable produit et produit modifiée
         this.produit = retourAPI;
         for (const index in this.produit.arrayPhoto) {
-          let img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
+          const img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
           this.produit.arrayPhoto[index].imgHeight = img.height;
           this.produit.arrayPhoto[index].imgWidth = img.width;
         }
@@ -284,7 +290,7 @@ export class DetailProduitComponent implements OnInit {
       // Permet de copier la variable produit dans produitModifier
       if (this.produit != null && this.produit !== undefined) {
         for (const index in this.produit.arrayPhoto) {
-          let img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
+          const img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
           this.produit.arrayPhoto[index].imgHeight = img.height;
           this.produit.arrayPhoto[index].imgWidth = img.width;
         }
@@ -401,42 +407,28 @@ export class DetailProduitComponent implements OnInit {
   }
 
   /**
-   * Renvoie un tableau des clés de la map mapCaracteristique du produitModifie.
+   * Ajoute une caractéristique au produit modifié uniquement si la valeur entrée est correcte.
    */
-  public getCaracteristiquesUpdated() {
-    return Array.from(this.produitModifie.mapCaracteristique.keys());
-  }
-
-  /**
-   * Ajoute une caractéristique au produit modifié uniquement si la caractéristique est inexistante.
-   */
+  // TODO Filtrer les caractéristiques proposées
   public addCaracteristiqueToProduit() {
     const caracChosen: Caracteristique = this.choixCaracteristiqueFormControl.value;
     const valueCaracChosen: string = this.inputCaracteristiqueFormControl.value;
     if (valueCaracChosen === '' || valueCaracChosen === undefined || valueCaracChosen === null) {
       this.openSnackBar('Valeur incorrecte !');
     } else {
-      this.produitModifie.mapCaracteristique.set(caracChosen, valueCaracChosen);
+      const caracteristiqueAssociated: CaracteristiqueAssociated = new CaracteristiqueAssociated();
+      caracteristiqueAssociated.caracteristique = caracChosen;
+      caracteristiqueAssociated.value = valueCaracChosen;
+      this.produitModifie.arrayCaracteristiqueAssociated.push(caracteristiqueAssociated);
     }
-    // TODO choix sur la fonction de supression d'un produit (choix 2 ici) :
-    // 1) bouton edition/supression comme sur la page caractéristiques
-    // 2) écrasement lors de l'ajout d'une valeur sur une caractéristique déjà existante
-
-    // choix 1 :
-    /*
-    else if (this.produitModifie.mapCaracteristique.get(caracChosen) === undefined) {
-      this.produitModifie.mapCaracteristique.set(caracChosen, valueCaracChosen);
-    } else {
-      this.openSnackBar('Caractéristique déjà existante pour ce produit !');
-    }
-    */
   }
 
   /**
-   * Supprime une caractéristique au produit modifié uniquement si la caractéristique est existante.
+   * Supprime une caractéristique associée au produit modifiée
    */
-  public deleteCaracteristiqueToProduit(carac: Caracteristique) {
-    this.produitModifie.mapCaracteristique.delete(carac);
+  public deleteCaracteristiqueToProduit(caracAssociated: CaracteristiqueAssociated) {
+    this.produitModifie.arrayCaracteristiqueAssociated.splice(
+      this.produitModifie.arrayCaracteristiqueAssociated.indexOf(caracAssociated, 0), 1);
   }
 
   /**

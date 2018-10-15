@@ -180,22 +180,20 @@
 
 
         <mat-list>
-          <mat-list-item *ngFor="let carac of getCaracteristiquesUpdated()">
-            <div id="caracListItem">
-              <div>
-                {{carac.label}} : {{produitModifie.mapCaracteristique.get(carac)}}
-              </div>
-              <div>
-                <button mat-stroked-button
-                        matTooltip="Supprimer caractéristique"
-                        [matTooltipPosition]="'below'"
-                        (click)="deleteCaracteristiqueToProduit(carac)">
-                  <mat-icon>remove</mat-icon>
-                  Supprimer
-                </button>
-              </div>
+          <mat-list-item *ngFor="let caracAssociated of produitModifie.arrayCaracteristiqueAssociated">
+            <div>
+              {{caracAssociated.caracteristique.label}} : {{caracAssociated.value}}
             </div>
-
+            <!-- TODO changer les bouttons delete + ajouter un edit sur la valeur uniquement-->
+            <div>
+              <button mat-stroked-button
+                      matTooltip="Supprimer caractéristique"
+                      [matTooltipPosition]="'below'"
+                      (click)="deleteCaracteristiqueToProduit(caracAssociated)">
+                <mat-icon>remove</mat-icon>
+                Supprimer
+              </button>
+            </div>
           </mat-list-item>
         </mat-list>
 
