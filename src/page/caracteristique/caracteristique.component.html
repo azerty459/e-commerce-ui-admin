@@ -13,7 +13,7 @@
     </div>
 
     <div>
-      <button mat-icon-button>
+      <button mat-icon-button matTooltip="Ajouter la caractéristique">
         <mat-icon (click)="createCaracteristique()">
           add
         </mat-icon>
@@ -24,25 +24,63 @@
   <mat-list>
     <mat-list-item *ngFor="let carac of this.caracteristiques">
       <div (mouseover)="activateButtons(carac)" (mouseout)="unactivateButtons(carac)" class="caracListItem">
-        <div>
+        <div *ngIf="!this.isInEditMode(carac)">
           {{carac.label}}
         </div>
 
-        <div [hidden]="!this.caracteristiquesActivatedButtons.get(carac)" class="caracButtonsHiddenSwitch">
+        <form *ngIf="this.isInEditMode(carac)">
+          <mat-form-field>
+            <input matInput [formControl]="inputEditCaracteristiqueFormControl" placeholder="Nouveau Nom de Caractéristique" name="valueNewLabelCarac">
+          </mat-form-field>
+        </form>
+
+        <!-- bouttons d'edit et de supression -->
+
+        <div
+          *ngIf="!this.isInEditMode(carac)"
+          [hidden]="!this.caracteristiquesActivatedButtons.get(carac)"
+          class="caracButtonsHiddenSwitch">
           <div class="caracButtonsFlex">
             <div>
-              <button mat-icon-button>
+              <button mat-icon-button
+                      matTooltip="Editer la caractéristique"
+                      (click)="switchEditMode(carac)">
                 <mat-icon color="primary">edit</mat-icon>
               </button>
             </div>
 
             <div>
-              <button mat-icon-button (click)="removeCaracteristique(carac)">
+              <button mat-icon-button
+                      matTooltip="Supprimer la caractéristique"
+                      (click)="removeCaracteristique(carac)">
                 <mat-icon color="warn">delete</mat-icon>
               </button>
             </div>
           </div>
         </div>
+
+        <!-- bouttons de validation ou d'annulation de l'édition -->
+
+        <div *ngIf="this.isInEditMode(carac)">
+          <div class="caracButtonsFlex">
+            <div>
+              <button mat-icon-button
+                      matTooltip="Valider la modification"
+                      (click)="updateCaracteristique(carac)">
+                <mat-icon color="primary">done</mat-icon>
+              </button>
+            </div>
+
+            <div>
+              <button mat-icon-button
+                      matTooltip="Annuler la modification"
+                      (click)="switchEditMode(null)">
+                <mat-icon color="warn">cancel</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </mat-list-item>

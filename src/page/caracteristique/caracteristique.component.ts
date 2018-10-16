@@ -1,16 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CaracteristiqueDataService} from '../../../e-commerce-ui-common/business/data/caracteristique-data.service';
 import {Caracteristique} from '../../../e-commerce-ui-common/models/Caracteristique';
 import {FormControl} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-caracteristique',
   templateUrl: './caracteristique.component.html',
   styleUrls: ['./caracteristique.component.css']
 })
-export class CaracteristiqueComponent implements OnInit {
-
+export class CaracteristiqueComponent implements OnInit, OnDestroy {
 
   constructor(
     private caracteristiqueDataService: CaracteristiqueDataService,
@@ -28,9 +28,23 @@ export class CaracteristiqueComponent implements OnInit {
   public inputNewCaracteristiqueFormControl: FormControl = new FormControl();
 
   /**
-   * Map des catégories : clé => caractéristique, valeur => booléen (correspondant à l'activation ou non des boutons)
+   * Map des caractéristiques pour les bouttons d'édition et de supression :
+   * clé => caractéristique, valeur => booléen (correspondant à l'activation ou non des boutons)
    */
   public caracteristiquesActivatedButtons: Map<Caracteristique, boolean> = new Map<Caracteristique, boolean>();
+
+  /**
+   * Caracteristique à éditer si le mode d'édition est activé.
+   * Si le mode d'édition est désactivé, cette variable vaut null
+   */
+  public caracteristiqueEditMode: Caracteristique = null;
+
+  /**
+   * FormControl lié à l'input qui permet de modifier une nouvelle caractéristique
+   */
+  public inputEditCaracteristiqueFormControl: FormControl = new FormControl();
+
+  public subscriptions: Subscription[] = [];
 
   /**
    * A la naissance du composant :
@@ -41,17 +55,22 @@ export class CaracteristiqueComponent implements OnInit {
   }
 
   /**
-   * Fonction de reload qui permet de clear la data + refaire les appels REST
+   * Fonction de reload qui permet de clear la data + refaire les appels graphql
    */
   public reload() {
     this.caracteristiques = [];
     this.caracteristiquesActivatedButtons.clear();
-    this.caracteristiqueDataService.getAll()
-      .map(carac => {
-        this.caracteristiques.push(carac);
-        this.caracteristiquesActivatedButtons.set(carac, false);
-      })
-      .subscribe();
+    this.caracteristiqueEditMode = null;
+    this.subscriptions = [];
+
+    // get + sort des caractéristiques
+    const sub: Subscription = this.caracteristiqueDataService.getAll()
+      .toArray()
+      .subscribe(caracteristiques => {
+        caracteristiques.sort(Caracteristique.comparatorFn);
+        this.caracteristiques = caracteristiques;
+      });
+    this.subscriptions.push(sub);
   }
 
   /**
@@ -68,6 +87,7 @@ export class CaracteristiqueComponent implements OnInit {
     const newCaracteristique: Caracteristique = new Caracteristique();
     newCaracteristique.label = newCaracteristiqueLabel;
     if (this.isNewCaracsteristique(newCaracteristique)) {
+      this.subscriptions.push(
       this.caracteristiqueDataService.addCaracteristique(newCaracteristique)
         .subscribe(
           onSuccess => {
@@ -76,7 +96,7 @@ export class CaracteristiqueComponent implements OnInit {
             onError => {
               this.openSnackBar('Une erreur serveur s\'est produite.');
               this.reload();
-          });
+          }));
     } else {
       this.openSnackBar('Caractéristique déjà existante !');
     }
@@ -102,8 +122,7 @@ export class CaracteristiqueComponent implements OnInit {
   public removeCaracteristique(carac: Caracteristique) {
     this.caracteristiqueDataService.deleteCaracteristique(carac)
       .subscribe(
-        onSuccess => {
-          console.log(onSuccess);
+        () => {
           this.reload();
         },
         onError => {
@@ -111,6 +130,48 @@ export class CaracteristiqueComponent implements OnInit {
           this.openSnackBar('Une erreur serveur s\'est produite.');
         }
       );
+  }
+
+  /**
+   * Fonction appelée lors d'un click sur un boutton edit d'une caractéristique.
+   * Passe en mode édition de caractéristique :
+   * - le mat-item se transforme en mat-input
+   * - le bouton d'édition disparâit
+   * - les boutons de validation et d'annulation apparaîssent
+   */
+  public switchEditMode(carac: Caracteristique) {
+    this.caracteristiqueEditMode = carac;
+    this.inputEditCaracteristiqueFormControl = new FormControl();
+  }
+
+  /**
+   * Modifie une caractéristique existante si la valeur est différente de celle précédente.
+   * Affiche un snackbar d'erreur sinon.
+   * @param carac
+   */
+  public updateCaracteristique(carac: Caracteristique) {
+    const newLabel = this.inputEditCaracteristiqueFormControl.value.trim();
+    if (newLabel === carac.label) {
+      this.openSnackBar('La valeur n\'a pas été modifiée');
+    }
+    carac.label = newLabel;
+    this.caracteristiqueDataService.updateCaracteristique(carac)
+      .subscribe(
+        () => {
+          this.reload();
+        },
+        onError => {
+          console.log(onError);
+          this.openSnackBar('Une erreur serveur s\'est produite.');
+        }
+      );
+  }
+
+  /**
+   * Renvoie true si la caractéristique est en mode édition, false sinon.
+   */
+  public isInEditMode(carac: Caracteristique) {
+    return (carac === this.caracteristiqueEditMode);
   }
 
   /**
@@ -139,6 +200,10 @@ export class CaracteristiqueComponent implements OnInit {
    */
   public unactivateButtons(carac: Caracteristique) {
     this.caracteristiquesActivatedButtons.set(carac, false);
+  }
+
+  public ngOnDestroy() {
+    this.subscriptions.map(s => s.unsubscribe());
   }
 
 }
