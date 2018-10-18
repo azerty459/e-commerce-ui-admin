@@ -18,6 +18,7 @@ import {environment} from '../../environments/environment';
 import {Caracteristique} from '../../../e-commerce-ui-common/models/Caracteristique';
 import {CaracteristiqueDataService} from '../../../e-commerce-ui-common/business/data/caracteristique-data.service';
 import {CaracteristiqueAssociated} from '../../../e-commerce-ui-common/models/CaracteristiqueAssociated';
+import {deepEqual} from "assert";
 
 @Component({
   selector: 'app-detail-produit',
@@ -136,12 +137,6 @@ export class DetailProduitComponent implements OnInit {
     // Obtenir toutes les catégories existantes (associées ou non à un produit)
     this.categories = await this.categorieBusiness.getAllCategories();
 
-    // Obtenir toutes les caractéristiques existantes (associées ou non à un produit)
-    this.caracteristiqueDataService.getAll().subscribe(
-      carac => this.caracteristiques.push(carac),
-      error => console.log(error.message)
-    );
-
     // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
     if (this.categories !== undefined) {
       this.categoriesObservable = this.choixCategorieFormControl.valueChanges.pipe(
@@ -165,14 +160,23 @@ export class DetailProduitComponent implements OnInit {
         this.router.navigate(['page-404'], {skipLocationChange: true});
       }
       this.produit = retourAPI;
-      console.log(this.produit);
       // gestion dimension photo
+
+      // Obtenir toutes les caractéristiques existantes + filtre pour garder uniquement les caractéristiques non associées au produit
+      this.caracteristiqueDataService.getAll()
+        .filter(carac => !this.produit.isAssociatedWithCaracteristique(carac))
+        .toArray()
+        .subscribe(
+          carac => this.caracteristiques = carac,
+          error => console.log(error.message)
+        );
+
       for (const index in this.produit.arrayPhoto) {
         const img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
         this.produit.arrayPhoto[index].imgHeight = img.height;
         this.produit.arrayPhoto[index].imgWidth = img.width;
       }
-      this.produitModifie = Object.assign({}, this.produit);
+      this.produitModifie = this.produit.createSame();
     }
   }
 
@@ -185,17 +189,14 @@ export class DetailProduitComponent implements OnInit {
     });
   }
 
-
   comparedProductWithProductModif() {
-    // Si produit modifier est différent de produit
-    if (JSON.stringify(this.produit) !== JSON.stringify(this.produitModifie)) {
-      this.cacherBoutonAnnulation = false;
-      // Permets d'afficher la pop-up "en cours d'édition"
-      this.formEditService.setDirty(true);
-    } else {
+    try {
+      deepEqual(this.produit, this.produitModifie);
+      // si le produit et le produit modifié sont différents
       this.cacherBoutonAnnulation = true;
-      // Permets d'afficher la pop-up "en cours d'édition"
-      this.formEditService.setDirty(false);
+    } catch {
+      // si le produit et le produit modifié sont égaux en tout point (deep equals)
+      this.cacherBoutonAnnulation = false;
     }
   }
 
@@ -275,7 +276,6 @@ export class DetailProduitComponent implements OnInit {
           ' le nom et le prix HT.';
       }
     }
-
 
   }
 
@@ -409,7 +409,6 @@ export class DetailProduitComponent implements OnInit {
   /**
    * Ajoute une caractéristique au produit modifié uniquement si la valeur entrée est correcte.
    */
-  // TODO Filtrer les caractéristiques proposées
   public addCaracteristiqueToProduit() {
     const caracChosen: Caracteristique = this.choixCaracteristiqueFormControl.value;
     const valueCaracChosen: string = this.inputCaracteristiqueFormControl.value;
@@ -420,6 +419,7 @@ export class DetailProduitComponent implements OnInit {
       caracteristiqueAssociated.caracteristique = caracChosen;
       caracteristiqueAssociated.value = valueCaracChosen;
       this.produitModifie.arrayCaracteristiqueAssociated.push(caracteristiqueAssociated);
+      this.comparedProductWithProductModif();
     }
   }
 
@@ -428,13 +428,13 @@ export class DetailProduitComponent implements OnInit {
    */
   public deleteCaracteristiqueToProduit(caracAssociated: CaracteristiqueAssociated) {
     this.produitModifie.arrayCaracteristiqueAssociated.splice(
-      this.produitModifie.arrayCaracteristiqueAssociated.indexOf(caracAssociated, 0), 1);
+      this.produitModifie.arrayCaracteristiqueAssociated.indexOf(caracAssociated, 0),
+      1);
   }
 
   /**
    * Affiche le snackbar qui affiche un message d'erreur si l'ajout d'une caractéristique est impossible
    */
-
 
   openSnackBar(message: string) {
     this.snackBar.open(message, 'Fermer', {

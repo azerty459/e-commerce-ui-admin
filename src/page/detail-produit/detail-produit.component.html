@@ -4,6 +4,8 @@
 <ng-template #nonSup>
   <h1>{{ajout ? 'Ajout d\'un produit' : ''+produit?.nom+' - '+produit?.ref }}</h1>
 </ng-template>
+
+
 <div class="toolbar">
   <div class="leftTool">
     <i matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip" class="material-icons backArrow"
@@ -22,7 +24,8 @@
       <i class="material-icons">delete</i>
     </button>
 
-    <button *ngIf="! ajout" (click)="saveModification()" type="button" [disabled]="cacherBoutonAnnulation && !photoEnAttenteSupression.length!=0 && !photoEnAttenteAjout.length!=0 "
+    <button *ngIf="! ajout" (click)="saveModification()" type="button"
+            [disabled]="cacherBoutonAnnulation && !photoEnAttenteSupression.length!=0 && !photoEnAttenteAjout.length!=0 "
             class="btn btn-success pull-right centrer-block"
             matTooltip="Enregistrer les modifications" [matTooltipPosition]="'below'">
       <b class="noShow">Sauvegarder</b>
@@ -38,6 +41,7 @@
 
   </div>
 </div>
+
 <div *ngIf="!cacherAlert || !cacherErreur" class="alerteDiv">
   <div *ngIf="!cacherAlert" class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>
   <div *ngIf="!cacherErreur" class="alert alert-danger" role="alert" [hidden]="cacherErreur">{{message}}</div>
@@ -45,111 +49,111 @@
 
 
 <div *ngIf="produitModifie">
-    <mat-accordion multi="true">
-      <mat-expansion-panel #panel1 [expanded]="true">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Details
-          </mat-panel-title>
-          <mat-panel-description *ngIf="panel1.expanded === false">
-            <div [class]="panel1.expanded === false ? 'centrerPanel' : ''">Modifier les categories du produit</div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <form id="formProduit">
-          <div class="flex-container">
-            <div class="form-group short-field">
-              <label for="referenceProduit">Référence</label>
-              <input id="referenceProduit" type="text" [(ngModel)]="produitModifie.ref" name="reference"
-                     class="form-control form-control-lg" [attr.disabled]="! ajout ? 'disabled' : null">
-            </div>
+  <mat-accordion multi="true">
+    <mat-expansion-panel #panel1 [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Details
+        </mat-panel-title>
+        <mat-panel-description *ngIf="panel1.expanded === false">
+          <div [class]="panel1.expanded === false ? 'centrerPanel' : ''">Modifier le détail d'un produit</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form id="formProduit">
+        <div class="flex-container">
+          <div class="form-group short-field">
+            <label for="referenceProduit">Référence</label>
+            <input id="referenceProduit" type="text" [(ngModel)]="produitModifie.ref" name="reference"
+                   class="form-control form-control-lg" [attr.disabled]="! ajout ? 'disabled' : null">
+          </div>
 
-            <div class="form-group long-field">
-              <label for="nomProduit">Nom</label>
-              <input (input)="comparedProductWithProductModif()" id="nomProduit" type="text"
-                     [(ngModel)]="produitModifie.nom"
-                     name="nom" class="form-control form-control-lg">
-            </div>
+          <div class="form-group long-field">
+            <label for="nomProduit">Nom</label>
+            <input (input)="comparedProductWithProductModif()" id="nomProduit" type="text"
+                   [(ngModel)]="produitModifie.nom"
+                   name="nom" class="form-control form-control-lg">
+          </div>
 
-            <div class="form-group short-field">
-              <label for="prixProduit">Prix HT</label>
-              <div class="input-group">
-                <input (input)="comparedProductWithProductModif()" id="prixProduit" type="number" min="0" step="0.2"
-                       [(ngModel)]="produitModifie.prixHT" (keypress)="numberToCommaSeperate($event)"
-                       name="prixHT" class="form-control form-control-lg">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-euro"></i></span>
-             </div>
+          <div class="form-group short-field">
+            <label for="prixProduit">Prix HT</label>
+            <div class="input-group">
+              <input (input)="comparedProductWithProductModif()" id="prixProduit" type="number" min="0" step="0.2"
+                     [(ngModel)]="produitModifie.prixHT" (keypress)="numberToCommaSeperate($event)"
+                     name="prixHT" class="form-control form-control-lg">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-euro"></i></span>
             </div>
           </div>
-          <div class="form-group">
-            <label for="descProduit">Description</label>
-            <textarea (input)="comparedProductWithProductModif()" id="descProduit" rows="4"
-                      [(ngModel)]="produitModifie.description" name="description" class="form-control form-control-lg"></textarea>
-          </div>
-        </form>
-      </mat-expansion-panel>
+        </div>
+        <div class="form-group">
+          <label for="descProduit">Description</label>
+          <textarea (input)="comparedProductWithProductModif()" id="descProduit" rows="4"
+                    [(ngModel)]="produitModifie.description" name="description"
+                    class="form-control form-control-lg"></textarea>
+        </div>
+      </form>
+    </mat-expansion-panel>
 
-      <mat-expansion-panel #panel2 disabled="{{disabledSecondaryPanels}}">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Categories
-          </mat-panel-title>
-          <mat-panel-description *ngIf="panel2.expanded === false">
-            <div [class]="panel2.expanded === false ? 'centrerPanel' : ''">Modifier les categories du produit</div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
+    <mat-expansion-panel #panel2 disabled="{{disabledSecondaryPanels}}">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Categories
+        </mat-panel-title>
+        <mat-panel-description *ngIf="panel2.expanded === false">
+          <div [class]="panel2.expanded === false ? 'centrerPanel' : ''">Modifier les categories du produit</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
 
-        <mat-form-field class="demo-chip-list">
-          <mat-chip-list #chipList>
-            <mat-chip
-              *ngFor="let categorie of produitModifie.arrayCategorie"
-              [selectable]="selectable"
-              [removable]="removable"
-              (removed)="deleteCategory(categorie)">
-              {{categorie.nomCat}}
-              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-            </mat-chip>
-            <label for="listCategorie"></label>
-            <input
-              id="listCategorie"
-              (blur)="clearInputChips()"
-              placeholder="Écrivez le nom d'une catégorie pour associer votre produit à la catégorie choisie..."
-              #categorieInput
-              [formControl]="choixCategorieFormControl"
-              [matAutocomplete]="auto"
-              [matChipInputFor]="chipList"
-              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-              [matChipInputAddOnBlur]="addOnBlur"
-            />
-          </mat-chip-list>
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="addCategory($event)">
-            <mat-option *ngFor="let categorie of categoriesObservable | async" [value]="categorie">
-              {{ categorie.nomCat}}
-              {{categorie.chemin[0] ? '(' : ''}}
-              <span *ngFor="let categorieDuChemin of categorie.chemin; let i = index">
+      <mat-form-field class="demo-chip-list">
+        <mat-chip-list #chipList>
+          <mat-chip
+            *ngFor="let categorie of produitModifie.arrayCategorie"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="deleteCategory(categorie)">
+            {{categorie.nomCat}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <label for="listCategorie"></label>
+          <input
+            id="listCategorie"
+            (blur)="clearInputChips()"
+            placeholder="Écrivez le nom d'une catégorie pour associer votre produit à la catégorie choisie..."
+            #categorieInput
+            [formControl]="choixCategorieFormControl"
+            [matAutocomplete]="auto"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+          />
+        </mat-chip-list>
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="addCategory($event)">
+          <mat-option *ngFor="let categorie of categoriesObservable | async" [value]="categorie">
+            {{ categorie.nomCat}}
+            {{categorie.chemin[0] ? '(' : ''}}
+            <span *ngFor="let categorieDuChemin of categorie.chemin; let i = index">
                  < {{categorieDuChemin.nom}}
               </span>
-              {{categorie.chemin[0] ? ')' : ''}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </mat-expansion-panel>
+            {{categorie.chemin[0] ? ')' : ''}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </mat-expansion-panel>
 
-      <mat-expansion-panel #panel3 disabled="{{disabledSecondaryPanels}}" id="caracPanel">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Caractéristiques
-          </mat-panel-title>
-          <mat-panel-description *ngIf="panel3.expanded === false">
-            <div [class]="panel3.expanded === false ? 'centrerPanel' : ''">Modifier les caractéristiques du produit</div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <!-- Permet de charger quand on ouvre le panel et pas avant
-        <ng-template matExpansionPanelContent>
-          Some deferred content
-        </ng-template>
-        -->
-        <div id="caracDiv">
-          <div>
+    <mat-expansion-panel #panel3 disabled="{{disabledSecondaryPanels}}" id="caracPanel">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Caractéristiques
+        </mat-panel-title>
+        <mat-panel-description *ngIf="panel3.expanded === false">
+          <div [class]="panel3.expanded === false ? 'centrerPanel' : ''">Modifier les caractéristiques du produit</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <!-- Contenu hors header du panel Caractéristiques -->
+      <table>
+        <tr>
+          <!-- mat-select des caractéristiques existantes -->
+          <th>
             <form>
               <mat-form-field>
                 <mat-select [formControl]="choixCaracteristiqueFormControl"
@@ -160,108 +164,122 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-
+            </form>
+          </th>
+          <!-- mat-input correspondant à la valeur que l'utilisateur veut attribuer -->
+          <th>
+            <form>
               <mat-form-field>
                 <input matInput [formControl]="inputCaracteristiqueFormControl" placeholder="Valeur" name="valueCarac">
               </mat-form-field>
             </form>
-          </div>
-
-          <div>
-            <button mat-stroked-button
+          </th>
+          <!-- boutton d'ajout d'une caractéristique associée au produit -->
+          <th>
+            <button mat-icon-button
                     matTooltip="Ajouter caractéristique"
-                    [matTooltipPosition]="'below'"
                     (click)="addCaracteristiqueToProduit()">
-              <mat-icon>add</mat-icon>
-              Ajouter
+              <mat-icon>
+                add
+              </mat-icon>
             </button>
-          </div>
-        </div>
+          </th>
+
+        </tr>
+
+        <tr *ngFor="let caracAssociated of produitModifie.arrayCaracteristiqueAssociated">
+          <td>
+            {{caracAssociated.caracteristique.label}}
+          </td>
+          <td>
+            {{caracAssociated.value}}
+          </td>
+          <td>
+            <button mat-icon-button
+                    matTooltip="Supprimer caractéristique"
+                    (click)="deleteCaracteristiqueToProduit(caracAssociated)">
+              <mat-icon>
+                remove
+              </mat-icon>
+            </button>
+          </td>
+        </tr>
+
+      </table>
+
+      <!-- Fin du contenu hors header du panel Caractéristiques -->
+
+    </mat-expansion-panel>
+
+    <mat-expansion-panel #panel4 disabled="{{disabledSecondaryPanels}}">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Photos
+        </mat-panel-title>
+        <mat-panel-description *ngIf="panel4.expanded === false">
+          <div [class]="panel4.expanded === false ? 'centrerPanel' : ''">Modifier les photos du produit</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
 
 
-        <mat-list>
-          <mat-list-item *ngFor="let caracAssociated of produitModifie.arrayCaracteristiqueAssociated">
-            <div>
-              {{caracAssociated.caracteristique.label}} : {{caracAssociated.value}}
-            </div>
-            <!-- TODO changer les bouttons delete + ajouter un edit sur la valeur uniquement-->
-            <div>
-              <button mat-stroked-button
-                      matTooltip="Supprimer caractéristique"
-                      [matTooltipPosition]="'below'"
-                      (click)="deleteCaracteristiqueToProduit(caracAssociated)">
-                <mat-icon>remove</mat-icon>
-                Supprimer
-              </button>
-            </div>
-          </mat-list-item>
-        </mat-list>
+      <div class="rowPhoto">
 
-      </mat-expansion-panel>
+        <mat-card class="col-md-6 photoCard" *ngFor="let photo of produitModifie.arrayPhoto;let i = index">
+          <mat-card-header>
 
-      <mat-expansion-panel #panel4 disabled="{{disabledSecondaryPanels}}">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Photos
-          </mat-panel-title>
-          <mat-panel-description *ngIf="panel4.expanded === false">
-            <div [class]="panel4.expanded === false ? 'centrerPanel' : ''">Modifier les categories du produit</div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-
-
-
-        <div class="rowPhoto">
-
-          <mat-card class="col-md-6 photoCard" *ngFor="let photo of produitModifie.arrayPhoto;let i = index">
-            <mat-card-header>
-
-              <mat-card-title>
-                <div>Photo n°{{i+1}} {{produitModifie.photoPrincipale.id === photo.id ? '- photo principale du produit' : ''}}
-                </div>
-                <div class="photoTool">
-                  <button mat-icon-button color="warn" class="deletePhotoButton" (click)="removePhoto(photo)">
-                    <mat-icon>clear</mat-icon>
-                  </button>
-                  <button *ngIf="photo.id !== 0" mat-icon-button color="primary" class="favPhotoButton" (click)="favPhoto(photo)">
-                    <mat-icon>{{produitModifie.photoPrincipale.id != photo.id ? 'favorite_border ' : 'favorite'}}</mat-icon>
-                  </button>
-                </div>
-
-              </mat-card-title>
-              <mat-card-subtitle>{{photo.nom}}</mat-card-subtitle>
-
-            </mat-card-header>
-
-            <mat-card-content>
-              <img class="mat-card-image" src="{{!photo.url.startsWith(environment.api_rest_download_url) ? photo.url : photo.url+'_1080x1024'}}" alt="PhotoNumero{{i}}"/>
-            </mat-card-content>
-            <mat-card-subtitle *ngIf="photo.imgHeight != undefined">dimension : {{photo.imgWidth+' x '+photo.imgHeight}}</mat-card-subtitle>
-            <mat-card-actions>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-        <div class="rowUpload">
-          <mat-card class="col-md-6 photoCard">
-            <mat-card-header>
-              <mat-card-title>Upload</mat-card-title>
-              <mat-card-subtitle>taille maximale 1 Mo</mat-card-subtitle>
-            </mat-card-header>
-            <img *ngIf="upload.imgSelected" class="mat-card-image" src="../../assets/img/1024px-Emblem-question.svg.png"
-                 alt="produit image"/>
-            <mat-card-content>
-              <div class="container-fluid">
-                <app-upload-img [photoEnAttente]="photoEnAttenteAjout" [produit]="produitModifie" class="center-block" #upload></app-upload-img>
+            <mat-card-title>
+              <div>Photo n°{{i+1}} {{produitModifie.photoPrincipale.id === photo.id ? '- photo principale du produit' :
+                ''}}
               </div>
-            </mat-card-content>
-            <mat-card-actions>
-            </mat-card-actions>
-          </mat-card>
-        </div>
+              <div class="photoTool">
+                <button mat-icon-button color="warn" class="deletePhotoButton" (click)="removePhoto(photo)">
+                  <mat-icon>clear</mat-icon>
+                </button>
+                <button *ngIf="photo.id !== 0" mat-icon-button color="primary" class="favPhotoButton"
+                        (click)="favPhoto(photo)">
+                  <mat-icon>{{produitModifie.photoPrincipale.id != photo.id ? 'favorite_border ' : 'favorite'}}
+                  </mat-icon>
+                </button>
+              </div>
 
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
+            </mat-card-title>
+            <mat-card-subtitle>{{photo.nom}}</mat-card-subtitle>
+
+          </mat-card-header>
+
+          <mat-card-content>
+            <img class="mat-card-image"
+                 src="{{!photo.url.startsWith(environment.api_rest_download_url) ? photo.url : photo.url+'_1080x1024'}}"
+                 alt="PhotoNumero{{i}}"/>
+          </mat-card-content>
+          <mat-card-subtitle *ngIf="photo.imgHeight != undefined">dimension : {{photo.imgWidth+' x '+photo.imgHeight}}
+          </mat-card-subtitle>
+          <mat-card-actions>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div class="rowUpload">
+        <mat-card class="col-md-6 photoCard">
+          <mat-card-header>
+            <mat-card-title>Upload</mat-card-title>
+            <mat-card-subtitle>taille maximale 1 Mo</mat-card-subtitle>
+          </mat-card-header>
+          <img *ngIf="upload.imgSelected" class="mat-card-image" src="../../assets/img/1024px-Emblem-question.svg.png"
+               alt="produit image"/>
+          <mat-card-content>
+            <div class="container-fluid">
+              <app-upload-img [photoEnAttente]="photoEnAttenteAjout" [produit]="produitModifie" class="center-block"
+                              #upload></app-upload-img>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
 
 
 
