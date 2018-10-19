@@ -18,7 +18,7 @@ import {environment} from '../../environments/environment';
 import {Caracteristique} from '../../../e-commerce-ui-common/models/Caracteristique';
 import {CaracteristiqueDataService} from '../../../e-commerce-ui-common/business/data/caracteristique-data.service';
 import {CaracteristiqueAssociated} from '../../../e-commerce-ui-common/models/CaracteristiqueAssociated';
-import {deepEqual} from "assert";
+import {deepEqual} from 'assert';
 
 @Component({
   selector: 'app-detail-produit',
@@ -94,8 +94,6 @@ export class DetailProduitComponent implements OnInit {
    * @type {boolean}
    */
   toolNotFixed = true;
-
-  ancienPrixHTModifier: number;
 
   public photoEnAttenteAjout = [];
   public photoEnAttenteSupression = [];
@@ -415,10 +413,17 @@ export class DetailProduitComponent implements OnInit {
     if (valueCaracChosen === '' || valueCaracChosen === undefined || valueCaracChosen === null) {
       this.openSnackBar('Valeur incorrecte !');
     } else {
+      // Valeur acceptée, création de la nouvelle caractéristique associée
       const caracteristiqueAssociated: CaracteristiqueAssociated = new CaracteristiqueAssociated();
       caracteristiqueAssociated.caracteristique = caracChosen;
       caracteristiqueAssociated.value = valueCaracChosen;
       this.produitModifie.arrayCaracteristiqueAssociated.push(caracteristiqueAssociated);
+
+      // Retrait de cette caractéristique parmi les choix proposés + clean de l'input (pour la placeholder)
+      this.caracteristiques.splice(this.caracteristiques.indexOf(caracChosen, 0), 1);
+      this.choixCaracteristiqueFormControl.reset();
+
+      // Check si il y a des modifications sur le produit
       this.comparedProductWithProductModif();
     }
   }
@@ -427,9 +432,15 @@ export class DetailProduitComponent implements OnInit {
    * Supprime une caractéristique associée au produit modifiée
    */
   public deleteCaracteristiqueToProduit(caracAssociated: CaracteristiqueAssociated) {
+    // Suppression de la caractéristique associés
     this.produitModifie.arrayCaracteristiqueAssociated.splice(
-      this.produitModifie.arrayCaracteristiqueAssociated.indexOf(caracAssociated, 0),
-      1);
+      this.produitModifie.arrayCaracteristiqueAssociated.indexOf(caracAssociated, 0), 1);
+
+    // Ajout de cette caractéristique parmi les choix proposés
+    this.caracteristiques.push(caracAssociated.caracteristique);
+
+    // Check si il y a des modificiations sur le produit
+    this.comparedProductWithProductModif();
   }
 
   /**
