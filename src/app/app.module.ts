@@ -37,6 +37,7 @@ import {FiltreService} from "../../e-commerce-ui-common/business/filtre.service"
 import {ProduiDataService} from "../../e-commerce-ui-common/business/data/produitData.service";
 import {ChartsModule} from 'ng2-charts'
 import {MatTableModule} from '@angular/material/table';
+import { StatistiqueBusiness } from '../../e-commerce-ui-common/business/statistique.service';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import {MatTableModule} from '@angular/material/table';
     ChartsModule
   ],
   providers: [
+    StatistiqueBusiness,
     ProduitBusiness,
     ProduiDataService,
     CategorieBusinessService,

@@ -2,7 +2,7 @@
     <h1>Dashboard</h1>
 </div>
 
-<div class="tableau">
+<div *ngIf="dataSource" class="tableau">
 
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <!--- Note that these columns can be defined in any order.
