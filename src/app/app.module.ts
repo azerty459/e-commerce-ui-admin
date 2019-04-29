@@ -35,7 +35,7 @@ import {AuthDataService} from "../business/auth-data.service";
 import {AuthInterceptor} from "../../e-commerce-ui-common/utilitaires/AuthInterceptor";
 import {FiltreService} from "../../e-commerce-ui-common/business/filtre.service";
 import {ProduiDataService} from "../../e-commerce-ui-common/business/data/produitData.service";
-
+import {ChartsModule} from 'ng2-charts'
 import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
@@ -66,7 +66,8 @@ import {MatTableModule} from '@angular/material/table';
     HttpClientModule, // Utilisation du module http
     CollapseModule.forRoot(), // Pour ngx bootstrap
     BsDropdownModule.forRoot(), // Pour ngx bootstrap
-    MatTableModule
+    MatTableModule,
+    ChartsModule
   ],
   providers: [
     ProduitBusiness,

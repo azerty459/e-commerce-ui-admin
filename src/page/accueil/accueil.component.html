@@ -1,4 +1,4 @@
-<div>
+<div class="titre">
     <h1>Dashboard</h1>
 </div>
 
@@ -23,5 +23,18 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-      
+
+    <div class="graph">
+      <div style="display: block">
+        <canvas baseChart
+          [datasets]="barChartData"
+          [labels]="barChartLabels"
+          [options]="barChartOptions"
+          [legend]="barChartLegend"
+          [chartType]="barChartType">
+        </canvas>
+      </div>
+      <button mat-button mat-raised-button color="primary" (click)="randomize()">Update</button>
+    </div>
+           
 </div>
