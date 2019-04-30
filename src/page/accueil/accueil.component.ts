@@ -31,7 +31,7 @@ export class AccueilComponent implements OnInit{
   barChartLabels: Label[] = null;
   barChartType: ChartType = 'bar';
   barChartLegend = true;
-  barChartData: ChartDataSets[] = [ {data: [8,24,16,32], label: 'Quantité par Catégorie', backgroundColor: 'rgba(0,23,232,0.18)', hoverBackgroundColor: 'rgba(0,23,232,0.6)', borderWidth: 1,borderColor: 'rgba(15,15,15,1)', hoverBorderColor: 'rgba(15,15,15,1)'}];
+  barChartData: ChartDataSets[] = [ {data: [], label: 'Quantité par Catégorie', backgroundColor: 'rgba(0,23,232,0.18)', hoverBackgroundColor: 'rgba(0,23,232,0.6)', borderWidth: 1,borderColor: 'rgba(15,15,15,1)', hoverBorderColor: 'rgba(15,15,15,1)'}];
 
   constructor(private statistiqueBusiness: StatistiqueBusiness){
 
@@ -46,7 +46,7 @@ export class AccueilComponent implements OnInit{
     await this.promiseStatistique.then(
       (value) => {
         this.statistique = value;
-
+        console.log(this.statistique)
         let dataTab = [] 
         dataTab.push({name: 'Utilisateurs', nombreLigne: this.statistique.nbUtilisateur})
         dataTab.push({name: 'Produits', nombreLigne: this.statistique.nbProduit})
@@ -54,10 +54,13 @@ export class AccueilComponent implements OnInit{
         this.dataSource = dataTab;
 
         let dataLabels = []
+        let dataNumberProduit = []
         for(const nb of this.statistique.nbProduitCategorie){
           dataLabels.push(nb.categorie);
+          dataNumberProduit.push(nb.nb);
         }
         this.barChartLabels = dataLabels;
+        this.barChartData[0].data = dataNumberProduit;
       });
   }
 }
