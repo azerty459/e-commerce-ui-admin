@@ -113,15 +113,14 @@ export class DetailUtilisateurComponent implements OnInit {
       this.utilisateur = new Utilisateur(null, null, null, null, null);
       this.utilisateur.role =  new Role(0,"");
     } else {
-      // La modification ce n'est pas en fait
-      // this.ajout = false;
-      // const idUtilisateur = parseInt(this.route.snapshot.paramMap.get('id'), 10);
-      // const retourAPI = await this.utilisateurService.getById(idUtilisateur);
-      // if (!(retourAPI.valueOf() instanceof Utilisateur)) {
-      //   this.router.navigate(['page-404'], {skipLocationChange: true});
-      // }
-      // this.utilisateur = retourAPI;
-      // this.utilisateurModifie = JSON.parse(JSON.stringify(this.utilisateur));
+      this.ajout = false;
+      const idUtilisateur = parseInt(this.route.snapshot.paramMap.get('id'), 10);
+      const retourAPI = await this.utilisateurService.getById(idUtilisateur);
+      if (!(retourAPI.valueOf() instanceof Utilisateur)) {
+        this.router.navigate(['page-404'], {skipLocationChange: true});
+      }
+      this.utilisateur = retourAPI;
+      this.utilisateurModifie = JSON.parse(JSON.stringify(this.utilisateur));
     }
   }
 

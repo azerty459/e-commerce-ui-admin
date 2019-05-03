@@ -50,6 +50,11 @@ const appRoutes: Routes = [
     data: { title: 'Ajout utilisateur' }
   },
   {
+    path: 'admin/utilisateur/detail/:id',
+    component: DetailUtilisateurComponent,
+    data: { title: 'Détail utilisateur' }
+  },
+  {
     path: 'admin/utilisateurs/page/:page',
     component: UtilisateurComponent,
     data: { title: 'Gestion des utilisateurs' }
