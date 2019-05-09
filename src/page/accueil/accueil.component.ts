@@ -4,14 +4,6 @@ import { Label, defaultColors } from 'ng2-charts';
 import { Statistique } from '../../../e-commerce-ui-common/models/Statistique';
 import { StatistiqueBusiness } from '../../../e-commerce-ui-common/business/statistique.service'
 
-export interface PeriodicElement {
-  name: string;
-  nombreLigne: number;
-}
-
-/**
- * @title Basic use of `<table mat-table>`
- */
 @Component({
   selector: 'app-accueil',
   templateUrl: './accueil.component.html',
