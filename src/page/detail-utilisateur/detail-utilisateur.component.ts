@@ -1,30 +1,30 @@
-import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Observable} from "rxjs";
-import {COMMA, ENTER} from "@angular/cdk/keycodes";
-import {Modal} from "ngx-modialog/plugins/bootstrap";
-import {PreviousRouteBusiness} from "../../../e-commerce-ui-common/business/previous-route.service";
-import {map, startWith} from "rxjs/operators";
-import {FormControl} from "@angular/forms";
-import {FormEditService} from "../../../e-commerce-ui-common/business/form-edit.service";
-import {UtilisateurService} from "../../../e-commerce-ui-common/business/utilisateur.service";
-import {Utilisateur} from "../../../e-commerce-ui-common/models/Utilisateur";
-import {RoleService} from "../../../e-commerce-ui-common/business/role.service";
-import {Role} from "../../../e-commerce-ui-common/models/Role";
-import {MatAutocompleteSelectedEvent} from "@angular/material";
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {Modal} from 'ngx-modialog/plugins/bootstrap';
+import {PreviousRouteBusiness} from '../../../e-commerce-ui-common/business/previous-route.service';
+import {map, startWith} from 'rxjs/operators';
+import {FormControl} from '@angular/forms';
+import {FormEditService} from '../../../e-commerce-ui-common/business/form-edit.service';
+import {UtilisateurService} from '../../../e-commerce-ui-common/business/utilisateur.service';
+import {Utilisateur} from '../../../e-commerce-ui-common/models/Utilisateur';
+import {RoleService} from '../../../e-commerce-ui-common/business/role.service';
+import {Role} from '../../../e-commerce-ui-common/models/Role';
+import {MatAutocompleteSelectedEvent} from '@angular/material';
 
 @Component({
-  selector: "app-detail-utilisateur",
-  templateUrl: "./detail-utilisateur.component.html",
-  styleUrls: ["./detail-utilisateur.component.scss"]
+  selector: 'app-detail-utilisateur',
+  templateUrl: './detail-utilisateur.component.html',
+  styleUrls: ['./detail-utilisateur.component.scss']
 })
 export class DetailUtilisateurComponent implements OnInit {
-  @ViewChild("photo") public photo;
+  @ViewChild('photo') public photo;
   public selectable = true;
   public removable = true;
   public addOnBlur = true;
-  public positionBeforeTooltip = "before";
-  public positionAfterTooltip = "after";
+  public positionBeforeTooltip = 'before';
+  public positionAfterTooltip = 'after';
   // Enter, comma
   public separatorKeysCodes = [ENTER, COMMA];
   public message: string;
@@ -71,13 +71,13 @@ export class DetailUtilisateurComponent implements OnInit {
    */
   toolNotFixed = true;
 
-  public typePassword = "password";
+  public typePassword = 'password';
 
-  public classPassword = "glyphicon glyphicon-eye-open";
+  public classPassword = 'glyphicon glyphicon-eye-open';
 
 
-  @ViewChild("roleInput") roleInput: ElementRef;
-  @ViewChild("toolContainerNotFixed", {read: ElementRef}) toolContainerNotFixed: ElementRef;
+  @ViewChild('roleInput') roleInput: ElementRef;
+  @ViewChild('toolContainerNotFixed', {read: ElementRef}) toolContainerNotFixed: ElementRef;
 
   constructor(private modal: Modal,
               private formEditService: FormEditService,
@@ -91,7 +91,7 @@ export class DetailUtilisateurComponent implements OnInit {
   ngOnInit() {
     this.formEditService.clear();
     this.getUser();
-    window.addEventListener("scroll", this.scroll, true); // third parameter
+    window.addEventListener('scroll', this.scroll, true); // third parameter
   }
 
   async getUser() {
@@ -100,25 +100,25 @@ export class DetailUtilisateurComponent implements OnInit {
     if (this.roles !== undefined) {
       // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
       this.roleObservable = this.choixRoleFormControl.valueChanges.pipe(
-        startWith(""),
+        startWith(''),
         map(val => this.roles.filter(role => role.nom.toLowerCase().indexOf(val) === 0))
       );
     }
     //
     const url = this.route.snapshot.routeConfig.path;
-    if (url === "admin/utilisateur/ajouter") {
+    if (url === 'admin/utilisateur/ajouter') {
       this.ajout = true;
       this.utilisateurModifie = new Utilisateur(null, null, null, null, null);
-      this.utilisateurModifie.role = new Role(0, "");
+      this.utilisateurModifie.role = new Role(0, '');
 
       this.utilisateur = new Utilisateur(null, null, null, null, null);
-      this.utilisateur.role = new Role(0, "");
+      this.utilisateur.role = new Role(0, '');
     } else {
       this.ajout = false;
-      const idUtilisateur = parseInt(this.route.snapshot.paramMap.get("id"), 10);
+      const idUtilisateur = parseInt(this.route.snapshot.paramMap.get('id'), 10);
       const retourAPI = await this.utilisateurService.getById(idUtilisateur);
       if (!(retourAPI.valueOf() instanceof Utilisateur)) {
-        this.router.navigate(["page-404"], {skipLocationChange: true});
+        this.router.navigate(['page-404'], {skipLocationChange: true});
       }
       this.utilisateur = retourAPI;
       this.utilisateurModifie = JSON.parse(JSON.stringify(this.utilisateur));
@@ -165,7 +165,7 @@ export class DetailUtilisateurComponent implements OnInit {
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.cacherErreur = true;
         this.cacherAlert = false;
-        this.message = "L'utilisateur a été mis à jour.";
+        this.message = 'L\'utilisateur a été mis à jour.';
         this.cacherBoutonAnnulation = true;
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.formEditService.setDirty(false);
@@ -173,8 +173,8 @@ export class DetailUtilisateurComponent implements OnInit {
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.cacherErreur = false;
         this.cacherAlert = true;
-        this.message = "L'utilisateur n'a pas pu être modifié, vous devez renseigner au minimum les champs de l'email" +
-          " et du mdp";
+        this.message = 'L\'utilisateur n\'a pas pu être modifié, vous devez renseigner au minimum les champs de l\'email' +
+          ' et du mdp';
       }
     }
   }
@@ -192,8 +192,8 @@ export class DetailUtilisateurComponent implements OnInit {
       if (this.utilisateur != null && this.utilisateur !== undefined) {
         this.utilisateurModifie = JSON.parse(JSON.stringify(retourAPI));
       }
-      this.message = "L'utilisateur a été correctement ajouté";
-      this.router.navigate(["/admin/utilisateur"]);
+      this.message = 'L\'utilisateur a été correctement ajouté';
+      this.router.navigate(['/admin/utilisateur']);
     } else {
       this.cacherErreur = false;
       this.cacherAlert = true;
@@ -205,15 +205,15 @@ export class DetailUtilisateurComponent implements OnInit {
   public deleteUser(utilisateur: Utilisateur) {
     // Pop-up gérant la suppression d'un utilisateur
     const dialogRef = this.modal.confirm()
-      .size("lg")
+      .size('lg')
       .isBlocking(true)
       .showClose(false)
       .keyboard(27)
-      .title("Suppression de " + utilisateur.id + " - " + utilisateur.email)
-      .body("Comfirmez vous la suppression de " + utilisateur.id + " - " + utilisateur.email + "?")
-      .okBtn("Comfirmer la suppression")
-      .okBtnClass("btn btn-danger")
-      .cancelBtn("Annuler la suppression")
+      .title('Suppression de ' + utilisateur.id + ' - ' + utilisateur.email)
+      .body('Comfirmez vous la suppression de ' + utilisateur.id + ' - ' + utilisateur.email + '?')
+      .okBtn('Comfirmer la suppression')
+      .okBtnClass('btn btn-danger')
+      .cancelBtn('Annuler la suppression')
       .open();
     dialogRef.result
       .then(async () => {
@@ -222,7 +222,7 @@ export class DetailUtilisateurComponent implements OnInit {
         if (supprimer) {
           this.cacherErreur = false;
           this.cacherAlert = true;
-          this.message = "L'utilisateur a été supprimé.";
+          this.message = 'L\'utilisateur a été supprimé.';
         }
       })
       // Pour éviter l'erreur de promise dans console.log
@@ -231,13 +231,13 @@ export class DetailUtilisateurComponent implements OnInit {
 
   // Supprime une rôle de la liste
   public deleteRole(role: any): void {
-    this.utilisateurModifie.role = new Role(0, "");
+    this.utilisateurModifie.role = new Role(0, '');
   }
 
   // Permet de rajouter un role dans la chips
   public addRole(event: MatAutocompleteSelectedEvent): void {
     const retourRole = event.option.value;
-    this.roleInput.nativeElement.value = "";
+    this.roleInput.nativeElement.value = '';
     this.choixRoleFormControl.setValue(null);
     const role = this.utilisateurModifie.role;
     let trouver = false;
@@ -253,28 +253,28 @@ export class DetailUtilisateurComponent implements OnInit {
     } else {
       this.cacherAlert = true;
       this.cacherErreur = false;
-      this.message = "Ce rôle est déjà ajoutée.";
+      this.message = 'Ce rôle est déjà ajoutée.';
     }
   }
 
   // Méthode de retour à la liste des utilisateurs
   public goBack(): void {
-    this.router.navigate(["/admin/utilisateur"]);
+    this.router.navigate(['/admin/utilisateur']);
     this.comparedUserWithUserModif();
   }
 
   // Permets de gérer le bouton 'oeil' dans l'input mot de passe
   public hidePassword(): void {
-    if (this.typePassword === "password") {
+    if (this.typePassword === 'password') {
       // Permets de définir le input de type:
-      this.typePassword = "text";
+      this.typePassword = 'text';
       // Permets de changer la classe de l'icone dans l'input
-      this.classPassword = "glyphicon glyphicon-eye-open";
+      this.classPassword = 'glyphicon glyphicon-eye-open';
     } else {
       // Permets de définir le input de type:
-      this.typePassword = "password";
+      this.typePassword = 'password';
       // Permets de changer la classe de l'icone dans l'input
-      this.classPassword = "glyphicon glyphicon-eye-close";
+      this.classPassword = 'glyphicon glyphicon-eye-close';
     }
   }
 

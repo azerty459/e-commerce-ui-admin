@@ -1,17 +1,17 @@
-import {filter, map, mergeMap} from "rxjs/operators";
-import {Component, OnInit} from "@angular/core";
-import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
-import {Title} from "@angular/platform-browser";
-import {PreviousRouteBusiness} from "../../e-commerce-ui-common/business/previous-route.service";
-import {AuthDataService} from "../business/auth-data.service";
-import {Token} from "../../e-commerce-ui-common/models/Token";
-import {AuthInterceptor} from "../../e-commerce-ui-common/utilitaires/AuthInterceptor";
-import {Modal} from "ngx-modialog/plugins/bootstrap";
+import {filter, map, mergeMap} from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {Title} from '@angular/platform-browser';
+import {PreviousRouteBusiness} from '../../e-commerce-ui-common/business/previous-route.service';
+import {AuthDataService} from '../business/auth-data.service';
+import {Token} from '../../e-commerce-ui-common/models/Token';
+import {AuthInterceptor} from '../../e-commerce-ui-common/utilitaires/AuthInterceptor';
+import {Modal} from 'ngx-modialog/plugins/bootstrap';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"]
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
 
 export class AppComponent implements OnInit {
@@ -40,27 +40,27 @@ export class AppComponent implements OnInit {
         while (route.firstChild) route = route.firstChild;
         return route;
       }),
-      filter((route) => route.outlet === "primary"),
+      filter((route) => route.outlet === 'primary'),
       mergeMap((route) => route.data),)
-      .subscribe((event) => this.titleService.setTitle(event["title"]));
+      .subscribe((event) => this.titleService.setTitle(event['title']));
   }
 
   public goHome() {
 
-    this.router.navigate(["/admin"]);
+    this.router.navigate(['/admin']);
   }
 
   public logout() {
     const dialogRef = this.modal.confirm()
-      .size("lg")
+      .size('lg')
       .isBlocking(true)
       .showClose(false)
       .keyboard(27)
-      .title("Deconnexion")
-      .body("Etes vous certain de vouloir vous deconnecter?")
-      .okBtn("Se deconnecter")
-      .okBtnClass("btn btn-danger")
-      .cancelBtn("Rester connecter")
+      .title('Deconnexion')
+      .body('Etes vous certain de vouloir vous deconnecter?')
+      .okBtn('Se deconnecter')
+      .okBtnClass('btn btn-danger')
+      .cancelBtn('Rester connecter')
       .open();
     dialogRef.result.then(async () => {
       this.authData.logout();

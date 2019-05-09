@@ -1,21 +1,21 @@
-import {Component, Input, OnInit} from "@angular/core";
-import {Produit} from "../../../e-commerce-ui-common/models/Produit";
-import {ProduitBusiness} from "../../../e-commerce-ui-common/business/produit.service";
-import {Photo} from "../../../e-commerce-ui-common/models/Photo";
-import {MatSnackBar} from "@angular/material";
+import {Component, Input, OnInit} from '@angular/core';
+import {Produit} from '../../../e-commerce-ui-common/models/Produit';
+import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
+import {Photo} from '../../../e-commerce-ui-common/models/Photo';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
-  selector: "app-upload-img",
-  templateUrl: "./upload-img.component.html",
-  styleUrls: ["./upload-img.component.css"]
+  selector: 'app-upload-img',
+  templateUrl: './upload-img.component.html',
+  styleUrls: ['./upload-img.component.css']
 })
 
 export class UploadImgComponent implements OnInit {
   imgSelected = false;
   @Input() produit: Produit;
   @Input() photoEnAttente;
-  private fileSelectMsg = "No file selected yet.";
-  private fileUploadMsg = "No file uploaded yet.";
+  private fileSelectMsg = 'No file selected yet.';
+  private fileUploadMsg = 'No file uploaded yet.';
 
   constructor(
     private snackBar: MatSnackBar,
@@ -43,18 +43,18 @@ export class UploadImgComponent implements OnInit {
   async uploadEvent(file: File) {
     console.log(file.size);
     if (file.size > 1000000) {
-      this.snackBar.open("Fichier trop lourd ( " + file.size + " octet > 1000000 octet )", "", {
+      this.snackBar.open('Fichier trop lourd ( ' + file.size + ' octet > 1000000 octet )', '', {
         duration: 2000
       });
     } else {
-      this.snackBar.open("Image prêt à être uploadé", "", {
+      this.snackBar.open('Image prêt à être uploadé', '', {
         duration: 2000
       });
       this.addPhoto(file);
       this.imgSelected = false;
       this.fileUploadMsg = file.name;
       console.log(file);
-      const photo = new Photo(0, "././assets/img/1024px-Emblem-question.svg.png", file.name);
+      const photo = new Photo(0, '././assets/img/1024px-Emblem-question.svg.png', file.name);
       photo.file = file;
       // On ajoute la photo dans la l'arrayPhoto du produit
       if (this.produit.arrayPhoto.length !== 0) {
@@ -69,8 +69,8 @@ export class UploadImgComponent implements OnInit {
    * Permet d'annuler la selection d'un fichier
    */
   cancelEvent(): void {
-    this.fileSelectMsg = "No file selected yet.";
-    this.fileUploadMsg = "No file uploaded yet.";
+    this.fileSelectMsg = 'No file selected yet.';
+    this.fileUploadMsg = 'No file uploaded yet.';
     this.imgSelected = false;
   }
 

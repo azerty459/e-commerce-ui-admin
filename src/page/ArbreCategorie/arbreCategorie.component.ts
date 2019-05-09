@@ -1,22 +1,22 @@
-import {FlatTreeControl} from "@angular/cdk/tree";
-import {Component, OnInit} from "@angular/core";
-import {MatTreeFlatDataSource, MatTreeFlattener} from "@angular/material/tree";
-import {CategorieNode} from "../../../e-commerce-ui-common/models/CategorieNode";
-import {CategorieFlatNode} from "../../../e-commerce-ui-common/models/CategorieFlatNode";
-import {ArbreService} from "../../../e-commerce-ui-common/business/arbre.service";
-import {Categorie} from "../../../e-commerce-ui-common/models/Categorie";
-import {Modal} from "ngx-modialog/plugins/bootstrap";
-import {MatSnackBar} from "@angular/material";
-import {AlerteSnackBarComponent} from "../../utilitaires/alerteSnackBar/alerteSnackBar.component";
+import {FlatTreeControl} from '@angular/cdk/tree';
+import {Component, OnInit} from '@angular/core';
+import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
+import {CategorieNode} from '../../../e-commerce-ui-common/models/CategorieNode';
+import {CategorieFlatNode} from '../../../e-commerce-ui-common/models/CategorieFlatNode';
+import {ArbreService} from '../../../e-commerce-ui-common/business/arbre.service';
+import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
+import {Modal} from 'ngx-modialog/plugins/bootstrap';
+import {MatSnackBar} from '@angular/material';
+import {AlerteSnackBarComponent} from '../../utilitaires/alerteSnackBar/alerteSnackBar.component';
 
 
 /**
  * @title Arbre avec FlatNode
  */
 @Component({
-  selector: "app-arbre-categorie",
-  templateUrl: "arbreCategorie.component.html",
-  styleUrls: ["arbreCategorie.component.css"],
+  selector: 'app-arbre-categorie',
+  templateUrl: 'arbreCategorie.component.html',
+  styleUrls: ['arbreCategorie.component.css'],
 })
 
 
@@ -27,7 +27,7 @@ export class ArbreCategorieComponent implements OnInit {
   public treeFlattener: MatTreeFlattener<CategorieNode, CategorieFlatNode>;
   public dataSource: MatTreeFlatDataSource<CategorieNode, CategorieFlatNode>;
   // EXEMPLE FILTRES
-  filter = ["Catégorie vide", "Nouvelles", "Promo ", "+ de 100 articles", "- de 50 articles", "Plus de stock", "Top vente"];
+  filter = ['Catégorie vide', 'Nouvelles', 'Promo ', '+ de 100 articles', '- de 50 articles', 'Plus de stock', 'Top vente'];
   displayFilter = false;
   // boolean afficher erreur
   nomCategorieIsEmpy = false;
@@ -121,22 +121,22 @@ export class ArbreCategorieComponent implements OnInit {
    */
   async deleteCategorie(node: CategorieFlatNode) {
     // Modal
-    let bodyString = "Comfirmez vous la suppression de la categorie " + node.nomCategorie + " - id (" + node.id + ")";
+    let bodyString = 'Comfirmez vous la suppression de la categorie ' + node.nomCategorie + ' - id (' + node.id + ')';
     if (this.arbreService.flatNodeMap.get(node).children !== undefined) {
-      bodyString = bodyString + " et de ses categories enfants ?";
+      bodyString = bodyString + ' et de ses categories enfants ?';
     } else {
-      bodyString = bodyString + "?";
+      bodyString = bodyString + '?';
     }
     const dialogRef = this.modal.confirm()
-      .size("lg")
+      .size('lg')
       .isBlocking(true)
       .showClose(false)
       .keyboard(27)
-      .title("Suppression de la catégorie " + node.nomCategorie + " - id (" + node.id + ")")
+      .title('Suppression de la catégorie ' + node.nomCategorie + ' - id (' + node.id + ')')
       .body(bodyString)
-      .okBtn("Confirmer la suppression")
-      .okBtnClass("btn btn-danger")
-      .cancelBtn("Annuler la suppression")
+      .okBtn('Confirmer la suppression')
+      .okBtnClass('btn btn-danger')
+      .cancelBtn('Annuler la suppression')
       .open();
     dialogRef.result
       .then(async () => {
@@ -152,7 +152,7 @@ export class ArbreCategorieComponent implements OnInit {
             // On supprime la categorie visuelement si la suppression dans la base de donnée est un succès
             this.deleteNode(node);
           } else {
-            console.log("pas supprimer");
+            console.log('pas supprimer');
           }
         } else {
           // TODO Message erreur
@@ -205,7 +205,7 @@ export class ArbreCategorieComponent implements OnInit {
     return this.arbreService.hasCategories;
   }
 
-  hasNoContent = (_: number, _nodeData: CategorieFlatNode) => _nodeData.nomCategorie === "";
+  hasNoContent = (_: number, _nodeData: CategorieFlatNode) => _nodeData.nomCategorie === '';
 
   /**
    * Methode permettant d'afficher la fenétre de filtre
@@ -223,11 +223,11 @@ export class ArbreCategorieComponent implements OnInit {
     // Une nodeParent null signifie qu'on se trouve au niveau 0
     if (nodeParent === null) {
       // on utilise un timestamp afin de pouvoir identifier la node afin de pouvoir eventuellement supprimer la node
-      this.arbreService.insertItem(null, <CategorieNode>{id: "" + -Date.now(), nomCategorie: ""});
-      console.log(<CategorieNode>{id: "" + -Date.now(), nomCategorie: ""});
+      this.arbreService.insertItem(null, <CategorieNode>{id: '' + -Date.now(), nomCategorie: ''});
+      console.log(<CategorieNode>{id: '' + -Date.now(), nomCategorie: ''});
     } else {
       const nodeParentFlat = this.arbreService.flatNodeMap.get(nodeParent);
-      this.arbreService.insertItem(nodeParentFlat!, <CategorieNode>{nomCategorie: ""});
+      this.arbreService.insertItem(nodeParentFlat!, <CategorieNode>{nomCategorie: ''});
       nodeParent.expandable = true;
       this.treeControl.expand(nodeParent);
     }
@@ -241,13 +241,13 @@ export class ArbreCategorieComponent implements OnInit {
    */
   async saveNode(node: CategorieFlatNode, nomCategorie: string) {
     let nestedNode = this.arbreService.flatNodeMap.get(node);
-    if (nomCategorie === "") {
+    if (nomCategorie === '') {
       this.nomCategorieIsEmpy = true;
     } else {
       this.nomCategorieIsEmpy = false;
       if (node.idParent) {
         const categorie: Categorie = await this.arbreService.categorieBusiness.ajouterCategorieEnfant(nomCategorie, node.idParent);
-        if (typeof categorie === "string" || categorie === undefined) {
+        if (typeof categorie === 'string' || categorie === undefined) {
           this.nomCategorieIsEmpy = true;
           this.nomCategorieIsEmpy = true;
           nestedNode = undefined;
@@ -257,7 +257,7 @@ export class ArbreCategorieComponent implements OnInit {
         }
       } else {
         const categorie: Categorie = await this.arbreService.categorieBusiness.ajouterCategorieParent(nomCategorie);
-        if (typeof categorie === "string" || categorie === undefined) {
+        if (typeof categorie === 'string' || categorie === undefined) {
           this.nomCategorieIsEmpy = true;
           this.nomCategorieIsEmpy = true;
           nestedNode = undefined;
@@ -333,7 +333,7 @@ export class ArbreCategorieComponent implements OnInit {
   public afficherMessageAlerteSupression(): void {
 
     this.snackBarRef = this.snackBar.openFromComponent(AlerteSnackBarComponent, {
-      panelClass: ["snackBar"],
+      panelClass: ['snackBar'],
     });
     this.snackBarRef.instance.snackBarRefAlerteComponent = this.snackBarRef;
   }

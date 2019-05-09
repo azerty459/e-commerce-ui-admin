@@ -1,13 +1,13 @@
-import {Component, OnInit} from "@angular/core";
-import {ChartDataSets, ChartOptions, ChartType} from "chart.js";
-import {Label} from "ng2-charts";
-import {Statistique} from "../../../e-commerce-ui-common/models/Statistique";
-import {StatistiqueBusiness} from "../../../e-commerce-ui-common/business/statistique.service";
+import {Component, OnInit} from '@angular/core';
+import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
+import {Label} from 'ng2-charts';
+import {Statistique} from '../../../e-commerce-ui-common/models/Statistique';
+import {StatistiqueBusiness} from '../../../e-commerce-ui-common/business/statistique.service';
 
 @Component({
-  selector: "app-accueil",
-  templateUrl: "./accueil.component.html",
-  styleUrls: ["./accueil.component.css"]
+  selector: 'app-accueil',
+  templateUrl: './accueil.component.html',
+  styleUrls: ['./accueil.component.css']
 })
 
 export class AccueilComponent implements OnInit {
@@ -15,21 +15,21 @@ export class AccueilComponent implements OnInit {
   public promiseStatistique: Promise<Statistique>;
   public statistique: Statistique;
 
-  displayedColumns: string[] = ["name", "nombreLigne"];
+  displayedColumns: string[] = ['name', 'nombreLigne'];
   dataArray = null;
 
   barChartOptions: ChartOptions = {responsive: true};
   barChartLabels: Label[] = null;
-  barChartType: ChartType = "bar";
+  barChartType: ChartType = 'bar';
   barChartLegend = true;
   barChartData: ChartDataSets[] = [{
     data: [],
-    label: "Quantité par Catégorie",
-    backgroundColor: "rgba(0,23,232,0.18)",
-    hoverBackgroundColor: "rgba(0,23,232,0.6)",
+    label: 'Quantité par Catégorie',
+    backgroundColor: 'rgba(0,23,232,0.18)',
+    hoverBackgroundColor: 'rgba(0,23,232,0.6)',
     borderWidth: 1,
-    borderColor: "rgba(15,15,15,1)",
-    hoverBorderColor: "rgba(15,15,15,1)"
+    borderColor: 'rgba(15,15,15,1)',
+    hoverBorderColor: 'rgba(15,15,15,1)'
   }];
 
   constructor(private statistiqueBusiness: StatistiqueBusiness) {
@@ -46,9 +46,9 @@ export class AccueilComponent implements OnInit {
       (value) => {
         this.statistique = value;
         let data = [];
-        data.push({name: "Utilisateurs", nombreLigne: this.statistique.nbUtilisateur});
-        data.push({name: "Produits", nombreLigne: this.statistique.nbProduit});
-        data.push({name: "Catégories", nombreLigne: this.statistique.nbCategorie});
+        data.push({name: 'Utilisateurs', nombreLigne: this.statistique.nbUtilisateur});
+        data.push({name: 'Produits', nombreLigne: this.statistique.nbProduit});
+        data.push({name: 'Catégories', nombreLigne: this.statistique.nbCategorie});
         this.dataArray = data;
 
         let dataLabels = [];

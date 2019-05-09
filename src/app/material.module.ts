@@ -1,4 +1,4 @@
-import {NgModule} from "@angular/core";
+import {NgModule} from '@angular/core';
 import {
   MatAutocompleteModule,
   MatButtonModule,
@@ -17,8 +17,8 @@ import {
   MatToolbarModule,
   MatTooltipModule,
   MatTreeModule,
-} from "@angular/material";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+} from '@angular/material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 const angularMaterial = [
   MatCardModule,

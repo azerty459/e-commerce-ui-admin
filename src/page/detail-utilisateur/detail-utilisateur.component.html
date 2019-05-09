@@ -39,7 +39,8 @@
             <i class="material-icons">delete</i>
           </button>
 
-          <button (click)="saveModification()" *ngIf="! ajout" [disabled]="cacherBoutonAnnulation" [matTooltipPosition]="'below'"
+          <button (click)="saveModification()" *ngIf="! ajout" [disabled]="cacherBoutonAnnulation"
+                  [matTooltipPosition]="'below'"
                   class="btn btn-success pull-right centrer-block"
                   matTooltip="Enregistrer les modifications" type="button">
             <b class="noShow">Sauvegarder</b>
@@ -82,7 +83,8 @@
 
           <div class="input-group long-field">
             <label for="emailUtilisateur">Email</label>
-            <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.email" class="form-control form-control-lg"
+            <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.email"
+                   class="form-control form-control-lg"
                    id="emailUtilisateur"
                    name="emailUtilisateur" type="text">
           </div>
@@ -102,14 +104,16 @@
 
           <div *ngIf="!ajout" class="form-group short-field">
             <label for="nomUtilisateur">Nom</label>
-            <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.nom" class="form-control form-control-lg"
+            <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.nom"
+                   class="form-control form-control-lg"
                    id="nomUtilisateur"
                    name="nomUtilisateur" type="text">
           </div>
 
           <div *ngIf="!ajout" class="form-group short-field">
             <label for="nomUtilisateur">Prénom</label>
-            <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.prenom" class="form-control form-control-lg"
+            <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.prenom"
+                   class="form-control form-control-lg"
                    id="prenomUtilisateur"
                    name="prenomUtilisateur" type="text">
           </div>

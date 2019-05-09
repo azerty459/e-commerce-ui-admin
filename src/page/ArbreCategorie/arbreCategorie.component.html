@@ -77,7 +77,8 @@
               </mat-icon>
             </button>
             <!--Div qui contient la node (le nom de la categorie) ainsi que la barre d'outil situé sur sa droite-->
-            <div (mouseout)="disableToolNode(node)" (mouseover)="enableToolNode(node)" [dragData]="node" [dragEnabled]="!node.isInEditMode"
+            <div (mouseout)="disableToolNode(node)" (mouseover)="enableToolNode(node)" [dragData]="node"
+                 [dragEnabled]="!node.isInEditMode"
                  class="nodeAndTool" draggable>
               <!-- si la node est en mode edition le click sur cette dernière ne fait rien, sinon le click permet
               de rentrer en mode edition -->
@@ -92,9 +93,10 @@
               <!-- Div contenant les outils elle apparait quand le boolean node.enableToolNode est vrai-->
               <div [hidden]="!node.enableToolNode" class="tool">
                 <!--Bouton permettant la sortie du mode edition-->
-                <button (click)="node.nomCategorieModifie=node.nomCategorie;node.isInEditMode=false;node.enableToolNode=false;nomCategorieIsEmpy = false;"
-                        *ngIf="node.isInEditMode"
-                        mat-icon-button>
+                <button
+                  (click)="node.nomCategorieModifie=node.nomCategorie;node.isInEditMode=false;node.enableToolNode=false;nomCategorieIsEmpy = false;"
+                  *ngIf="node.isInEditMode"
+                  mat-icon-button>
                   <mat-icon class="mat-icon-rtl-mirror">
                     cancel
                   </mat-icon>
@@ -131,7 +133,8 @@
               </mat-icon>
             </button>
             <!--Div qui contient la node (le nom de la categorie) ainsi que la barre d'outil situé sur sa droite-->
-            <div (mouseout)="disableToolNode(node)" (mouseover)="enableToolNode(node)" [dragData]="node" [dragEnabled]="!node.isInEditMode"
+            <div (mouseout)="disableToolNode(node)" (mouseover)="enableToolNode(node)" [dragData]="node"
+                 [dragEnabled]="!node.isInEditMode"
                  class="nodeAndTool" draggable>
               <!-- si la node est en mode edition le click sur cette dernière ne fait rien, sinon le click permet
               de rentrer en mode edition -->

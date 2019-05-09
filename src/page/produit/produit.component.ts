@@ -1,13 +1,13 @@
-import {Component, OnInit} from "@angular/core";
-import {ProduitBusiness} from "../../../e-commerce-ui-common/business/produit.service";
-import {Produit} from "../../../e-commerce-ui-common/models/Produit";
-import {Modal} from "ngx-modialog/plugins/bootstrap";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
+import {Produit} from '../../../e-commerce-ui-common/models/Produit';
+import {Modal} from 'ngx-modialog/plugins/bootstrap';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
-  selector: "app-produit",
-  templateUrl: "./produit.component.html",
-  styleUrls: ["./produit.component.css"]
+  selector: 'app-produit',
+  templateUrl: './produit.component.html',
+  styleUrls: ['./produit.component.css']
 })
 export class ProduitComponent implements OnInit {
 
@@ -29,7 +29,7 @@ export class ProduitComponent implements OnInit {
         this.pageActuelURL = parseInt(params.page, 10);
       },
       error => {
-        console.log("Erreur gestion de page ", error);
+        console.log('Erreur gestion de page ', error);
       },
     );
   }
@@ -46,7 +46,7 @@ export class ProduitComponent implements OnInit {
       this.produits = page.tableau;
       this.pageMax = page.pageMax;
     } else {
-      console.log("Erreur getProduitByPagination");
+      console.log('Erreur getProduitByPagination');
     }
     this.redirect();
   }
@@ -58,14 +58,14 @@ export class ProduitComponent implements OnInit {
 
   async redirect() {
     if (this.pageActuelURL <= 0) {
-      this.router.navigate(["/admin/produit", this.pageMin]);
+      this.router.navigate(['/admin/produit', this.pageMin]);
     } else if (this.pageActuelURL > this.pageMax) {
-      this.router.navigate(["/admin/produit", this.pageMax]);
+      this.router.navigate(['/admin/produit', this.pageMax]);
     }
   }
 
   paging(value: String) {
-    if (value === "precedent") {
+    if (value === 'precedent') {
       if (this.pageActuelURL > this.pageMin) {
         this.pageActuelURL = this.pageActuelURL - 1;
       }
@@ -75,20 +75,20 @@ export class ProduitComponent implements OnInit {
       }
     }
     this.display();
-    this.router.navigate(["/admin/produit", this.pageActuelURL]);
+    this.router.navigate(['/admin/produit', this.pageActuelURL]);
   }
 
   deleteProduit(produit: Produit) {
     const dialogRef = this.modal.confirm()
-      .size("lg")
+      .size('lg')
       .isBlocking(true)
       .showClose(false)
       .keyboard(27)
-      .title("Suppression de " + produit.nom + " - " + produit.ref)
-      .body("Comfirmez vous la suppression de " + produit.nom + " - " + produit.ref + "?")
-      .okBtn("Comfirmer la suppression")
-      .okBtnClass("btn btn-danger")
-      .cancelBtn("Annuler la suppression")
+      .title('Suppression de ' + produit.nom + ' - ' + produit.ref)
+      .body('Comfirmez vous la suppression de ' + produit.nom + ' - ' + produit.ref + '?')
+      .okBtn('Comfirmer la suppression')
+      .okBtnClass('btn btn-danger')
+      .cancelBtn('Annuler la suppression')
       .open();
     dialogRef.result
       .then(async () => {

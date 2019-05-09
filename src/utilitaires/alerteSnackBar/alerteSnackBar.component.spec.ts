@@ -1,8 +1,8 @@
-import {async, ComponentFixture, TestBed} from "@angular/core/testing";
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {AlerteSnackBarComponent} from "./alerteSnackBar.component";
+import {AlerteSnackBarComponent} from './alerteSnackBar.component';
 
-describe("AlerteSnackBarComponent", () => {
+describe('AlerteSnackBarComponent', () => {
   let component: AlerteSnackBarComponent;
   let fixture: ComponentFixture<AlerteSnackBarComponent>;
 
@@ -19,7 +19,7 @@ describe("AlerteSnackBarComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });
