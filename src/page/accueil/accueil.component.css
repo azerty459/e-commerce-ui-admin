@@ -2,3 +2,14 @@
   font-weight: bold;
   color: green;
 }
+
+.titre{
+  text-align: center;
+}
+
+table, .graph{
+  width: 86%;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 4%;
+}
