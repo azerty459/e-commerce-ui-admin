@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from "@angular/core/testing";
 
-import { UploadImgComponent } from './upload-img.component';
+import {UploadImgComponent} from "./upload-img.component";
 
-describe('AlerteSnackBarComponent', () => {
+describe("AlerteSnackBarComponent", () => {
   let component: UploadImgComponent;
   let fixture: ComponentFixture<UploadImgComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UploadImgComponent ]
-    })
-    .compileComponents();
+        declarations: [UploadImgComponent]
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe('AlerteSnackBarComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

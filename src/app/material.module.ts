@@ -1,13 +1,25 @@
-import {NgModule} from '@angular/core';
+import {NgModule} from "@angular/core";
 import {
-  MatAutocompleteModule, MatButtonModule, MatCardModule, MatChipsModule, MatExpansionModule, MatFormFieldModule,
+  MatAutocompleteModule,
+  MatButtonModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatExpansionModule,
+  MatFormFieldModule,
   MatGridListModule,
-  MatToolbarModule,
-  MatSnackBarModule,
-  MatIconModule, MatInputModule, MatRadioModule, MatTooltipModule, MatTreeModule, MatListModule, MatCheckboxModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatRadioModule,
   MatSelectModule,
-} from '@angular/material';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+  MatSnackBarModule,
+  MatToolbarModule,
+  MatTooltipModule,
+  MatTreeModule,
+} from "@angular/material";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
 const angularMaterial = [
   MatCardModule,
   MatSelectModule,
@@ -41,5 +53,6 @@ const angularMaterial = [
 })
 
 export class MaterialModule {
-    constructor() {}
+  constructor() {
+  }
 }

@@ -1,10 +1,10 @@
 <div class="div-header">
-    <h1>Gestion des produits</h1>
-    <a class="boutton_ajouterproduit" [routerLink]="['/admin/produit/ajouter']">
-      <button class="btn btn-success centrer-block"><b class="noShow">Ajouter un produit</b><i class="material-icons">add</i></button>
-    </a>
+  <h1>Gestion des produits</h1>
+  <a [routerLink]="['/admin/produit/ajouter']" class="boutton_ajouterproduit">
+    <button class="btn btn-success centrer-block"><b class="noShow">Ajouter un produit</b><i
+      class="material-icons">add</i></button>
+  </a>
 </div>
-
 
 
 <div class="row">
@@ -16,7 +16,7 @@
       <div class="afficher flex flex-row">
         <span class="text_afficher">Nombre de produit à afficher:</span>
         <div class="form-group">
-          <select id="messagesParPage" (change)="selected($event.target.value)" class="form-control">
+          <select (change)="selected($event.target.value)" class="form-control" id="messagesParPage">
             <option value="5">5 produits</option>
             <option value="25">25 produits</option>
             <option value="50">50 produits</option>
@@ -58,11 +58,13 @@
                 <td><p>{{produit.prixHT}}</p></td>
                 <td>
                   <a [routerLink]="['/admin/produit/detail', produit.ref]">
-                    <button type="button" class="btn btn-warning centrer-block"><i class="material-icons">create</i></button>
+                    <button class="btn btn-warning centrer-block" type="button"><i class="material-icons">create</i>
+                    </button>
                   </a>
                 </td>
                 <td>
-                  <button type="button" class="btn btn-danger centrer-block" (click)="deleteProduit(produit)"><i class="material-icons">delete</i></button>
+                  <button (click)="deleteProduit(produit)" class="btn btn-danger centrer-block" type="button"><i
+                    class="material-icons">delete</i></button>
                 </td>
               </tr>
             </ng-container>
@@ -96,9 +98,11 @@
     <strong>Nombre total de produits: {{nombreDeProduit}}</strong>
     <span class="text_afficher">Page {{pageActuelURL}} sur {{pageMax}}</span>
     <div class="toolbar-pagination">
-      <button mat-raised-button type="button" class="navigationButtons" (click)="paging('precedent')"><i class="material-icons">navigate_before</i><span class="noShow">Précédent</span></button>
+      <button (click)="paging('precedent')" class="navigationButtons" mat-raised-button type="button"><i
+        class="material-icons">navigate_before</i><span class="noShow">Précédent</span></button>
       <div class="espace"></div>
-      <button mat-raised-button class="navigationButtons" type="button" (click)="paging('suivant')"><span class="noShow">Suivant</span><i class="material-icons">navigate_next</i></button>
+      <button (click)="paging('suivant')" class="navigationButtons" mat-raised-button type="button"><span
+        class="noShow">Suivant</span><i class="material-icons">navigate_next</i></button>
     </div>
   </div>
 </ng-template>

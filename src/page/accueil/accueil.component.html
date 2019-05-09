@@ -1,37 +1,37 @@
 <div class="titre">
-    <h1>Dashboard</h1>
+  <h1>Dashboard</h1>
 </div>
 
 <div *ngIf="dataArray" class="tableau">
 
-    <table mat-table [dataSource]="dataArray" class="mat-elevation-z8">
-        
-        <!-- Name Column -->
-        <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Nom de la table </th>
-            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-        </ng-container>
-        
-        <!-- nombreLigne Column -->
-        <ng-container matColumnDef="nombreLigne">
-            <th mat-header-cell *matHeaderCellDef> nombre de ligne </th>
-            <td mat-cell *matCellDef="let element"> {{element.nombreLigne}} </td>
-        </ng-container>
-        
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+  <table [dataSource]="dataArray" class="mat-elevation-z8" mat-table>
 
-    <div class="graph">
-      <div style="display: block">
-        <canvas baseChart
-          [datasets]="barChartData"
-          [labels]="barChartLabels"
-          [options]="barChartOptions"
-          [legend]="barChartLegend"
-          [chartType]="barChartType">
-        </canvas>
-      </div>
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th *matHeaderCellDef mat-header-cell> Nom de la table</th>
+      <td *matCellDef="let element" mat-cell> {{element.name}} </td>
+    </ng-container>
+
+    <!-- nombreLigne Column -->
+    <ng-container matColumnDef="nombreLigne">
+      <th *matHeaderCellDef mat-header-cell> nombre de ligne</th>
+      <td *matCellDef="let element" mat-cell> {{element.nombreLigne}} </td>
+    </ng-container>
+
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+  </table>
+
+  <div class="graph">
+    <div style="display: block">
+      <canvas [chartType]="barChartType"
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [legend]="barChartLegend"
+              [options]="barChartOptions"
+              baseChart>
+      </canvas>
     </div>
-           
+  </div>
+
 </div>

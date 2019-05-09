@@ -1,6 +1,7 @@
-.restoreButton{
+.restoreButton {
 }
-.alertDiv{
+
+.alertDiv {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -10,17 +11,19 @@
 
 }
 
-.headerIcon{
+.headerIcon {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-start;
 }
-.rowContainer{
+
+.rowContainer {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
 }
-.buttonIcon{
-  cursor:pointer;
+
+.buttonIcon {
+  cursor: pointer;
 }

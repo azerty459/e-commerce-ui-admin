@@ -1,19 +1,20 @@
 
-
-.mat-tree-node{
+.mat-tree-node {
   font-size: 1.7rem;
   height: 20px;
 
 }
-.border{
+
+.border {
   height: 48px;
-  border-left-style:groove;
-}
-.tool{
-margin-left: 20px;
+  border-left-style: groove;
 }
 
-.nodeAndTool{
+.tool {
+  margin-left: 20px;
+}
+
+.nodeAndTool {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -21,69 +22,78 @@ margin-left: 20px;
   padding-right: 100px;
 }
 
-.messageSupression{
+.messageSupression {
   color: lightgrey;
 }
-.arbre{
+
+.arbre {
   margin-top: 30px;
-  display : flex;
+  display: flex;
   flex-direction: row;
   justify-content: center;
 }
-.arbreContainer{
-  display : flex;
+
+.arbreContainer {
+  display: flex;
   flex-direction: column;
   align-items: center;
-  flex:8;
+  flex: 8;
   margin-bottom: 100px;
 }
-.arbreCard{
+
+.arbreCard {
   min-width: 90%;
   display: flex;
   flex-direction: column;
   justify-content: start;
 }
 
-.filterContainer{
-  flex:1;
-  display : flex;
+.filterContainer {
+  flex: 1;
+  display: flex;
   flex-direction: column;
   align-items: start;
 
 }
-.mat-selection-list{
-  display : flex;
+
+.mat-selection-list {
+  display: flex;
   flex-direction: column;
 }
 
-.toolTree{
+.toolTree {
   margin-bottom: 50px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   width: 100%;
-  border-bottom-style:groove;
+  border-bottom-style: groove;
   border-bottom-width: 1px;
 }
-.alert{
-  margin-top:2px;
+
+.alert {
+  margin-top: 2px;
 }
-.float-right{
+
+.float-right {
   float: right;
 }
-.drag-transit{
+
+.drag-transit {
   font-size: 20px;
   border: dashed 2px;
 }
 
-.drag-border{
+.drag-border {
   opacity: 0.33;
 }
-.drag-over-border{
+
+.drag-over-border {
   width: 100%;
-  border-style:groove;
+  border-style: groove;
 }
-.racineDroppable{
+
+.racineDroppable {
   width: 50px;
   height: 100%;
   margin-top: 5px;
@@ -94,17 +104,21 @@ margin-left: 20px;
   border: dashed;
   border-width: 2px;
 }
-.drag-hint-border-racine{
+
+.drag-hint-border-racine {
   display: flex;
 }
-.racineHeight{
+
+.racineHeight {
   width: 50px;
 }
-.arbreAndRacine{
+
+.arbreAndRacine {
   display: flex;
   flex-direction: row;
 }
-.mat-tree-node{
+
+.mat-tree-node {
   min-height: 40px !important;
 }
 

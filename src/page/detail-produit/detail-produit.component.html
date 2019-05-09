@@ -1,5 +1,5 @@
 <div #spacer xmlns="http://www.w3.org/1999/html">
-  <mat-toolbar  class="toolContainer">
+  <mat-toolbar class="toolContainer">
     <mat-toolbar-row>
     </mat-toolbar-row>
     <mat-toolbar-row>
@@ -7,46 +7,48 @@
   </mat-toolbar>
 </div>
 <div class="navbar-fixed-top">
-  <mat-toolbar  class="toolContainer">
+  <mat-toolbar class="toolContainer">
     <mat-toolbar-row>
       <div class="title">
         <div *ngIf="!ajout && produit?.nom.length >= 50; else nonSup">
           {{produit?.nom.substring(0, 50)}} ... - {{produit?.ref}}
         </div>
         <ng-template #nonSup>
-          {{ajout ? 'Ajout d\'un produit' : ''+produit?.nom+' - '+produit?.ref }}
+          {{ajout ? 'Ajout d\'un produit' : '' + produit?.nom + ' - ' + produit?.ref }}
         </ng-template>
       </div>
     </mat-toolbar-row>
     <mat-toolbar-row>
       <div class="toolbar">
         <div class="leftTool">
-          <i matTooltip="Revenir en arrière" [matTooltipPosition]="positionAfterTooltip" class="material-icons backArrow"
-             (click)="goBack()">arrow_back</i>
+          <i (click)="goBack()" [matTooltipPosition]="positionAfterTooltip"
+             class="material-icons backArrow"
+             matTooltip="Revenir en arrière">arrow_back</i>
         </div>
         <div class="rightTool">
 
-          <button type="submit" class="btn btn-success" *ngIf="ajout" (click)="addProduct()">
+          <button (click)="addProduct()" *ngIf="ajout" class="btn btn-success" type="submit">
             Ajouter le produit
           </button>
 
-          <button *ngIf="! ajout" (click)="deleteProduct(produit)" type="button"
+          <button (click)="deleteProduct(produit)" *ngIf="! ajout" [matTooltipPosition]="'below'"
                   class="btn btn-danger pull-right centrer-block"
-                  matTooltip="Supprimer ce produit" [matTooltipPosition]="'below'">
+                  matTooltip="Supprimer ce produit" type="button">
             <b class="noShow">Supprimer</b>
             <i class="material-icons">delete</i>
           </button>
 
-          <button *ngIf="! ajout" (click)="saveModification()" type="button" [disabled]="cacherBoutonAnnulation && !photoEnAttenteSupression.length!=0 && !photoEnAttenteAjout.length!=0 "
+          <button (click)="saveModification()" *ngIf="! ajout" [disabled]="cacherBoutonAnnulation && !photoEnAttenteSupression.length!=0 && !photoEnAttenteAjout.length!=0 "
+                  [matTooltipPosition]="'below'"
                   class="btn btn-success pull-right centrer-block"
-                  matTooltip="Enregistrer les modifications" [matTooltipPosition]="'below'">
+                  matTooltip="Enregistrer les modifications" type="button">
             <b class="noShow">Sauvegarder</b>
             <i class="material-icons">save</i>
           </button>
 
-          <button *ngIf="! ajout" (click)="cancelModification(produit)" [disabled]="cacherBoutonAnnulation"
-                  type="button" class="btn btn-warning pull-right centrer-block"
-                  matTooltip="Annuler les modifications" [matTooltipPosition]="'below'">
+          <button (click)="cancelModification(produit)" *ngIf="! ajout" [disabled]="cacherBoutonAnnulation"
+                  [matTooltipPosition]="'below'" class="btn btn-warning pull-right centrer-block"
+                  matTooltip="Annuler les modifications" type="button">
             <b class="noShow">Annuler</b>
             <i class="material-icons">settings_backup_restore</i>
           </button>
@@ -56,8 +58,8 @@
     </mat-toolbar-row>
     <mat-toolbar-row *ngIf="!cacherAlert || !cacherErreur">
       <div class="alerteDiv">
-        <div *ngIf="!cacherAlert" class="alert alert-success" role="alert" [hidden]="cacherAlert">{{message}}</div>
-        <div *ngIf="!cacherErreur" class="alert alert-danger" role="alert" [hidden]="cacherErreur">{{message}}</div>
+        <div *ngIf="!cacherAlert" [hidden]="cacherAlert" class="alert alert-success" role="alert">{{message}}</div>
+        <div *ngIf="!cacherErreur" [hidden]="cacherErreur" class="alert alert-danger" role="alert">{{message}}</div>
       </div>
     </mat-toolbar-row>
   </mat-toolbar>
@@ -65,160 +67,166 @@
 
 
 <div *ngIf="produitModifie">
-    <mat-accordion multi="true">
-      <mat-expansion-panel #panel1 [expanded]="true">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Details
-          </mat-panel-title>
-          <mat-panel-description *ngIf="panel1.expanded === false">
-            <div [class]="panel1.expanded === false ? 'centrerPanel' : ''">Modifier les categories du produit</div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <form id="formProduit">
-          <div class="flex-container">
-            <div class="form-group short-field">
-              <label for="referenceProduit">Référence</label>
-              <input id="referenceProduit" type="text" [(ngModel)]="produitModifie.ref" name="reference"
-                     class="form-control form-control-lg" [attr.disabled]="! ajout ? 'disabled' : null">
-            </div>
+  <mat-accordion multi="true">
+    <mat-expansion-panel #panel1 [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Details
+        </mat-panel-title>
+        <mat-panel-description *ngIf="panel1.expanded === false">
+          <div [class]="panel1.expanded === false ? 'centrerPanel' : ''">Modifier les categories du produit</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form id="formProduit">
+        <div class="flex-container">
+          <div class="form-group short-field">
+            <label for="referenceProduit">Référence</label>
+            <input [(ngModel)]="produitModifie.ref" [attr.disabled]="! ajout ? 'disabled' : null" class="form-control form-control-lg" id="referenceProduit"
+                   name="reference" type="text">
+          </div>
 
-            <div class="form-group long-field">
-              <label for="nomProduit">Nom</label>
-              <input (input)="comparedProductWithProductModif()" id="nomProduit" type="text"
-                     [(ngModel)]="produitModifie.nom"
-                     name="nom" class="form-control form-control-lg">
-            </div>
+          <div class="form-group long-field">
+            <label for="nomProduit">Nom</label>
+            <input (input)="comparedProductWithProductModif()" [(ngModel)]="produitModifie.nom" class="form-control form-control-lg"
+                   id="nomProduit"
+                   name="nom" type="text">
+          </div>
 
-            <div class="form-group short-field">
-              <label for="prixProduit">Prix HT</label>
-              <div class="input-group">
-                <input (input)="comparedProductWithProductModif()" id="prixProduit" type="number" min="0" step="0.2"
-                       [(ngModel)]="produitModifie.prixHT" (keypress)="numberToCommaSeperate($event)"
-                       name="prixHT" class="form-control form-control-lg">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-euro"></i></span>
-             </div>
+          <div class="form-group short-field">
+            <label for="prixProduit">Prix HT</label>
+            <div class="input-group">
+              <input (input)="comparedProductWithProductModif()" (keypress)="numberToCommaSeperate($event)" [(ngModel)]="produitModifie.prixHT" class="form-control form-control-lg" id="prixProduit"
+                     min="0" name="prixHT"
+                     step="0.2" type="number">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-euro"></i></span>
             </div>
           </div>
-          <div class="form-group">
-            <label for="descProduit">Description</label>
-            <textarea (input)="comparedProductWithProductModif()" id="descProduit" rows="4"
-                      [(ngModel)]="produitModifie.description" name="description" class="form-control form-control-lg"></textarea>
-          </div>
-        </form>
-      </mat-expansion-panel>
+        </div>
+        <div class="form-group">
+          <label for="descProduit">Description</label>
+          <textarea (input)="comparedProductWithProductModif()" [(ngModel)]="produitModifie.description" class="form-control form-control-lg"
+                    id="descProduit" name="description"
+                    rows="4"></textarea>
+        </div>
+      </form>
+    </mat-expansion-panel>
 
-      <mat-expansion-panel #panel2 disabled="{{disabledAjoutCategorie}}">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Categories
-          </mat-panel-title>
-          <mat-panel-description *ngIf="panel2.expanded === false">
-            <div [class]="panel2.expanded === false ? 'centrerPanel' : ''">Modifier les categories du produit</div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
+    <mat-expansion-panel #panel2 disabled="{{disabledAjoutCategorie}}">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Categories
+        </mat-panel-title>
+        <mat-panel-description *ngIf="panel2.expanded === false">
+          <div [class]="panel2.expanded === false ? 'centrerPanel' : ''">Modifier les categories du produit</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
 
-        <mat-form-field class="demo-chip-list">
-          <mat-chip-list #chipList>
-            <mat-chip
-              *ngFor="let categorie of produitModifie.arrayCategorie"
-              [selectable]="selectable"
-              [removable]="removable"
-              (removed)="deleteCategory(categorie)">
-              {{categorie.nomCat}}
-              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-            </mat-chip>
-            <label for="listCategorie"></label>
-            <input
-              id="listCategorie"
-              (blur)="clearInputChips()"
-              placeholder="Écrivez le nom d'une catégorie pour associer votre produit à la catégorie choisie..."
-              #categorieInput
-              [formControl]="choixCategorieFormControl"
-              [matAutocomplete]="auto"
-              [matChipInputFor]="chipList"
-              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-              [matChipInputAddOnBlur]="addOnBlur"
-              [(ngModel)]="inputChoixParent"
-            />
-          </mat-chip-list>
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="addCategory($event)">
-            <mat-option *ngFor="let categorie of categoriesObservable | async" [value]="categorie">
-              {{ categorie.nomCat}}
-              {{categorie.chemin[0] ? '(' : ''}}
-              <span *ngFor="let categorieDuChemin of categorie.chemin; let i = index">
+      <mat-form-field class="demo-chip-list">
+        <mat-chip-list #chipList>
+          <mat-chip
+            (removed)="deleteCategory(categorie)"
+            *ngFor="let categorie of produitModifie.arrayCategorie"
+            [removable]="removable"
+            [selectable]="selectable">
+            {{categorie.nomCat}}
+            <mat-icon *ngIf="removable" matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <label for="listCategorie"></label>
+          <input
+            #categorieInput
+            (blur)="clearInputChips()"
+            [(ngModel)]="inputChoixParent"
+            [formControl]="choixCategorieFormControl"
+            [matAutocomplete]="auto"
+            [matChipInputAddOnBlur]="addOnBlur"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            id="listCategorie"
+            placeholder="Écrivez le nom d'une catégorie pour associer votre produit à la catégorie choisie..."
+          />
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addCategory($event)" autoActiveFirstOption>
+          <mat-option *ngFor="let categorie of categoriesObservable | async" [value]="categorie">
+            {{ categorie.nomCat}}
+            {{categorie.chemin[0] ? '(' : ''}}
+            <span *ngFor="let categorieDuChemin of categorie.chemin; let i = index">
                  < {{categorieDuChemin.nom}}
               </span>
-              {{categorie.chemin[0] ? ')' : ''}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </mat-expansion-panel>
+            {{categorie.chemin[0] ? ')' : ''}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </mat-expansion-panel>
 
 
-      <mat-expansion-panel #panel3 disabled="{{disabledAjoutCategorie}}">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Photos
-          </mat-panel-title>
-          <mat-panel-description *ngIf="panel3.expanded === false">
-            <div [class]="panel3.expanded === false ? 'centrerPanel' : ''">Modifier les categories du produit</div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
+    <mat-expansion-panel #panel3 disabled="{{disabledAjoutCategorie}}">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Photos
+        </mat-panel-title>
+        <mat-panel-description *ngIf="panel3.expanded === false">
+          <div [class]="panel3.expanded === false ? 'centrerPanel' : ''">Modifier les categories du produit</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
 
 
+      <div class="rowPhoto">
 
-        <div class="rowPhoto">
+        <mat-card *ngFor="let photo of produitModifie.arrayPhoto;let i = index" class="col-md-6 photoCard">
+          <mat-card-header>
 
-          <mat-card class="col-md-6 photoCard" *ngFor="let photo of produitModifie.arrayPhoto;let i = index">
-            <mat-card-header>
-
-              <mat-card-title>
-                <div>Photo n°{{i+1}} {{produitModifie.photoPrincipale.id === photo.id ? '- photo principale du produit' : ''}}
-                </div>
-                <div class="photoTool">
-                  <button mat-icon-button color="warn" class="deletePhotoButton" (click)="removePhoto(photo)">
-                    <mat-icon>clear</mat-icon>
-                  </button>
-                  <button *ngIf="photo.id !== 0" mat-icon-button color="primary" class="favPhotoButton" (click)="favPhoto(photo)">
-                    <mat-icon>{{produitModifie.photoPrincipale.id != photo.id ? 'favorite_border ' : 'favorite'}}</mat-icon>
-                  </button>
-                </div>
-
-              </mat-card-title>
-              <mat-card-subtitle>{{photo.nom}}</mat-card-subtitle>
-
-            </mat-card-header>
-
-            <mat-card-content>
-              <img class="mat-card-image" src="{{!photo.url.startsWith(environment.api_rest_download_url) ? photo.url : photo.url+'_1080x1024'}}" alt="PhotoNumero{{i}}"/>
-            </mat-card-content>
-            <mat-card-subtitle *ngIf="photo.imgHeight != undefined">dimension : {{photo.imgWidth+' x '+photo.imgHeight}}</mat-card-subtitle>
-            <mat-card-actions>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-        <div class="rowUpload">
-          <mat-card class="col-md-6 photoCard">
-            <mat-card-header>
-              <mat-card-title>Upload</mat-card-title>
-              <mat-card-subtitle>taille maximale 1 Mo</mat-card-subtitle>
-            </mat-card-header>
-            <img *ngIf="upload.imgSelected" class="mat-card-image" src="../../assets/img/1024px-Emblem-question.svg.png"
-                 alt="produit image"/>
-            <mat-card-content>
-              <div class="container-fluid">
-                <app-upload-img [photoEnAttente]="photoEnAttenteAjout" [produit]="produitModifie" class="center-block" #upload></app-upload-img>
+            <mat-card-title>
+              <div>Photo
+                n°{{i + 1}} {{produitModifie.photoPrincipale.id === photo.id ? '- photo principale du produit' : ''}}
               </div>
-            </mat-card-content>
-            <mat-card-actions>
-            </mat-card-actions>
-          </mat-card>
-        </div>
+              <div class="photoTool">
+                <button (click)="removePhoto(photo)" class="deletePhotoButton" color="warn" mat-icon-button>
+                  <mat-icon>clear</mat-icon>
+                </button>
+                <button (click)="favPhoto(photo)" *ngIf="photo.id !== 0" class="favPhotoButton" color="primary"
+                        mat-icon-button>
+                  <mat-icon>{{produitModifie.photoPrincipale.id != photo.id ? 'favorite_border ' : 'favorite'}}</mat-icon>
+                </button>
+              </div>
 
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
+            </mat-card-title>
+            <mat-card-subtitle>{{photo.nom}}</mat-card-subtitle>
+
+          </mat-card-header>
+
+          <mat-card-content>
+            <img alt="PhotoNumero{{i}}"
+                 class="mat-card-image"
+                 src="{{!photo.url.startsWith(environment.api_rest_download_url) ? photo.url : photo.url+'_1080x1024'}}"/>
+          </mat-card-content>
+          <mat-card-subtitle *ngIf="photo.imgHeight != undefined">dimension
+            : {{photo.imgWidth + ' x ' + photo.imgHeight}}</mat-card-subtitle>
+          <mat-card-actions>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+      <div class="rowUpload">
+        <mat-card class="col-md-6 photoCard">
+          <mat-card-header>
+            <mat-card-title>Upload</mat-card-title>
+            <mat-card-subtitle>taille maximale 1 Mo</mat-card-subtitle>
+          </mat-card-header>
+          <img *ngIf="upload.imgSelected" alt="produit image" class="mat-card-image"
+               src="../../assets/img/1024px-Emblem-question.svg.png"/>
+          <mat-card-content>
+            <div class="container-fluid">
+              <app-upload-img #upload [photoEnAttente]="photoEnAttenteAjout" [produit]="produitModifie"
+                              class="center-block"></app-upload-img>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
 
 
 

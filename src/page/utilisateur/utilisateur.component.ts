@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import {Modal} from 'ngx-modialog/plugins/bootstrap';
-import {ActivatedRoute} from '@angular/router';
-import {PaginationService} from '../../../e-commerce-ui-common/business/pagination.service';
-import {UtilisateurService} from '../../../e-commerce-ui-common/business/utilisateur.service';
-import {Utilisateur} from '../../../e-commerce-ui-common/models/Utilisateur';
+import {Component, OnInit} from "@angular/core";
+import {Modal} from "ngx-modialog/plugins/bootstrap";
+import {ActivatedRoute} from "@angular/router";
+import {PaginationService} from "../../../e-commerce-ui-common/business/pagination.service";
+import {UtilisateurService} from "../../../e-commerce-ui-common/business/utilisateur.service";
+import {Utilisateur} from "../../../e-commerce-ui-common/models/Utilisateur";
 
 @Component({
-  selector: 'app-utilisateur',
-  templateUrl: './utilisateur.component.html',
-  styleUrls: ['./utilisateur.component.css']
+  selector: "app-utilisateur",
+  templateUrl: "./utilisateur.component.html",
+  styleUrls: ["./utilisateur.component.css"]
 })
 export class UtilisateurComponent implements OnInit {
 
@@ -26,7 +26,7 @@ export class UtilisateurComponent implements OnInit {
         this.pageActuelURL = parseInt(params.page, 10);
       },
       error => {
-        console.log('Erreur gestion de page ', error);
+        console.log("Erreur gestion de page ", error);
       },
     );
   }
@@ -34,7 +34,7 @@ export class UtilisateurComponent implements OnInit {
   // Permet de rafraichir l'écran d'affichage
   async display() {
     this.paginationService.paginationUtilisateur(this.pageActuelURL, this.messagesParPage);
-    this.paginationService.redirection('/admin/utilisateur');
+    this.paginationService.redirection("/admin/utilisateur");
   }
 
   ngOnInit() {
@@ -49,7 +49,7 @@ export class UtilisateurComponent implements OnInit {
 
   // Permets de gérer le bouton suivant et précedent dans la pagination
   paging(value: String) {
-    if (value === 'precedent') {
+    if (value === "precedent") {
       if (this.pageActuelURL > this.paginationService.getMinPage()) {
         this.pageActuelURL = this.pageActuelURL - 1;
       }
@@ -58,25 +58,25 @@ export class UtilisateurComponent implements OnInit {
         this.pageActuelURL = this.pageActuelURL + 1;
       }
     }
-    this.paginationService.refreshURL('/admin/utilisateurs/page/' + this.pageActuelURL);
+    this.paginationService.refreshURL("/admin/utilisateurs/page/" + this.pageActuelURL);
     this.display();
   }
 
   // Méthode pour supprimer un utilisateur
   deleteUser(utilisateur: Utilisateur) {
     const dialogRef = this.modal.confirm()
-      .size('lg')
+      .size("lg")
       .isBlocking(true)
       .showClose(false)
       .keyboard(27)
-      .title('Suppression de ' + utilisateur.email + ' - ' + utilisateur.id)
-      .body('Comfirmez vous la suppression de ' + utilisateur.email + ' - ' + utilisateur.id + '?')
-      .okBtn('Comfirmer la suppression')
-      .okBtnClass('btn btn-danger')
-      .cancelBtn('Annuler la suppression')
+      .title("Suppression de " + utilisateur.email + " - " + utilisateur.id)
+      .body("Comfirmez vous la suppression de " + utilisateur.email + " - " + utilisateur.id + "?")
+      .okBtn("Comfirmer la suppression")
+      .okBtnClass("btn btn-danger")
+      .cancelBtn("Annuler la suppression")
       .open();
     dialogRef.result
-      .then(async() => {
+      .then(async () => {
         const supprimer = await this.utilisateurService.delete(utilisateur);
         if (supprimer) {
           this.display();

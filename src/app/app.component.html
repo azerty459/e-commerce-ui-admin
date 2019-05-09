@@ -1,24 +1,29 @@
 <div class="container-fluid">
-  <div  class="row contenu">
+  <div class="row contenu">
     <nav *ngIf="token.token !== undefined" class="col-sm-2 col-md-2 hidden-xs-down bg-faded sidebar">
       <div class="navTool">
         <button (click)="goHome()" mat-icon-button>
-          <mat-icon class="white-icon" aria-label="Example icon-button with a heart icon">home</mat-icon>
+          <mat-icon aria-label="Example icon-button with a heart icon" class="white-icon">home</mat-icon>
         </button>
         <button (click)="logout()" mat-icon-button>
-          <mat-icon class="white-icon" aria-label="Example icon-button with a heart icon">exit_to_app</mat-icon>
+          <mat-icon aria-label="Example icon-button with a heart icon" class="white-icon">exit_to_app</mat-icon>
         </button>
       </div>
       <ul id="sidebarnav">
-        <li> <a routerLink="/admin/produit" routerLinkActive="active"><i class="mdi mdi-gauge"></i><span class="hide-menu">Produit</span></a>
+        <li><a routerLink="/admin/produit" routerLinkActive="active"><i class="mdi mdi-gauge"></i><span
+          class="hide-menu">Produit</span></a>
         </li>
-        <li> <a routerLink="/admin/utilisateur" routerLinkActive="active"><i class="mdi mdi-gauge"></i><span class="hide-menu">Utilisateur</span></a>
+        <li><a routerLink="/admin/utilisateur" routerLinkActive="active"><i class="mdi mdi-gauge"></i><span
+          class="hide-menu">Utilisateur</span></a>
         </li>
-        <li> <a routerLink="/admin/categorie" routerLinkActive="active"><i class="mdi mdi-gauge"></i><span class="hide-menu">Categorie</span></a>
+        <li><a routerLink="/admin/categorie" routerLinkActive="active"><i class="mdi mdi-gauge"></i><span
+          class="hide-menu">Categorie</span></a>
         </li>
       </ul>
     </nav>
-    <main [class]="token.token !== undefined ? 'col-sm-10 offset-sm-2 col-md-12 offset-md-1 pt-2' : 'col-sm-12  col-md-12 noPadding'" class="col-sm-10 offset-sm-2 col-md-12 offset-md-1 pt-2">
+    <main
+      [class]="token.token !== undefined ? 'col-sm-10 offset-sm-2 col-md-12 offset-md-1 pt-2' : 'col-sm-12  col-md-12 noPadding'"
+      class="col-sm-10 offset-sm-2 col-md-12 offset-md-1 pt-2">
       <router-outlet></router-outlet>
     </main>
   </div>

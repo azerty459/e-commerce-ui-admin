@@ -34,7 +34,7 @@ $navbar-color: #F9FAFB;
 .navbar-fixed-top {
   left: 14%;
   //audessus du main endessous du navbar de gauche
-  z-index:3;
+  z-index: 3;
   right: 0;
   margin-right: 15px;
 }
@@ -43,26 +43,33 @@ $navbar-color: #F9FAFB;
   font-weight: bold;
   color: green;
 }
+
 .demo-chip-list {
   width: 100%;
 }
-.mat-expansion-panel-header-description .material-icons{
+
+.mat-expansion-panel-header-description .material-icons {
   margin-left: auto;
 }
-.mat-expansion-panel-header-description .mat-panel-title{
+
+.mat-expansion-panel-header-description .mat-panel-title {
   margin: auto;
 }
-.descriptionPanel{
+
+.descriptionPanel {
   margin: auto;
 }
-.centrerPanel{
+
+.centrerPanel {
   margin: 0;
   text-align: center;
 }
+
 .mat-form-field-wrapper {
   width: 100%;
 }
-.photoCard{
+
+.photoCard {
 
   min-width: 200px;
   margin: 10px;
@@ -74,34 +81,38 @@ $navbar-color: #F9FAFB;
   }
 
 }
-img{
+
+img {
 
   max-width: 400px;
 }
-mat-card{
+
+mat-card {
   max-width: 400px;
 }
-.rowPhoto{
+
+.rowPhoto {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 }
-.rowUpload{
+
+.rowUpload {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-.img{
+.img {
   padding: 5px;
 }
 
-.app-upload-img{
+.app-upload-img {
   margin-bottom: 10px;
 }
 
-.backArrow{
-  cursor:pointer;
+.backArrow {
+  cursor: pointer;
   padding: 5px;
   margin-bottom: 20px;
   padding-left: 0;
@@ -121,42 +132,48 @@ mat-card{
 @media only screen and (max-width: 1000px) {
   .toolbar {
   }
-  .title{
+  .title {
     font-size: 1em !important;
   }
-  .btn{
+  .btn {
     font-size: 0.75em !important;
   }
-  .mat-toolbar-row{
+  .mat-toolbar-row {
     height: 35px !important;
   }
-  .navbar-fixed-top{
-    margin-left:0;
+  .navbar-fixed-top {
+    margin-left: 0;
     left: 0;
     width: 100%;
   }
 }
-.toolbar{
+
+.toolbar {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
 }
-.alerteDiv{
+
+.alerteDiv {
   width: 100%;
 }
-mat-toolbar{
-  background-color:#F9FAFB;
+
+mat-toolbar {
+  background-color: #F9FAFB;
 }
-.title{
+
+.title {
   display: block;
   font-size: 2em;
   margin: 0.67em 0;
 }
-.toolContainer{
+
+.toolContainer {
   border-bottom: 1px groove;
   margin-bottom: 20px;
 }
-.photoTool{
+
+.photoTool {
 
 }

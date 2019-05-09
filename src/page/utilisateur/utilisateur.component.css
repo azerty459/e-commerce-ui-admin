@@ -2,11 +2,11 @@
   display: flex;
 }
 
-.div-header{
+.div-header {
   display: flex;
   justify-content: space-between;
 }
 
-.boutton_ajouterproduit{
+.boutton_ajouterproduit {
   margin-top: 25px;
 }

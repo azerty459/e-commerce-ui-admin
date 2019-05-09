@@ -1,34 +1,40 @@
-.noPadding{
+.noPadding {
   padding-right: 0;
   padding-left: 0;
 }
-.disabled{
-  display:none;
+
+.disabled {
+  display: none;
 }
-.white-icon{
-  color:white;
+
+.white-icon {
+  color: white;
 }
-.navTool{
-  display:flex;
+
+.navTool {
+  display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 30px;
 }
-.sidebarnav{
-  display:flex;
+
+.sidebarnav {
+  display: flex;
   flex-direction: column;
   color: white;
   padding: 8px 35px 8px 15px;
   font-size: 15px;
   border-radius: 4px;
 }
+
 @media only screen and (max-width: 1000px) {
   nav {
     display: none;
   }
-  main{
-   width: 100%;
+
+  main {
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
   }

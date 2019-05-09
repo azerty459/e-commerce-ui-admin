@@ -1,33 +1,34 @@
-import {Component, OnInit, ViewChild, ElementRef, HostListener} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Produit} from '../../../e-commerce-ui-common/models/Produit';
-import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
-import {MatAutocompleteSelectedEvent} from '@angular/material';
-import {Observable} from 'rxjs';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
-import {Modal} from 'ngx-modialog/plugins/bootstrap';
-import {CategorieBusinessService} from '../../../e-commerce-ui-common/business/categorie.service';
-import {UploadImgComponent} from '../../utilitaires/upload-img/upload-img.component';
-import {PreviousRouteBusiness} from '../../../e-commerce-ui-common/business/previous-route.service';
-import {map, startWith} from 'rxjs/operators';
-import {FormControl} from '@angular/forms';
-import {FormEditService} from '../../../e-commerce-ui-common/business/form-edit.service';
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Produit} from "../../../e-commerce-ui-common/models/Produit";
+import {ProduitBusiness} from "../../../e-commerce-ui-common/business/produit.service";
+import {MatAutocompleteSelectedEvent} from "@angular/material";
+import {Observable} from "rxjs";
+import {COMMA, ENTER} from "@angular/cdk/keycodes";
+import {Categorie} from "../../../e-commerce-ui-common/models/Categorie";
+import {Modal} from "ngx-modialog/plugins/bootstrap";
+import {CategorieBusinessService} from "../../../e-commerce-ui-common/business/categorie.service";
+import {UploadImgComponent} from "../../utilitaires/upload-img/upload-img.component";
+import {PreviousRouteBusiness} from "../../../e-commerce-ui-common/business/previous-route.service";
+import {map, startWith} from "rxjs/operators";
+import {FormControl} from "@angular/forms";
+import {FormEditService} from "../../../e-commerce-ui-common/business/form-edit.service";
 import {Photo} from "../../../e-commerce-ui-common/models/Photo";
-import { environment } from '../../environments/environment';
+import {environment} from "../../environments/environment";
+
 @Component({
-  selector: 'app-detail-produit',
-  templateUrl: './detail-produit.component.html',
-  styleUrls: ['./detail-produit.component.scss']
+  selector: "app-detail-produit",
+  templateUrl: "./detail-produit.component.html",
+  styleUrls: ["./detail-produit.component.scss"]
 })
 export class DetailProduitComponent implements OnInit {
-  @ViewChild('photo') public photo;
+  @ViewChild("photo") public photo;
   public selectable = true;
   public removable = true;
   public addOnBlur = true;
   public environment = environment;
-  public positionBeforeTooltip = 'before';
-  public positionAfterTooltip = 'after';
+  public positionBeforeTooltip = "before";
+  public positionAfterTooltip = "after";
   // Enter, comma
   public separatorKeysCodes = [ENTER, COMMA];
   public message: string;
@@ -78,8 +79,8 @@ export class DetailProduitComponent implements OnInit {
 
   public photoEnAttenteAjout = [];
   public photoEnAttenteSupression = [];
-  @ViewChild('categorieInput') categorieInput: ElementRef;
-  @ViewChild('spacer', {read: ElementRef}) spacer: ElementRef;
+  @ViewChild("categorieInput") categorieInput: ElementRef;
+  @ViewChild("spacer", {read: ElementRef}) spacer: ElementRef;
 
   constructor(private uploadImg: UploadImgComponent,
               private modal: Modal,
@@ -107,7 +108,7 @@ export class DetailProduitComponent implements OnInit {
   ngOnInit() {
     this.formEditService.clear();
     this.getProduit();
-    window.addEventListener('scroll', this.scroll, true); // third parameter
+    window.addEventListener("scroll", this.scroll, true); // third parameter
   }
 
   async getProduit() {
@@ -115,12 +116,12 @@ export class DetailProduitComponent implements OnInit {
     if (this.categories !== undefined) {
       // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
       this.categoriesObservable = this.choixCategorieFormControl.valueChanges.pipe(
-        startWith(''),
+        startWith(""),
         map(val => this.categories.filter(categorie => categorie.nomCat.toLowerCase().indexOf(val.toLowerCase()) === 0))
       );
     }
     const url = this.route.snapshot.routeConfig.path;
-    if (url === 'admin/produit/ajouter') {
+    if (url === "admin/produit/ajouter") {
       this.ajout = true;
       this.produitModifie = new Produit(null, null, null, null, 0, []);
       this.produit = new Produit(null, null, null, null, 0, []);
@@ -128,17 +129,17 @@ export class DetailProduitComponent implements OnInit {
     } else {
       this.ajout = false;
       this.disabledAjoutCategorie = false;
-      const refProduit = this.route.snapshot.paramMap.get('id');
+      const refProduit = this.route.snapshot.paramMap.get("id");
       const retourAPI = await this.produitBusiness.getProduitByRef(refProduit);
 
       if (!(retourAPI.valueOf() instanceof Produit)) {
-        this.router.navigate(['page-404'], {skipLocationChange: true});
+        this.router.navigate(["page-404"], {skipLocationChange: true});
       }
       this.produit = retourAPI;
       // gestion dimension photo
       console.log(this.produit);
-      for(const index in this.produit.arrayPhoto){
-        let img = await this.getDataImg(this.produit.arrayPhoto[index].url+'_1080x1024');
+      for (const index in this.produit.arrayPhoto) {
+        let img = await this.getDataImg(this.produit.arrayPhoto[index].url + "_1080x1024");
         this.produit.arrayPhoto[index].imgHeight = img.height;
         this.produit.arrayPhoto[index].imgWidth = img.width;
       }
@@ -172,8 +173,8 @@ export class DetailProduitComponent implements OnInit {
 
   async cancelModification(produit: Produit) {
     // Permet de copier la variable produit dans produitModifier
-    for(const index in this.produit.arrayPhoto){
-      let img = await this.getDataImg(this.produit.arrayPhoto[index].url+'_1080x1024');
+    for (const index in this.produit.arrayPhoto) {
+      let img = await this.getDataImg(this.produit.arrayPhoto[index].url + "_1080x1024");
       this.produit.arrayPhoto[index].imgHeight = img.height;
       this.produit.arrayPhoto[index].imgWidth = img.width;
     }
@@ -194,9 +195,9 @@ export class DetailProduitComponent implements OnInit {
     if (this.photoEnAttenteSupression !== undefined) {
       for (const photo of this.photoEnAttenteSupression) {
         await this.produitBusiness.removePhoto(photo);
-        if (photo.id === this.produitModifie.photoPrincipale.id){
+        if (photo.id === this.produitModifie.photoPrincipale.id) {
           (<Photo>this.produitModifie.photoPrincipale).id = 0;
-          (<Photo>this.produit.photoPrincipale).id =0;
+          (<Photo>this.produit.photoPrincipale).id = 0;
         }
       }
       this.photoEnAttenteSupression = [];
@@ -204,8 +205,8 @@ export class DetailProduitComponent implements OnInit {
     if (this.photoEnAttenteAjout !== undefined) {
       for (const photo of this.photoEnAttenteAjout) {
         const dataAEnvoyer = new FormData();
-        dataAEnvoyer.append('fichier', photo);
-        dataAEnvoyer.append('ref', this.produitModifie.ref);
+        dataAEnvoyer.append("fichier", photo);
+        dataAEnvoyer.append("ref", this.produitModifie.ref);
         const resultatUpload = await this.produitBusiness.ajoutPhoto(dataAEnvoyer);
         if (resultatUpload) {
           const produit: Produit = await this.produitBusiness.getProduitByRef(this.produit.ref);
@@ -221,8 +222,8 @@ export class DetailProduitComponent implements OnInit {
       if (retourAPI.valueOf() instanceof Produit) {
         // Mets à jour la variable produit et produit modifiée
         this.produit = retourAPI;
-        for(const index in this.produit.arrayPhoto){
-          let img = await this.getDataImg(this.produit.arrayPhoto[index].url+'_1080x1024');
+        for (const index in this.produit.arrayPhoto) {
+          let img = await this.getDataImg(this.produit.arrayPhoto[index].url + "_1080x1024");
           this.produit.arrayPhoto[index].imgHeight = img.height;
           this.produit.arrayPhoto[index].imgWidth = img.width;
         }
@@ -230,7 +231,7 @@ export class DetailProduitComponent implements OnInit {
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.cacherErreur = true;
         this.cacherAlert = false;
-        this.message = 'Le produit a été mis à jour.';
+        this.message = "Le produit a été mis à jour.";
         this.cacherBoutonAnnulation = true;
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.formEditService.setDirty(false);
@@ -238,11 +239,10 @@ export class DetailProduitComponent implements OnInit {
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.cacherErreur = false;
         this.cacherAlert = true;
-        this.message = 'Votre produit n\'a pas pu être modifié, vous devez renseigner au minimum les champs de la référence,' +
-          ' le nom et le prix HT.';
+        this.message = "Votre produit n'a pas pu être modifié, vous devez renseigner au minimum les champs de la référence," +
+          " le nom et le prix HT.";
       }
     }
-
 
 
   }
@@ -257,35 +257,35 @@ export class DetailProduitComponent implements OnInit {
       this.produit = retourAPI;
       // Permet de copier la variable produit dans produitModifier
       if (this.produit != null && this.produit !== undefined) {
-        for(const index in this.produit.arrayPhoto){
-          let img = await this.getDataImg(this.produit.arrayPhoto[index].url+'_1080x1024');
+        for (const index in this.produit.arrayPhoto) {
+          let img = await this.getDataImg(this.produit.arrayPhoto[index].url + "_1080x1024");
           this.produit.arrayPhoto[index].imgHeight = img.height;
           this.produit.arrayPhoto[index].imgWidth = img.width;
         }
         this.produitModifie = JSON.parse(JSON.stringify(retourAPI));
       }
-      this.message = 'Votre produit a été correctement ajouté';
+      this.message = "Votre produit a été correctement ajouté";
       this.disabledAjoutCategorie = false;
     } else {
       this.cacherErreur = false;
       this.cacherAlert = true;
-      this.message = 'Votre produit n\'a pas pu être ajouté, vous devez renseigner au minimum les champs de la référence,' +
-        ' le nom et le prix HT.';
+      this.message = "Votre produit n'a pas pu être ajouté, vous devez renseigner au minimum les champs de la référence," +
+        " le nom et le prix HT.";
     }
   }
 
   public deleteProduct(produit: Produit) {
     // Pop-up gérant la suppression d'un produit
     const dialogRef = this.modal.confirm()
-      .size('lg')
+      .size("lg")
       .isBlocking(true)
       .showClose(false)
       .keyboard(27)
-      .title('Suppression de ' + produit.nom + ' - ' + produit.ref)
-      .body('Comfirmez vous la suppression de ' + produit.nom + ' - ' + produit.ref + '?')
-      .okBtn('Comfirmer la suppression')
-      .okBtnClass('btn btn-danger')
-      .cancelBtn('Annuler la suppression')
+      .title("Suppression de " + produit.nom + " - " + produit.ref)
+      .body("Comfirmez vous la suppression de " + produit.nom + " - " + produit.ref + "?")
+      .okBtn("Comfirmer la suppression")
+      .okBtnClass("btn btn-danger")
+      .cancelBtn("Annuler la suppression")
       .open();
     dialogRef.result
       .then(async () => {
@@ -294,7 +294,7 @@ export class DetailProduitComponent implements OnInit {
         if (supprimer) {
           this.cacherErreur = false;
           this.cacherAlert = true;
-          this.message = 'Le produit a été supprimé.';
+          this.message = "Le produit a été supprimé.";
         }
       })
       // Pour éviter l'erreur de promise dans console.log
@@ -311,7 +311,7 @@ export class DetailProduitComponent implements OnInit {
 
   public addCategory(event: MatAutocompleteSelectedEvent): void {
     const retourCategorie = event.option.value;
-    this.categorieInput.nativeElement.value = '';
+    this.categorieInput.nativeElement.value = "";
     this.choixCategorieFormControl.setValue(null);
     const categories = this.produitModifie.arrayCategorie;
     let trouver = false;
@@ -327,7 +327,7 @@ export class DetailProduitComponent implements OnInit {
     } else {
       this.cacherAlert = true;
       this.cacherErreur = false;
-      this.message = 'Cette catégorie est déjà ajoutée.';
+      this.message = "Cette catégorie est déjà ajoutée.";
     }
   }
 
@@ -341,11 +341,11 @@ export class DetailProduitComponent implements OnInit {
   }
 
   public clearInputChips(): void {
-    this.categorieInput.nativeElement.value = '';
+    this.categorieInput.nativeElement.value = "";
   }
 
   public goBack(): void {
-    this.router.navigate(['/admin/produit']);
+    this.router.navigate(["/admin/produit"]);
     this.comparedProductWithProductModif();
   }
 
