@@ -22,7 +22,6 @@ export class AccueilComponent implements OnInit{
 
   public promiseStatistique: Promise<Statistique>;
   public statistique: Statistique;
-  public arrayNbProduitCategorie;
 
   displayedColumns: string[] = ['name', 'nombreLigne'];
   dataSource = null;
@@ -46,7 +45,6 @@ export class AccueilComponent implements OnInit{
     await this.promiseStatistique.then(
       (value) => {
         this.statistique = value;
-        console.log(this.statistique)
         let dataTab = [] 
         dataTab.push({name: 'Utilisateurs', nombreLigne: this.statistique.nbUtilisateur})
         dataTab.push({name: 'Produits', nombreLigne: this.statistique.nbProduit})
@@ -64,8 +62,3 @@ export class AccueilComponent implements OnInit{
       });
   }
 }
-
-
-/**  Copyright 2019 Google Inc. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license */
