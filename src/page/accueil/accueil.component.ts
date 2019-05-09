@@ -24,7 +24,7 @@ export class AccueilComponent implements OnInit{
   public statistique: Statistique;
 
   displayedColumns: string[] = ['name', 'nombreLigne'];
-  dataSource = null;
+  dataArray = null;
 
   barChartOptions: ChartOptions = {responsive: true};
   barChartLabels: Label[] = null;
@@ -45,11 +45,11 @@ export class AccueilComponent implements OnInit{
     await this.promiseStatistique.then(
       (value) => {
         this.statistique = value;
-        let dataTab = [] 
-        dataTab.push({name: 'Utilisateurs', nombreLigne: this.statistique.nbUtilisateur})
-        dataTab.push({name: 'Produits', nombreLigne: this.statistique.nbProduit})
-        dataTab.push({name: 'Catégories', nombreLigne: this.statistique.nbCategorie})
-        this.dataSource = dataTab;
+        let data = [] 
+        data.push({name: 'Utilisateurs', nombreLigne: this.statistique.nbUtilisateur})
+        data.push({name: 'Produits', nombreLigne: this.statistique.nbProduit})
+        data.push({name: 'Catégories', nombreLigne: this.statistique.nbCategorie})
+        this.dataArray = data;
 
         let dataLabels = []
         let dataNumberProduit = []

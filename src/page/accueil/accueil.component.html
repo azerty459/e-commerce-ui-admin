@@ -2,11 +2,9 @@
     <h1>Dashboard</h1>
 </div>
 
-<div *ngIf="dataSource" class="tableau">
+<div *ngIf="dataArray" class="tableau">
 
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <!--- Note that these columns can be defined in any order.
-            The actual rendered columns are set as a property on the row definition" -->
+    <table mat-table [dataSource]="dataArray" class="mat-elevation-z8">
         
         <!-- Name Column -->
         <ng-container matColumnDef="name">
