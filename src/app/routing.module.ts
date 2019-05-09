@@ -15,30 +15,30 @@ const appRoutes: Routes = [
   {
     path: 'admin',
     component: AccueilComponent,
-    data: { title: 'Admin - Accueil' }
+    data: {title: 'Admin - Accueil'}
   },
   // login
   {
     path: 'admin/login',
     component: LoginComponent,
-    data: { title: 'Admin - Login' }
+    data: {title: 'Admin - Login'}
   },
   // produit
   {
     path: 'admin/produit/ajouter',
     component: DetailProduitComponent,
-    data: { title: 'Détail produit' }
+    data: {title: 'Détail produit'}
   },
   {
     path: 'admin/produit/:page',
     component: ProduitComponent,
-    data: { title: 'Admin - Produits' }
+    data: {title: 'Admin - Produits'}
   },
   {
     path: 'admin/produit/detail/:id',
     component: DetailProduitComponent,
     canDeactivate: [FormEditGuard],
-    data: { title: 'Détail produit' }
+    data: {title: 'Détail produit'}
   },
   {
     path: 'admin/produit',
@@ -47,17 +47,17 @@ const appRoutes: Routes = [
   {
     path: 'admin/utilisateur/ajouter',
     component: DetailUtilisateurComponent,
-    data: { title: 'Ajout utilisateur' }
+    data: {title: 'Ajout utilisateur'}
   },
   {
     path: 'admin/utilisateur/detail/:id',
     component: DetailUtilisateurComponent,
-    data: { title: 'Détail utilisateur' }
+    data: {title: 'Détail utilisateur'}
   },
   {
     path: 'admin/utilisateurs/page/:page',
     component: UtilisateurComponent,
-    data: { title: 'Gestion des utilisateurs' }
+    data: {title: 'Gestion des utilisateurs'}
   },
   {
     path: 'admin/utilisateur',
@@ -90,7 +90,7 @@ const appRoutes: Routes = [
   imports: [
     RouterModule.forRoot( // Pour le module routing
       appRoutes,
-      { enableTracing: false } // <-- debugging purposes only
+      {enableTracing: false} // <-- debugging purposes only
     ),
   ],
   exports: [
@@ -99,5 +99,6 @@ const appRoutes: Routes = [
 })
 
 export class RoutingModule {
-    constructor() {}
+  constructor() {
+  }
 }

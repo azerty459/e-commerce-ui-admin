@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef, HostListener} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
@@ -57,7 +57,7 @@ export class DetailUtilisateurComponent implements OnInit {
    * Boolean permettant de cacher l'alerte de succès
    * @type {boolean}
    */
-  cacherAlert =  true;
+  cacherAlert = true;
 
   /**
    * Boolean permettant de cacher l'alerte d'erreur
@@ -77,7 +77,8 @@ export class DetailUtilisateurComponent implements OnInit {
 
 
   @ViewChild('roleInput') roleInput: ElementRef;
-  @ViewChild('toolContainerNotFixed', { read: ElementRef }) toolContainerNotFixed: ElementRef;
+  @ViewChild('toolContainerNotFixed', {read: ElementRef}) toolContainerNotFixed: ElementRef;
+
   constructor(private modal: Modal,
               private formEditService: FormEditService,
               private previousRouteBusiness: PreviousRouteBusiness,
@@ -108,10 +109,10 @@ export class DetailUtilisateurComponent implements OnInit {
     if (url === 'admin/utilisateur/ajouter') {
       this.ajout = true;
       this.utilisateurModifie = new Utilisateur(null, null, null, null, null);
-      this.utilisateurModifie.role =  new Role(0,"");
+      this.utilisateurModifie.role = new Role(0, '');
 
       this.utilisateur = new Utilisateur(null, null, null, null, null);
-      this.utilisateur.role =  new Role(0,"");
+      this.utilisateur.role = new Role(0, '');
     } else {
       this.ajout = false;
       const idUtilisateur = parseInt(this.route.snapshot.paramMap.get('id'), 10);
@@ -230,7 +231,7 @@ export class DetailUtilisateurComponent implements OnInit {
 
   // Supprime une rôle de la liste
   public deleteRole(role: any): void {
-   this.utilisateurModifie.role = new Role(0,"");
+    this.utilisateurModifie.role = new Role(0, '');
   }
 
   // Permet de rajouter un role dans la chips
@@ -247,7 +248,7 @@ export class DetailUtilisateurComponent implements OnInit {
       }
     }
     if (trouver === false) {
-      this.utilisateurModifie.role=retourRole;
+      this.utilisateurModifie.role = retourRole;
       this.comparedUserWithUserModif();
     } else {
       this.cacherAlert = true;
@@ -264,14 +265,14 @@ export class DetailUtilisateurComponent implements OnInit {
 
   // Permets de gérer le bouton 'oeil' dans l'input mot de passe
   public hidePassword(): void {
-    if (this.typePassword  === 'password') {
+    if (this.typePassword === 'password') {
       // Permets de définir le input de type:
       this.typePassword = 'text';
       // Permets de changer la classe de l'icone dans l'input
       this.classPassword = 'glyphicon glyphicon-eye-open';
     } else {
       // Permets de définir le input de type:
-      this.typePassword  = 'password';
+      this.typePassword = 'password';
       // Permets de changer la classe de l'icone dans l'input
       this.classPassword = 'glyphicon glyphicon-eye-close';
     }

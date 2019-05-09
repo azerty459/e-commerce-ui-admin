@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AlerteSnackBarComponent } from './alerteSnackBar.component';
+import {AlerteSnackBarComponent} from './alerteSnackBar.component';
 
 describe('AlerteSnackBarComponent', () => {
   let component: AlerteSnackBarComponent;
@@ -8,9 +8,9 @@ describe('AlerteSnackBarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AlerteSnackBarComponent ]
-    })
-    .compileComponents();
+        declarations: [AlerteSnackBarComponent]
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {

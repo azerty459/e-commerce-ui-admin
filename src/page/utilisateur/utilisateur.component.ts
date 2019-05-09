@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Modal} from 'ngx-modialog/plugins/bootstrap';
 import {ActivatedRoute} from '@angular/router';
 import {PaginationService} from '../../../e-commerce-ui-common/business/pagination.service';
@@ -76,7 +76,7 @@ export class UtilisateurComponent implements OnInit {
       .cancelBtn('Annuler la suppression')
       .open();
     dialogRef.result
-      .then(async() => {
+      .then(async () => {
         const supprimer = await this.utilisateurService.delete(utilisateur);
         if (supprimer) {
           this.display();

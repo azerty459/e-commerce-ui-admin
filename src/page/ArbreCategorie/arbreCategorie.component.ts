@@ -1,15 +1,13 @@
 import {FlatTreeControl} from '@angular/cdk/tree';
-import {AfterViewChecked, Component, ElementRef, OnInit, Renderer, Renderer2, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import {CategorieNode} from '../../../e-commerce-ui-common/models/CategorieNode';
 import {CategorieFlatNode} from '../../../e-commerce-ui-common/models/CategorieFlatNode';
 import {ArbreService} from '../../../e-commerce-ui-common/business/arbre.service';
 import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
 import {Modal} from 'ngx-modialog/plugins/bootstrap';
-import {AfterViewInit} from '@angular/core';
-import {MatSnackBar} from "@angular/material";
-import {AlerteSnackBarComponent} from "../../utilitaires/alerteSnackBar/alerteSnackBar.component";
-import {forEach} from "@angular/router/src/utils/collection";
+import {MatSnackBar} from '@angular/material';
+import {AlerteSnackBarComponent} from '../../utilitaires/alerteSnackBar/alerteSnackBar.component';
 
 
 /**
@@ -33,10 +31,8 @@ export class ArbreCategorieComponent implements OnInit {
   displayFilter = false;
   // boolean afficher erreur
   nomCategorieIsEmpy = false;
-  ngOnInit(): void {
-  }
 
-  constructor(private arbreService: ArbreService, private modal: Modal,  public snackBar: MatSnackBar) {
+  constructor(private arbreService: ArbreService, private modal: Modal, public snackBar: MatSnackBar) {
     this.treeFlattener = new MatTreeFlattener(arbreService.transformerNodeToFlatNode, arbreService.getLevel,
       arbreService.isExpandable, arbreService.getChildren);
     this.treeControl = new FlatTreeControl<CategorieFlatNode>(arbreService.getLevel, arbreService.isExpandable);
@@ -45,6 +41,9 @@ export class ArbreCategorieComponent implements OnInit {
     arbreService.dataChange.subscribe(data => {
       this.dataSource.data = data;
     });
+  }
+
+  ngOnInit(): void {
   }
 
   /**
@@ -56,8 +55,6 @@ export class ArbreCategorieComponent implements OnInit {
   public hasChild = (_: number, nodeData: CategorieFlatNode) => {
     return nodeData.expandable;
   };
-
-
 
 
   /**
@@ -117,17 +114,17 @@ export class ArbreCategorieComponent implements OnInit {
 
 
   /**
-     }
+   }
    * Methode permettant de supprimer une categorie a partir de sa flat node
    * @param {CategorieFlatNode} node flat node représentant la categorie a supprimer
    * @return {Promise<void>}
    */
   async deleteCategorie(node: CategorieFlatNode) {
     // Modal
-    let bodyString = 'Comfirmez vous la suppression de la categorie ' + node.nomCategorie + ' - id (' + node.id + ')' ;
-    if (this.arbreService.flatNodeMap.get(node).children !== undefined){
-      bodyString = bodyString +  ' et de ses categories enfants ?';
-    } else{
+    let bodyString = 'Comfirmez vous la suppression de la categorie ' + node.nomCategorie + ' - id (' + node.id + ')';
+    if (this.arbreService.flatNodeMap.get(node).children !== undefined) {
+      bodyString = bodyString + ' et de ses categories enfants ?';
+    } else {
       bodyString = bodyString + '?';
     }
     const dialogRef = this.modal.confirm()
@@ -188,7 +185,8 @@ export class ArbreCategorieComponent implements OnInit {
       arbreService.data.forEach(function (value, index) {
         if (value.id === node.id) {
           console.log(arbreService.data);
-          arbreService.data.splice(index, 1);}
+          arbreService.data.splice(index, 1);
+        }
       });
 
       if (this.arbreService.data.length === 0) {
@@ -225,8 +223,8 @@ export class ArbreCategorieComponent implements OnInit {
     // Une nodeParent null signifie qu'on se trouve au niveau 0
     if (nodeParent === null) {
       // on utilise un timestamp afin de pouvoir identifier la node afin de pouvoir eventuellement supprimer la node
-      this.arbreService.insertItem(null, <CategorieNode>{id: ''+-Date.now(), nomCategorie: ''});
-      console.log(<CategorieNode>{id: ''+-Date.now(), nomCategorie: ''});
+      this.arbreService.insertItem(null, <CategorieNode>{id: '' + -Date.now(), nomCategorie: ''});
+      console.log(<CategorieNode>{id: '' + -Date.now(), nomCategorie: ''});
     } else {
       const nodeParentFlat = this.arbreService.flatNodeMap.get(nodeParent);
       this.arbreService.insertItem(nodeParentFlat!, <CategorieNode>{nomCategorie: ''});
@@ -268,7 +266,7 @@ export class ArbreCategorieComponent implements OnInit {
           nestedNode.nomCategorie = categorie.nomCat;
         }
       }
-      if( nestedNode !== undefined ){
+      if (nestedNode !== undefined) {
         this.arbreService.updateCategorie(nestedNode!, nomCategorie);
       }
     }
@@ -303,7 +301,7 @@ export class ArbreCategorieComponent implements OnInit {
         this.arbreService.categoriedataBusiness.moveCategorie(
           new Categorie(node.id, node.nomCategorie, null, null),
           undefined
-        )
+        );
       }
 
     } else {
@@ -324,7 +322,7 @@ export class ArbreCategorieComponent implements OnInit {
         this.arbreService.categoriedataBusiness.moveCategorie(
           new Categorie(node.id, node.nomCategorie, null, null),
           new Categorie(nodeParent.id, nodeParent.nomCategorie, null, null)
-        )
+        );
       } else {
         // TODO message drop pas autorisé
       }
@@ -339,19 +337,20 @@ export class ArbreCategorieComponent implements OnInit {
     });
     this.snackBarRef.instance.snackBarRefAlerteComponent = this.snackBarRef;
   }
+
   /**
    * Methode permettant de vérifie si flaNode est doppable dans flatNodeParent
    * @param {CategorieFlatNode} flatNode
    * @param {CategorieFlatNode} flatNodeParent
    * @returns {boolean}
    */
-  public isDropAllowed(flatNode: CategorieFlatNode , flatNodeParent: CategorieFlatNode){
+  public isDropAllowed(flatNode: CategorieFlatNode, flatNodeParent: CategorieFlatNode) {
 
     const nodeParent = this.arbreService.flatNodeMap.get(flatNodeParent);
     const node = this.arbreService.flatNodeMap.get(flatNode);
     const nodesDifferentes = node.id !== nodeParent.id;
     const nodeNonDirectementAparente = node.idParent !== nodeParent.id;
-    if ( nodesDifferentes && nodeNonDirectementAparente && !this.arbreService.nodeContain(node, nodeParent)) {
+    if (nodesDifferentes && nodeNonDirectementAparente && !this.arbreService.nodeContain(node, nodeParent)) {
       return true;
     } else {
       return false;

@@ -1,5 +1,5 @@
-<td-file-upload #singleFileUpload (select)="selectEvent($event)"
-                (upload)="uploadEvent($event)" (cancel)="cancelEvent()" >
+<td-file-upload #singleFileUpload (cancel)="cancelEvent()"
+                (select)="selectEvent($event)" (upload)="uploadEvent($event)">
   <mat-icon>file_upload</mat-icon>
   <span>Cliquer pour envoyer</span>
   <ng-template td-file-input-label>

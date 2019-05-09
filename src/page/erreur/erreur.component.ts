@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-erreur',
@@ -11,7 +11,8 @@ export class ErreurComponent implements OnInit {
   public titreErreur: String;
   public messageErreur: String;
 
-  constructor() {}
+  constructor() {
+  }
 
   ngOnInit() {
   }

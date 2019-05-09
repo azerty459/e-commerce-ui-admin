@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { UploadImgComponent } from './upload-img.component';
+import {UploadImgComponent} from './upload-img.component';
 
 describe('AlerteSnackBarComponent', () => {
   let component: UploadImgComponent;
@@ -8,9 +8,9 @@ describe('AlerteSnackBarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UploadImgComponent ]
-    })
-    .compileComponents();
+        declarations: [UploadImgComponent]
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {

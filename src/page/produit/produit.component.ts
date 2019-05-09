@@ -17,7 +17,7 @@ export class ProduitComponent implements OnInit {
 
   public pageActuelURL: number;
   public pageMax: number;
-  public pageMin  = 1;
+  public pageMin = 1;
   public messagesParPage = 5;
 
   constructor(private modal: Modal,
@@ -25,7 +25,7 @@ export class ProduitComponent implements OnInit {
               private router: Router,
               private activatedRoute: ActivatedRoute) {
     this.activatedRoute.params.subscribe(params => {
-      // radix à 10 pour un décimal
+        // radix à 10 pour un décimal
         this.pageActuelURL = parseInt(params.page, 10);
       },
       error => {
@@ -91,7 +91,7 @@ export class ProduitComponent implements OnInit {
       .cancelBtn('Annuler la suppression')
       .open();
     dialogRef.result
-      .then(async() => {
+      .then(async () => {
         const supprimer = await this.produitBusiness.deleteProduit(produit);
         if (supprimer) {
           this.refreshProductList();

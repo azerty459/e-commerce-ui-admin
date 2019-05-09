@@ -1,9 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
-import {Photo} from "../../../e-commerce-ui-common/models/Photo";
-import {throwError as observableThrowError} from 'rxjs/index';
-import {MatSnackBar} from "@angular/material";
+import {Photo} from '../../../e-commerce-ui-common/models/Photo';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-upload-img',
@@ -12,17 +11,18 @@ import {MatSnackBar} from "@angular/material";
 })
 
 export class UploadImgComponent implements OnInit {
+  imgSelected = false;
+  @Input() produit: Produit;
+  @Input() photoEnAttente;
   private fileSelectMsg = 'No file selected yet.';
   private fileUploadMsg = 'No file uploaded yet.';
 
-  imgSelected = false;
   constructor(
     private snackBar: MatSnackBar,
     private produitBusiness: ProduitBusiness
+  ) {
+  }
 
-  ) { }
-  @Input() produit: Produit;
-  @Input() photoEnAttente;
   ngOnInit() {
   }
 
@@ -36,18 +36,17 @@ export class UploadImgComponent implements OnInit {
   }
 
 
-
   /**
    * Permet de realiser l'upload du fichier
    * @param {File} file
    */
   async uploadEvent(file: File) {
     console.log(file.size);
-    if(file.size > 1000000){
-      this.snackBar.open('Fichier trop lourd ( '+file.size+' octet > 1000000 octet )', '', {
+    if (file.size > 1000000) {
+      this.snackBar.open('Fichier trop lourd ( ' + file.size + ' octet > 1000000 octet )', '', {
         duration: 2000
       });
-    }else {
+    } else {
       this.snackBar.open('Image prêt à être uploadé', '', {
         duration: 2000
       });
@@ -59,9 +58,9 @@ export class UploadImgComponent implements OnInit {
       photo.file = file;
       // On ajoute la photo dans la l'arrayPhoto du produit
       if (this.produit.arrayPhoto.length !== 0) {
-        this.produit.arrayPhoto.push(photo)
+        this.produit.arrayPhoto.push(photo);
       } else {
-        this.produit.arrayPhoto = [photo]
+        this.produit.arrayPhoto = [photo];
       }
     }
   }
@@ -81,7 +80,7 @@ export class UploadImgComponent implements OnInit {
    */
   public addPhoto(file: File): void {
 
-      this.photoEnAttente.push(file);
+    this.photoEnAttente.push(file);
   }
 
 }

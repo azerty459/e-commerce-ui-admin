@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef, HostListener} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Produit} from '../../../e-commerce-ui-common/models/Produit';
 import {ProduitBusiness} from '../../../e-commerce-ui-common/business/produit.service';
@@ -13,8 +13,9 @@ import {PreviousRouteBusiness} from '../../../e-commerce-ui-common/business/prev
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {FormEditService} from '../../../e-commerce-ui-common/business/form-edit.service';
-import {Photo} from "../../../e-commerce-ui-common/models/Photo";
-import { environment } from '../../environments/environment';
+import {Photo} from '../../../e-commerce-ui-common/models/Photo';
+import {environment} from '../../environments/environment';
+
 @Component({
   selector: 'app-detail-produit',
   templateUrl: './detail-produit.component.html',
@@ -137,8 +138,8 @@ export class DetailProduitComponent implements OnInit {
       this.produit = retourAPI;
       // gestion dimension photo
       console.log(this.produit);
-      for(const index in this.produit.arrayPhoto){
-        let img = await this.getDataImg(this.produit.arrayPhoto[index].url+'_1080x1024');
+      for (const index in this.produit.arrayPhoto) {
+        let img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
         this.produit.arrayPhoto[index].imgHeight = img.height;
         this.produit.arrayPhoto[index].imgWidth = img.width;
       }
@@ -172,8 +173,8 @@ export class DetailProduitComponent implements OnInit {
 
   async cancelModification(produit: Produit) {
     // Permet de copier la variable produit dans produitModifier
-    for(const index in this.produit.arrayPhoto){
-      let img = await this.getDataImg(this.produit.arrayPhoto[index].url+'_1080x1024');
+    for (const index in this.produit.arrayPhoto) {
+      let img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
       this.produit.arrayPhoto[index].imgHeight = img.height;
       this.produit.arrayPhoto[index].imgWidth = img.width;
     }
@@ -194,9 +195,9 @@ export class DetailProduitComponent implements OnInit {
     if (this.photoEnAttenteSupression !== undefined) {
       for (const photo of this.photoEnAttenteSupression) {
         await this.produitBusiness.removePhoto(photo);
-        if (photo.id === this.produitModifie.photoPrincipale.id){
+        if (photo.id === this.produitModifie.photoPrincipale.id) {
           (<Photo>this.produitModifie.photoPrincipale).id = 0;
-          (<Photo>this.produit.photoPrincipale).id =0;
+          (<Photo>this.produit.photoPrincipale).id = 0;
         }
       }
       this.photoEnAttenteSupression = [];
@@ -221,8 +222,8 @@ export class DetailProduitComponent implements OnInit {
       if (retourAPI.valueOf() instanceof Produit) {
         // Mets à jour la variable produit et produit modifiée
         this.produit = retourAPI;
-        for(const index in this.produit.arrayPhoto){
-          let img = await this.getDataImg(this.produit.arrayPhoto[index].url+'_1080x1024');
+        for (const index in this.produit.arrayPhoto) {
+          let img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
           this.produit.arrayPhoto[index].imgHeight = img.height;
           this.produit.arrayPhoto[index].imgWidth = img.width;
         }
@@ -244,7 +245,6 @@ export class DetailProduitComponent implements OnInit {
     }
 
 
-
   }
 
   public async addProduct() {
@@ -257,8 +257,8 @@ export class DetailProduitComponent implements OnInit {
       this.produit = retourAPI;
       // Permet de copier la variable produit dans produitModifier
       if (this.produit != null && this.produit !== undefined) {
-        for(const index in this.produit.arrayPhoto){
-          let img = await this.getDataImg(this.produit.arrayPhoto[index].url+'_1080x1024');
+        for (const index in this.produit.arrayPhoto) {
+          let img = await this.getDataImg(this.produit.arrayPhoto[index].url + '_1080x1024');
           this.produit.arrayPhoto[index].imgHeight = img.height;
           this.produit.arrayPhoto[index].imgWidth = img.width;
         }

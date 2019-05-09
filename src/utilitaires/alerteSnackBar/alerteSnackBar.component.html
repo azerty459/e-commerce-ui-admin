@@ -1,11 +1,11 @@
 <div class="rowContainer">
   <div class="headerIcon">
-      <mat-icon class="buttonIcon" (click)="exit()">clear</mat-icon>
+    <mat-icon (click)="exit()" class="buttonIcon">clear</mat-icon>
   </div>
   <div class="alertDiv">
     <span class="messageAlerte">Votre catégorie a bien été supprimée</span>
     <span class="restoreButton">
-      <button mat-raised-button (click)="restore()">
+      <button (click)="restore()" mat-raised-button>
         Restaurer
         <mat-icon>restore</mat-icon>
       </button>

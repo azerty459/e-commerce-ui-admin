@@ -1,38 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
-
-
-
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
 /*
   Nav bar
  */
-.snackBar{
+.snackBar {
   min-width: 700px !important;
-  padding:2px 0px 2px !important;
+  padding: 2px 0px 2px !important;
   padding-bottom: 14px !important;
-  margin-bottom: 5px  !important;
-  background-color:#4BB543 !important;
+  margin-bottom: 5px !important;
+  background-color: #4BB543 !important;
   border-radius: 10px !important;
   margin-top: 14px !important;
   margin-left: 14px !important;
   margin-right: 14px !important;
 }
 
-a:hover{
+a:hover {
   text-decoration: none;
 }
-a:checked{
+
+a:checked {
   text-decoration: none;
 }
+
 .toolbar {
   display: flex;
   margin: 10px 0px 10px 0;
   justify-content: space-between;
 }
+
 label {
   font-weight: 500 !important;
 }
-.navbar{
+
+.navbar {
   margin: 0px;
 }
 
@@ -57,14 +59,14 @@ label {
   Général
  */
 
-html, app-root, body{
-  margin:0;
-  height:100%;
+html, app-root, body {
+  margin: 0;
+  height: 100%;
 }
 
 body {
-  background-color:#F9FAFB;
-  margin:0;
+  background-color: #F9FAFB;
+  margin: 0;
   min-height: 100%;
 }
 
@@ -74,12 +76,13 @@ app-root {
   flex: 1;
 }
 
-.container-fluid { z-index: 4;
+.container-fluid {
+  z-index: 4;
   display: flex;
   flex-direction: column;
   flex: 1;
   margin-right: 0;
-   margin-left: 0;
+  margin-left: 0;
 }
 
 .contenu {
@@ -99,7 +102,7 @@ main {
 .centrer-block {
   display: flex;
   justify-content: center;
-  margin-left: 10px!important;
+  margin-left: 10px !important;
 }
 
 .centrer-block > b {
@@ -164,18 +167,19 @@ Styles pour les pages de listes de produits et de catégories
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  border: 1px solid rgba(0,0,0,.125);
+  border: 1px solid rgba(0, 0, 0, .125);
   border-radius: .25rem;
 }
 
 .card-header:first-child {
   border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
 }
+
 .card-header {
   padding: .75rem 1.25rem;
   margin-bottom: 0;
-  background-color: rgba(0,0,0,.03);
-  border-bottom: 1px solid rgba(0,0,0,.125);
+  background-color: rgba(0, 0, 0, .03);
+  border-bottom: 1px solid rgba(0, 0, 0, .125);
   display: flex;
   justify-content: space-between;
 }
