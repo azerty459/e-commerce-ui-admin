@@ -122,8 +122,8 @@ export class DetailProduitComponent implements OnInit {
     const url = this.route.snapshot.routeConfig.path;
     if (url === 'admin/produit/ajouter') {
       this.ajout = true;
-      this.produitModifie = new Produit(null, null, null, null, []);
-      this.produit = new Produit(null, null, null, null, []);
+      this.produitModifie = new Produit(null, null, null, null, 0, []);
+      this.produit = new Produit(null, null, null, null, 0, []);
       this.disabledAjoutCategorie = true;
     } else {
       this.ajout = false;
