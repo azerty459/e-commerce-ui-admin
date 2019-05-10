@@ -12,58 +12,60 @@
   </mat-toolbar>
 </div>
 
-<div class="navbar-fixed-top">
-  <mat-toolbar class="toolContainer">
-    <mat-toolbar-row>
-      <div class="title">
-        {{ajout ? 'Ajout d\'utilisateur' : '' + utilisateur.email + ' - ' + utilisateur.id }}
-      </div>
-    </mat-toolbar-row>
-    <mat-toolbar-row>
-      <div class="toolbar">
-        <div class="leftTool">
-          <i (click)="goBack()" [matTooltipPosition]="positionAfterTooltip"
-             class="material-icons backArrow"
-             matTooltip="Revenir en arrière">arrow_back</i>
+<div *ngIf="utilisateur">
+  <div class="navbar-fixed-top">
+    <mat-toolbar class="toolContainer">
+      <mat-toolbar-row>
+        <div class="title">
+          {{ajout ? 'Ajout d\'utilisateur' : '' + utilisateur.email + ' - ' + utilisateur.id }}
         </div>
-        <div class="rightTool">
+      </mat-toolbar-row>
+      <mat-toolbar-row>
+        <div class="toolbar">
+          <div class="leftTool">
+            <i (click)="goBack()" [matTooltipPosition]="positionAfterTooltip"
+               class="material-icons backArrow"
+               matTooltip="Revenir en arrière">arrow_back</i>
+          </div>
+          <div class="rightTool">
 
-          <button (click)="addUser()" *ngIf="ajout" class="btn btn-success" type="submit">
-            Ajouter l'utilisateur
-          </button>
+            <button (click)="addUser()" *ngIf="ajout" class="btn btn-success" type="submit">
+              Ajouter l'utilisateur
+            </button>
 
-          <button (click)="deleteUser(utilisateur)" *ngIf="! ajout" [matTooltipPosition]="'below'"
-                  class="btn btn-danger pull-right centrer-block"
-                  matTooltip="Supprimer l'utilisateur" type="button">
-            <b class="noShow">Supprimer</b>
-            <i class="material-icons">delete</i>
-          </button>
+            <button (click)="deleteUser(utilisateur)" *ngIf="! ajout" [matTooltipPosition]="'below'"
+                    class="btn btn-danger pull-right centrer-block"
+                    matTooltip="Supprimer l'utilisateur" type="button">
+              <b class="noShow">Supprimer</b>
+              <i class="material-icons">delete</i>
+            </button>
 
-          <button (click)="saveModification()" *ngIf="! ajout" [disabled]="cacherBoutonAnnulation"
-                  [matTooltipPosition]="'below'"
-                  class="btn btn-success pull-right centrer-block"
-                  matTooltip="Enregistrer les modifications" type="button">
-            <b class="noShow">Sauvegarder</b>
-            <i class="material-icons">save</i>
-          </button>
+            <button (click)="saveModification()" *ngIf="! ajout" [disabled]="cacherBoutonAnnulation"
+                    [matTooltipPosition]="'below'"
+                    class="btn btn-success pull-right centrer-block"
+                    matTooltip="Enregistrer les modifications" type="button">
+              <b class="noShow">Sauvegarder</b>
+              <i class="material-icons">save</i>
+            </button>
 
-          <button (click)="cancelModification(utilisateur)" *ngIf="! ajout" [disabled]="cacherBoutonAnnulation"
-                  [matTooltipPosition]="'below'" class="btn btn-warning pull-right centrer-block"
-                  matTooltip="Annuler les modifications" type="button">
-            <b class="noShow">Annuler</b>
-            <i class="material-icons">settings_backup_restore</i>
-          </button>
+            <button (click)="cancelModification(utilisateur)" *ngIf="! ajout" [disabled]="cacherBoutonAnnulation"
+                    [matTooltipPosition]="'below'" class="btn btn-warning pull-right centrer-block"
+                    matTooltip="Annuler les modifications" type="button">
+              <b class="noShow">Annuler</b>
+              <i class="material-icons">settings_backup_restore</i>
+            </button>
 
+          </div>
         </div>
-      </div>
-    </mat-toolbar-row>
-    <mat-toolbar-row *ngIf="!cacherAlert || !cacherErreur">
-      <div class="alerteDiv">
-        <div *ngIf="!cacherAlert" [hidden]="cacherAlert" class="alert alert-success" role="alert">{{message}}</div>
-        <div *ngIf="!cacherErreur" [hidden]="cacherErreur" class="alert alert-danger" role="alert">{{message}}</div>
-      </div>
-    </mat-toolbar-row>
-  </mat-toolbar>
+      </mat-toolbar-row>
+      <mat-toolbar-row *ngIf="!cacherAlert || !cacherErreur">
+        <div class="alerteDiv">
+          <div *ngIf="!cacherAlert" [hidden]="cacherAlert" class="alert alert-success" role="alert">{{message}}</div>
+          <div *ngIf="!cacherErreur" [hidden]="cacherErreur" class="alert alert-danger" role="alert">{{message}}</div>
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
 </div>
 
 
