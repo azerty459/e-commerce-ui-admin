@@ -104,13 +104,11 @@ export class DetailUtilisateurComponent implements OnInit {
         map(val => this.roles.filter(role => role.nom.toLowerCase().indexOf(val) === 0))
       );
     }
-    //
     const url = this.route.snapshot.routeConfig.path;
     if (url === 'admin/utilisateur/ajouter') {
       this.ajout = true;
       this.utilisateurModifie = new Utilisateur(null, null, null, null, null);
-      this.utilisateurModifie.role = new Role(0, '');
-
+      this.utilisateurModifie.role = this.roles[0];
       this.utilisateur = new Utilisateur(null, null, null, null, null);
       this.utilisateur.role = new Role(0, '');
     } else {

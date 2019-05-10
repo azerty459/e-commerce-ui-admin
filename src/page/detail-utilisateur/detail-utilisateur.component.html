@@ -135,7 +135,7 @@
 
       <mat-form-field>
         <mat-label>role</mat-label>
-        <mat-select [(ngModel)]="utilisateurModifie.role.nom">
+        <mat-select [(value)]="utilisateurModifie.role.nom">
           <mat-option *ngFor="let role of roles" [value]="role.nom">{{role.nom}}</mat-option>
         </mat-select>
       </mat-form-field>
