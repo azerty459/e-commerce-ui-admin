@@ -135,8 +135,8 @@
 
       <mat-form-field>
         <mat-label>role</mat-label>
-        <mat-select [(value)]="utilisateurModifie.role.nom">
-          <mat-option *ngFor="let role of roles" [value]="role.nom">{{role.nom}}</mat-option>
+        <mat-select [(value)]="utilisateurModifie.role.id">
+          <mat-option *ngFor="let role of roles" [value]="role.id">{{role.nom}}</mat-option>
         </mat-select>
       </mat-form-field>
     </mat-expansion-panel>
