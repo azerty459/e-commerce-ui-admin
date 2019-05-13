@@ -7,6 +7,7 @@ import {BootstrapModalModule} from 'ngx-modialog/plugins/bootstrap';
 import {CovalentFileModule} from '@covalent/core/file';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {CollapseModule} from 'ngx-bootstrap';
+import {BsModalService, ModalBackdropComponent, ModalContainerComponent} from 'ngx-bootstrap/modal';
 import {PreviousRouteBusiness} from '../../e-commerce-ui-common/business/previous-route.service';
 import {ProduitBusiness} from '../../e-commerce-ui-common/business/produit.service';
 import {CategorieBusinessService} from '../../e-commerce-ui-common/business/categorie.service';
@@ -22,7 +23,6 @@ import {ArbreCategorieComponent} from '../page/ArbreCategorie/arbreCategorie.com
 import {UploadImgComponent} from '../utilitaires/upload-img/upload-img.component';
 import {MaterialModule} from './material.module';
 import {RoutingModule} from './routing.module';
-// DRAG & DROP MODULE
 import {NgDragDropModule} from 'ng-drag-drop';
 import {UtilisateurComponent} from '../page/utilisateur/utilisateur.component';
 import {PaginationService} from '../../e-commerce-ui-common/business/pagination.service';
@@ -52,9 +52,12 @@ import {StatistiqueBusiness} from '../../e-commerce-ui-common/business/statistiq
 
     UtilisateurComponent,
     DetailUtilisateurComponent,
-    AlerteSnackBarComponent
+    AlerteSnackBarComponent,
+    ModalBackdropComponent,
+    ModalContainerComponent
   ],
   imports: [
+    // AlertModule.forRoot(),
     RoutingModule, // Utilisation de routing
     MaterialModule, // Utilisation d'angular Material
     BrowserModule,
@@ -86,9 +89,10 @@ import {StatistiqueBusiness} from '../../e-commerce-ui-common/business/statistiq
     AuthDataService,
     FiltreService,
     AuthInterceptor,
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    BsModalService
   ],
-  entryComponents: [AlerteSnackBarComponent],
+  entryComponents: [AlerteSnackBarComponent, ModalBackdropComponent, ModalContainerComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {
