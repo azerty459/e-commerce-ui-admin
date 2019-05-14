@@ -34,7 +34,7 @@ import {LoginComponent} from '../page/login/login.component';
 import {AuthDataService} from '../business/auth-data.service';
 import {AuthInterceptor} from '../../e-commerce-ui-common/utilitaires/AuthInterceptor';
 import {FiltreService} from '../../e-commerce-ui-common/business/filtre.service';
-import {ProduiDataService} from '../../e-commerce-ui-common/business/data/produitData.service';
+import {ProduiDataService} from '../../e-commerce-ui-common/business/data/produit-data.service';
 import {ChartsModule} from 'ng2-charts';
 import {MatTableModule} from '@angular/material/table';
 import {StatistiqueBusiness} from '../../e-commerce-ui-common/business/statistique.service';
