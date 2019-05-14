@@ -28,6 +28,7 @@ export class AuthDataService {
       this.messageAlerte.message = '';
       this.token.token = response['signinUtilisateur'].token.token;
       localStorage.setItem('AuthToken', this.token.token);
+      localStorage.setItem('InfoUser', JSON.stringify(response['signinUtilisateur'].token.utilisateur));
       this._router.navigate(['/admin']);
     }
   }
@@ -40,7 +41,7 @@ export class AuthDataService {
     const postResult = this.http.post(environment.api_login_url, {
       query: 'mutation { signinUtilisateur(auth: {email:"' + this.utilisateur.email + '",' +
         'password:"' + this.utilisateur.mdp + '"}){' +
-        'token{utilisateur{email}token}}}'
+        'token{utilisateur{email nom prenom}token}}}'
     });
     // On créer une promesse
     const promise = new Promise<any>((resolve) => {
@@ -49,7 +50,6 @@ export class AuthDataService {
         .toPromise()
         .then(
           response => {
-            console.log(response);
             // On résout notre promesse
             resolve(response);
           }
