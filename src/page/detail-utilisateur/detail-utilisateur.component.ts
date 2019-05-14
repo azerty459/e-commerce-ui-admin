@@ -117,9 +117,6 @@ export class DetailUtilisateurComponent implements OnInit {
       this.ajout = false;
       const idUtilisateur = parseInt(this.route.snapshot.paramMap.get('id'), 10);
       const retourAPI = await this.utilisateurService.getById(idUtilisateur);
-      if (!(retourAPI.valueOf() instanceof Utilisateur)) {
-        this.router.navigate(['page-404'], {skipLocationChange: true});
-      }
       this.utilisateur = retourAPI;
       this.utilisateurModifie = JSON.parse(JSON.stringify(this.utilisateur));
     }
@@ -176,6 +173,10 @@ export class DetailUtilisateurComponent implements OnInit {
         this.message = 'L\'utilisateur n\'a pas pu être modifié, vous devez renseigner au minimum les champs de l\'email' +
           ' et du mdp';
       }
+    } else {
+      this.cacherErreur = false;
+      this.cacherAlert = true;
+      this.message = 'Impossible de modifier l\'utilisateur : Erreur serveur';
     }
   }
 
