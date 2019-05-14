@@ -151,8 +151,7 @@ export class DetailUtilisateurComponent implements OnInit {
     const retourAPI = await this.utilisateurService.update(this.utilisateurModifie);
     if (retourAPI != null && retourAPI !== undefined) {
       // Si le retourAPI est un utilisateur
-      console.log(retourAPI/*, retourAPI.valueOf() instanceof Utilisateur, retourAPI.valueOf() instanceof Object*/);
-      if (retourAPI.valueOf() instanceof Utilisateur) {
+      if (retourAPI.constructor.name !== 'String') {
         // Mets à jour la variable utilisateur et utilisateur modifiée
         this.utilisateur = retourAPI;
         if (this.utilisateur != null && this.utilisateur !== undefined) {
@@ -182,7 +181,7 @@ export class DetailUtilisateurComponent implements OnInit {
   public async addUser() {
     const retourAPI = await this.utilisateurService.add(this.utilisateurModifie);
     // Si le retourAPI est un utilisateur
-    if (retourAPI.valueOf() instanceof Utilisateur) {
+    if (retourAPI.constructor.name !== 'String') {
       this.cacherErreur = true;
       this.cacherAlert = false;
       this.ajout = true;
@@ -196,7 +195,7 @@ export class DetailUtilisateurComponent implements OnInit {
     } else {
       this.cacherErreur = false;
       this.cacherAlert = true;
-      // this.message = retourAPI;
+      this.message = retourAPI;
     }
   }
 
