@@ -66,82 +66,81 @@
       </mat-toolbar-row>
     </mat-toolbar>
   </div>
-</div>
 
 
-<div *ngIf="utilisateurModifie">
-  <mat-accordion multi="true">
-    <mat-expansion-panel [expanded]="true">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Détails
-        </mat-panel-title>
-        <mat-panel-description>
-          <div class="descriptionPanel">Modifier les details de l'utilisateur</div>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <form id="formUtilisateur">
-        <div class="flex-container">
+  <div *ngIf="utilisateurModifie">
+    <mat-accordion multi="true">
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Détails
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="descriptionPanel">Modifier les details de l'utilisateur</div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <form id="formUtilisateur">
+          <div class="flex-container">
 
-          <div class="input-group long-field">
-            <label for="emailUtilisateur">Email</label>
-            <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.email"
-                   class="form-control form-control-lg"
-                   id="emailUtilisateur"
-                   name="emailUtilisateur" type="text">
-          </div>
+            <div class="input-group long-field">
+              <label for="emailUtilisateur">Email</label>
+              <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.email"
+                     class="form-control form-control-lg"
+                     id="emailUtilisateur"
+                     name="emailUtilisateur" type="text">
+            </div>
 
-          <div class="input-group long-field">
-            <label for="mdpUtilisateur">Mot de passe</label>
-            <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.mdp" [type]="typePassword"
-                   class="form-control form-control-lg"
-                   id="mdpUtilisateur" name="mdpUtilisateur"
-                   placeholder="Non affiché pour des raisons de sécurité">
-            <div class="input-group-btn">
-              <button (click)="hidePassword()" class="btn btn-default">
-                <i [class]="classPassword"></i>
-              </button>
+            <div class="input-group long-field">
+              <label for="mdpUtilisateur">Mot de passe</label>
+              <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.mdp" [type]="typePassword"
+                     class="form-control form-control-lg"
+                     id="mdpUtilisateur" name="mdpUtilisateur"
+                     placeholder="Non affiché pour des raisons de sécurité">
+              <div class="input-group-btn">
+                <button (click)="hidePassword()" class="btn btn-default">
+                  <i [class]="classPassword"></i>
+                </button>
+              </div>
+            </div>
+
+            <div *ngIf="!ajout" class="form-group short-field">
+              <label for="nomUtilisateur">Nom</label>
+              <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.nom"
+                     class="form-control form-control-lg"
+                     id="nomUtilisateur"
+                     name="nomUtilisateur" type="text">
+            </div>
+
+            <div *ngIf="!ajout" class="form-group short-field">
+              <label for="nomUtilisateur">Prénom</label>
+              <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.prenom"
+                     class="form-control form-control-lg"
+                     id="prenomUtilisateur"
+                     name="prenomUtilisateur" type="text">
             </div>
           </div>
+        </form>
+      </mat-expansion-panel>
 
-          <div *ngIf="!ajout" class="form-group short-field">
-            <label for="nomUtilisateur">Nom</label>
-            <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.nom"
-                   class="form-control form-control-lg"
-                   id="nomUtilisateur"
-                   name="nomUtilisateur" type="text">
-          </div>
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Rôles
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="descriptionPanel">Modifier les rôles de l'utilisateur</div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
 
-          <div *ngIf="!ajout" class="form-group short-field">
-            <label for="nomUtilisateur">Prénom</label>
-            <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.prenom"
-                   class="form-control form-control-lg"
-                   id="prenomUtilisateur"
-                   name="prenomUtilisateur" type="text">
-          </div>
-        </div>
-      </form>
-    </mat-expansion-panel>
-
-    <mat-expansion-panel [expanded]="true">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Rôles
-        </mat-panel-title>
-        <mat-panel-description>
-          <div class="descriptionPanel">Modifier les rôles de l'utilisateur</div>
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-
-      <mat-form-field>
-        <mat-label>role</mat-label>
-        <mat-select [(value)]="utilisateurModifie.role.id">
-          <mat-option *ngFor="let role of roles" [value]="role.id">{{role.nom}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </mat-expansion-panel>
-  </mat-accordion>
-</div>
+        <mat-form-field>
+          <mat-label>role</mat-label>
+          <mat-select [(value)]="utilisateurModifie.role.id">
+            <mat-option *ngFor="let role of roles" [value]="role.id">{{role.nom}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
 
 
 

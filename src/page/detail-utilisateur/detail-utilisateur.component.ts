@@ -11,7 +11,6 @@ import {UtilisateurService} from '../../../e-commerce-ui-common/business/utilisa
 import {Utilisateur} from '../../../e-commerce-ui-common/models/Utilisateur';
 import {RoleService} from '../../../e-commerce-ui-common/business/role.service';
 import {Role} from '../../../e-commerce-ui-common/models/Role';
-import {MatAutocompleteSelectedEvent} from '@angular/material';
 
 @Component({
   selector: 'app-detail-utilisateur',
@@ -115,9 +114,6 @@ export class DetailUtilisateurComponent implements OnInit {
       this.ajout = false;
       const idUtilisateur = parseInt(this.route.snapshot.paramMap.get('id'), 10);
       const retourAPI = await this.utilisateurService.getById(idUtilisateur);
-      if (!(retourAPI.valueOf() instanceof Utilisateur)) {
-        this.router.navigate(['page-404'], {skipLocationChange: true});
-      }
       this.utilisateur = retourAPI;
       this.utilisateurModifie = JSON.parse(JSON.stringify(this.utilisateur));
     }
@@ -151,9 +147,11 @@ export class DetailUtilisateurComponent implements OnInit {
   }
 
   public async updateUser() {
+    // Verification que les champs requis sont présent
     const retourAPI = await this.utilisateurService.update(this.utilisateurModifie);
     if (retourAPI != null && retourAPI !== undefined) {
       // Si le retourAPI est un utilisateur
+      console.log(retourAPI/*, retourAPI.valueOf() instanceof Utilisateur, retourAPI.valueOf() instanceof Object*/);
       if (retourAPI.valueOf() instanceof Utilisateur) {
         // Mets à jour la variable utilisateur et utilisateur modifiée
         this.utilisateur = retourAPI;
@@ -171,9 +169,12 @@ export class DetailUtilisateurComponent implements OnInit {
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.cacherErreur = false;
         this.cacherAlert = true;
-        this.message = 'L\'utilisateur n\'a pas pu être modifié, vous devez renseigner au minimum les champs de l\'email' +
-          ' et du mdp';
+        this.message = retourAPI;
       }
+    } else {
+      this.cacherErreur = false;
+      this.cacherAlert = true;
+      this.message = 'Impossible de modifier l\'utilisateur : Erreur serveur';
     }
   }
 
@@ -195,7 +196,7 @@ export class DetailUtilisateurComponent implements OnInit {
     } else {
       this.cacherErreur = false;
       this.cacherAlert = true;
-      this.message = retourAPI;
+      // this.message = retourAPI;
     }
   }
 
@@ -233,6 +234,7 @@ export class DetailUtilisateurComponent implements OnInit {
   }
 
   // Permet de rajouter un role dans la chips
+  /*
   public addRole(event: MatAutocompleteSelectedEvent): void {
     const retourRole = event.option.value;
     this.roleInput.nativeElement.value = '';
@@ -254,6 +256,7 @@ export class DetailUtilisateurComponent implements OnInit {
       this.message = 'Ce rôle est déjà ajoutée.';
     }
   }
+  */
 
   // Méthode de retour à la liste des utilisateurs
   public goBack(): void {
