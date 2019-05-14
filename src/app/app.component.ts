@@ -1,12 +1,12 @@
 import {filter, map, mergeMap} from 'rxjs/operators';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 import {PreviousRouteBusiness} from '../../e-commerce-ui-common/business/previous-route.service';
 import {AuthDataService} from '../business/auth-data.service';
 import {Token} from '../../e-commerce-ui-common/models/Token';
 import {AuthInterceptor} from '../../e-commerce-ui-common/utilitaires/AuthInterceptor';
-import {Modal} from 'ngx-modialog/plugins/bootstrap';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +16,10 @@ import {Modal} from 'ngx-modialog/plugins/bootstrap';
 
 export class AppComponent implements OnInit {
   public token: Token = this.authData.token;
+  public modelRef: BsModalRef;
 
   constructor(
-    private modal: Modal,
+    private modalService: BsModalService,
     private authInterceptor: AuthInterceptor,
     private authData: AuthDataService,
     private previousRouteBusiness: PreviousRouteBusiness,
@@ -45,26 +46,21 @@ export class AppComponent implements OnInit {
       .subscribe((event) => this.titleService.setTitle(event['title']));
   }
 
-  public goHome() {
+  public confirmModal(content: TemplateRef<any>) {
+    this.modelRef = this.modalService.show(content, {class: 'modal-md'});
+  }
 
+  public closeConfirmModal() {
+    this.modelRef.hide();
+  }
+
+  public goHome() {
     this.router.navigate(['/admin']);
   }
 
   public logout() {
-    const dialogRef = this.modal.confirm()
-      .size('lg')
-      .isBlocking(true)
-      .showClose(false)
-      .keyboard(27)
-      .title('Deconnexion')
-      .body('Etes vous certain de vouloir vous deconnecter?')
-      .okBtn('Se deconnecter')
-      .okBtnClass('btn btn-danger')
-      .cancelBtn('Rester connecter')
-      .open();
-    dialogRef.result.then(async () => {
-      this.authData.logout();
-    }).catch(() => null); // Pour éviter l'erreur de promise dans console.log)
+    this.modelRef.hide();
+    this.authData.logout();
   }
 
 }

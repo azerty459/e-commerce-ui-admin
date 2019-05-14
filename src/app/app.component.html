@@ -5,7 +5,7 @@
         <button (click)="goHome()" mat-icon-button>
           <mat-icon aria-label="Example icon-button with a heart icon" class="white-icon">home</mat-icon>
         </button>
-        <button (click)="logout()" mat-icon-button>
+        <button (click)="confirmModal(logoutModal)" mat-icon-button>
           <mat-icon aria-label="Example icon-button with a heart icon" class="white-icon">exit_to_app</mat-icon>
         </button>
       </div>
@@ -28,4 +28,21 @@
     </main>
   </div>
 </div>
+
+<ng-template #logoutModal>
+  <div class="modal-header">
+    <button (click)="closeConfirmModal()" aria-describedby="modal-title" class="close" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="modal-title">D&eacute;connexion</h4>
+  </div>
+  <div class="modal-body">
+    <p><strong>&Ecirc;tes-vous sur de vouloir vous d&eacute;connecter ?</strong></p>
+    <p>Toutes les informations non sauvegard&eacute;es seront perdues.</p>
+  </div>
+  <div class="modal-footer">
+    <button (click)="closeConfirmModal()" class="btn btn-outline-secondary" type="button">Annuler</button>
+    <button (click)="logout()" class="btn btn-danger" type="button">D&eacute;connexion</button>
+  </div>
+</ng-template>
 
