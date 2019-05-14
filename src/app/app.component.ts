@@ -7,6 +7,7 @@ import {AuthDataService} from '../business/auth-data.service';
 import {Token} from '../../e-commerce-ui-common/models/Token';
 import {AuthInterceptor} from '../../e-commerce-ui-common/utilitaires/AuthInterceptor';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import {Utilisateur} from '../../e-commerce-ui-common/models/Utilisateur';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 export class AppComponent implements OnInit {
   public token: Token = this.authData.token;
   public modelRef: BsModalRef;
+  public user: Utilisateur;
 
   constructor(
     private modalService: BsModalService,
@@ -30,6 +32,9 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
+
+    this.getInfoUser();
+
     if (!(await this.authData.isLogged())) {
       this.authData.logout();
     }
@@ -61,6 +66,10 @@ export class AppComponent implements OnInit {
   public logout() {
     this.modelRef.hide();
     this.authData.logout();
+  }
+
+  public getInfoUser() {
+    this.user = JSON.parse(localStorage.InfoUser);
   }
 
 }
