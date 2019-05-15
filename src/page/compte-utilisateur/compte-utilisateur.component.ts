@@ -4,7 +4,6 @@ import {Observable} from 'rxjs';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Modal} from 'ngx-modialog/plugins/bootstrap';
 import {PreviousRouteBusiness} from '../../../e-commerce-ui-common/business/previous-route.service';
-import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
 import {FormEditService} from '../../../e-commerce-ui-common/business/form-edit.service';
 import {UtilisateurService} from '../../../e-commerce-ui-common/business/utilisateur.service';
@@ -93,30 +92,11 @@ export class CompteUtilisateurComponent implements OnInit {
   }
 
   async getUser() {
-    // Permets de gérer l'affichage des rôles dans les chips
-    this.roles = await this.roleService.getAll();
-    if (this.roles !== undefined) {
-      // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
-      this.roleObservable = this.choixRoleFormControl.valueChanges.pipe(
-        startWith(''),
-        map(val => this.roles.filter(role => role.nom.toLowerCase().indexOf(val) === 0))
-      );
-    }
-    const url = this.route.snapshot.routeConfig.path;
-    if (url === 'admin/utilisateur/ajouter') {
-      this.ajout = true;
-      this.utilisateurModifie = new Utilisateur(null, null, null, null, null);
-      this.utilisateurModifie.role = this.roles[0];
-      this.utilisateur = new Utilisateur(null, null, null, null, null);
-      this.utilisateur.role = new Role(0, '');
-    } else {
-      this.ajout = false;
-      const utilisateurActuel = JSON.parse(localStorage.InfoUser);
-      const idUtilisateur = parseInt(utilisateurActuel.id, 10);
-      const retourAPI = await this.utilisateurService.getById(idUtilisateur);
-      this.utilisateur = retourAPI;
-      this.utilisateurModifie = JSON.parse(JSON.stringify(this.utilisateur));
-    }
+
+    const utilisateurActuel = JSON.parse(localStorage.InfoUser);
+    const idUtilisateur = parseInt(utilisateurActuel.id, 10);
+    const retourAPI = await this.utilisateurService.getById(idUtilisateur);
+    this.utilisateur = retourAPI;
   }
 
   // Méthode de retour à la liste des utilisateurs

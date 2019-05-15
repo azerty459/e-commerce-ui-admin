@@ -15,11 +15,13 @@
 <div *ngIf="utilisateur">
   <div class="navbar-fixed-top">
     <mat-toolbar class="toolContainer">
+
       <mat-toolbar-row>
         <div class="title">
-          {{ajout ? 'Ajout d\'utilisateur' : '' + utilisateur.email + ' - ' + utilisateur.id }}
+          {{utilisateur.email + ' - ' + utilisateur.id }}
         </div>
       </mat-toolbar-row>
+
       <mat-toolbar-row>
         <div class="toolbar">
           <div class="leftTool">
@@ -29,58 +31,53 @@
           </div>
         </div>
       </mat-toolbar-row>
-      <mat-toolbar-row *ngIf="!cacherAlert || !cacherErreur">
-        <div class="alerteDiv">
-          <div *ngIf="!cacherAlert" [hidden]="cacherAlert" class="alert alert-success" role="alert">{{message}}</div>
-          <div *ngIf="!cacherErreur" [hidden]="cacherErreur" class="alert alert-danger" role="alert">{{message}}</div>
-        </div>
-      </mat-toolbar-row>
+
     </mat-toolbar>
   </div>
 
+  <div class="infoUtilisateur">
 
-  <div>
-    <mat-accordion multi="true">
-      <mat-expansion-panel [expanded]="true">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Détails utilisateur
-          </mat-panel-title>
-        </mat-expansion-panel-header>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header class="titre">
 
-        <form id="formUtilisateur">
-          <div class="flex-container">
+        <h2>Détails utilisateur</h2>
 
-            <div class="input-group long-field">
-              <label>Email</label>
+      </mat-expansion-panel-header>
 
-            </div>
+      <div class="flex-container">
 
-            <div class="input-group long-field">
-              <label>Mot de passe</label>
-
-            </div>
-
-            <div class="form-group short-field">
-              <label>Nom</label>
-
-            </div>
-
-            <div class="form-group short-field">
-              <label>Prénom</label>
-
-            </div>
-
-            <div class="form-group short-field">
-              <label>Rôle</label>
-
-            </div>
-
+        <div class="input-group short-field">
+          <h3>Email</h3><br>
+          <div>
+            <h4>ici email</h4>
           </div>
-        </form>
+        </div>
 
-      </mat-expansion-panel>
-    </mat-accordion>
+        <div class="form-group short-field">
+          <h3>Nom</h3><br>
+          <div>
+            <h4>ici nom</h4>
+          </div>
+        </div>
+
+        <div class="form-group short-field">
+          <h3>Prénom</h3><br>
+          <div>
+            <h4>ici prénom</h4>
+          </div>
+        </div>
+
+        <div class="form-group short-field">
+          <h3>Rôle</h3><br>
+          <div>
+            <h4>ici rôle</h4>
+          </div>
+        </div>
+
+      </div>
+
+    </mat-expansion-panel>
+
   </div>
 
 
