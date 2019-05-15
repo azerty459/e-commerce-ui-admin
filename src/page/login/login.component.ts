@@ -24,6 +24,9 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.utilisateur.email = '';
     this.utilisateur.mdp = '';
+    if (this.authData.isLogged()) {
+      this.authData.logout();
+    }
   }
 
   public signIn() {
