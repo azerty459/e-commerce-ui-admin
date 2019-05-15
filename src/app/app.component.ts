@@ -1,5 +1,5 @@
 import {filter, map, mergeMap} from 'rxjs/operators';
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {Component, DoCheck, OnInit, TemplateRef} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 import {PreviousRouteBusiness} from '../../e-commerce-ui-common/business/previous-route.service';
@@ -15,7 +15,7 @@ import {Utilisateur} from '../../e-commerce-ui-common/models/Utilisateur';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, DoCheck {
   public token: Token = this.authData.token;
   public modelRef: BsModalRef;
   public user: Utilisateur;
@@ -33,8 +33,6 @@ export class AppComponent implements OnInit {
 
   async ngOnInit() {
 
-    this.getInfoUser();
-
     if (!(await this.authData.isLogged())) {
       this.authData.logout();
     }
@@ -49,6 +47,10 @@ export class AppComponent implements OnInit {
       filter((route) => route.outlet === 'primary'),
       mergeMap((route) => route.data),)
       .subscribe((event) => this.titleService.setTitle(event['title']));
+  }
+
+  ngDoCheck() {
+    this.getInfoUser();
   }
 
   public confirmModal(content: TemplateRef<any>) {
@@ -69,7 +71,9 @@ export class AppComponent implements OnInit {
   }
 
   public getInfoUser() {
-    this.user = JSON.parse(localStorage.InfoUser);
+    if (localStorage.InfoUser != undefined) {
+      this.user = JSON.parse(localStorage.InfoUser);
+    }
   }
 
 }

@@ -99,6 +99,7 @@ export class AuthDataService {
     this.token.token = undefined;
     this.token.utilisateur = new Utilisateur(null, null, null, null, null);
     localStorage.removeItem('AuthToken');
+    localStorage.removeItem('InfoUser');
     this._router.navigate(['/admin/login']);
   }
 }
