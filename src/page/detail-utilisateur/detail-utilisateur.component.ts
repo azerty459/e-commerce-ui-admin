@@ -11,7 +11,6 @@ import {UtilisateurService} from '../../../e-commerce-ui-common/business/utilisa
 import {Utilisateur} from '../../../e-commerce-ui-common/models/Utilisateur';
 import {RoleService} from '../../../e-commerce-ui-common/business/role.service';
 import {Role} from '../../../e-commerce-ui-common/models/Role';
-import {MatAutocompleteSelectedEvent} from '@angular/material';
 
 @Component({
   selector: 'app-detail-utilisateur',
@@ -27,7 +26,7 @@ export class DetailUtilisateurComponent implements OnInit {
   public positionAfterTooltip = 'after';
   // Enter, comma
   public separatorKeysCodes = [ENTER, COMMA];
-  public message: string;
+  public message: String;
   public ajout: boolean;
   public utilisateur: Utilisateur;
   public utilisateurModifie: Utilisateur;
@@ -104,13 +103,11 @@ export class DetailUtilisateurComponent implements OnInit {
         map(val => this.roles.filter(role => role.nom.toLowerCase().indexOf(val) === 0))
       );
     }
-    //
     const url = this.route.snapshot.routeConfig.path;
     if (url === 'admin/utilisateur/ajouter') {
       this.ajout = true;
       this.utilisateurModifie = new Utilisateur(null, null, null, null, null);
-      this.utilisateurModifie.role = new Role(0, '');
-
+      this.utilisateurModifie.role = this.roles[0];
       this.utilisateur = new Utilisateur(null, null, null, null, null);
       this.utilisateur.role = new Role(0, '');
     } else {
@@ -150,15 +147,14 @@ export class DetailUtilisateurComponent implements OnInit {
   }
 
   public async updateUser() {
+    // Verification que les champs requis sont présent
     const retourAPI = await this.utilisateurService.update(this.utilisateurModifie);
-    if (retourAPI != null && retourAPI !== undefined) {
+    if (retourAPI != null) {
       // Si le retourAPI est un utilisateur
-      if (retourAPI.valueOf() instanceof Utilisateur) {
+      if (retourAPI.constructor.name !== 'String') {
         // Mets à jour la variable utilisateur et utilisateur modifiée
         this.utilisateur = retourAPI;
-        if (this.utilisateur != null && this.utilisateur !== undefined) {
-          this.utilisateurModifie = JSON.parse(JSON.stringify(retourAPI));
-        }
+        this.utilisateurModifie = retourAPI;
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.cacherErreur = true;
         this.cacherAlert = false;
@@ -170,8 +166,7 @@ export class DetailUtilisateurComponent implements OnInit {
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.cacherErreur = false;
         this.cacherAlert = true;
-        this.message = 'L\'utilisateur n\'a pas pu être modifié, vous devez renseigner au minimum les champs de l\'email' +
-          ' et du mdp';
+        this.message = retourAPI;
       }
     } else {
       this.cacherErreur = false;
@@ -184,16 +179,13 @@ export class DetailUtilisateurComponent implements OnInit {
   public async addUser() {
     const retourAPI = await this.utilisateurService.add(this.utilisateurModifie);
     // Si le retourAPI est un utilisateur
-    if (retourAPI.valueOf() instanceof Utilisateur) {
-      this.cacherErreur = true;
-      this.cacherAlert = false;
+    if (retourAPI.constructor.name !== 'String') {
       this.ajout = true;
       this.utilisateur = retourAPI;
       // Mets à jour la variable utilisateur et utilisateur modifiée
-      if (this.utilisateur != null && this.utilisateur !== undefined) {
-        this.utilisateurModifie = JSON.parse(JSON.stringify(retourAPI));
+      if (this.utilisateur != null) {
+        this.utilisateurModifie = retourAPI;
       }
-      this.message = 'L\'utilisateur a été correctement ajouté';
       this.router.navigate(['/admin/utilisateur']);
     } else {
       this.cacherErreur = false;
@@ -236,6 +228,7 @@ export class DetailUtilisateurComponent implements OnInit {
   }
 
   // Permet de rajouter un role dans la chips
+  /*
   public addRole(event: MatAutocompleteSelectedEvent): void {
     const retourRole = event.option.value;
     this.roleInput.nativeElement.value = '';
@@ -257,6 +250,7 @@ export class DetailUtilisateurComponent implements OnInit {
       this.message = 'Ce rôle est déjà ajoutée.';
     }
   }
+  */
 
   // Méthode de retour à la liste des utilisateurs
   public goBack(): void {
