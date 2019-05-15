@@ -7,6 +7,13 @@
   display: none;
 }
 
+.infoUser {
+  color: white;
+  position: relative;
+  margin-right: 1em;
+  margin-left: auto;
+}
+
 .white-icon {
   color: white;
 }

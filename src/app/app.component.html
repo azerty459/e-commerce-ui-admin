@@ -8,6 +8,9 @@
         <button (click)="confirmModal(logoutModal)" mat-icon-button>
           <mat-icon aria-label="Example icon-button with a heart icon" class="white-icon">exit_to_app</mat-icon>
         </button>
+        <div *ngIf="user.nom !== '' && user.prenom !== ''" class=" infoUser">
+          <span>{{user.nom}} {{user.prenom}}</span>
+        </div>
       </div>
       <ul id="sidebarnav">
         <li><a routerLink="/admin/produit" routerLinkActive="active"><i class="mdi mdi-gauge"></i><span
