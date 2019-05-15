@@ -38,6 +38,7 @@ import {ProduiDataService} from '../../e-commerce-ui-common/business/data/produi
 import {ChartsModule} from 'ng2-charts';
 import {MatTableModule} from '@angular/material/table';
 import {StatistiqueBusiness} from '../../e-commerce-ui-common/business/statistique.service';
+import {CompteUtilisateurComponent} from '../page/compte-utilisateur/compte-utilisateur.component';
 
 @NgModule({
   declarations: [
@@ -49,12 +50,12 @@ import {StatistiqueBusiness} from '../../e-commerce-ui-common/business/statistiq
     UploadImgComponent,
     ErreurComponent,
     ArbreCategorieComponent,
-
     UtilisateurComponent,
     DetailUtilisateurComponent,
     AlerteSnackBarComponent,
     ModalBackdropComponent,
-    ModalContainerComponent
+    ModalContainerComponent,
+    CompteUtilisateurComponent
   ],
   imports: [
     // AlertModule.forRoot(),

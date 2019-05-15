@@ -1,0 +1,179 @@
+// Longueur des champs
+$short-field-width: 12%;
+$short-field-min-width: 150px;
+$long-field-width: 35%;
+$long-field-min-width: 200px;
+
+// Couleurs
+$navbar-color: #F9FAFB;
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  .form-group, .input-group {
+    margin-right: 1em;
+  }
+
+  .input-group-btn {
+    vertical-align: bottom !important;
+  }
+}
+
+.short-field {
+  width: $short-field-width;
+  min-width: $short-field-min-width;
+}
+
+.long-field {
+  width: $long-field-width;
+  min-width: $long-field-min-width;
+}
+
+.navbar-fixed-top {
+  left: 14%;
+  //audessus du main endessous du navbar de gauche
+  z-index: 3;
+  right: 0;
+  margin-right: 15px;
+}
+
+#message {
+  font-weight: bold;
+  color: green;
+}
+
+.demo-chip-list {
+  width: 100%;
+}
+
+.mat-expansion-panel-header-description .material-icons {
+  margin-left: auto;
+}
+
+.mat-expansion-panel-header-description .mat-panel-title {
+  margin: auto;
+}
+
+.descriptionPanel {
+  margin: auto;
+}
+
+.centrerPanel {
+  margin: 0;
+  text-align: center;
+}
+
+.mat-form-field-wrapper {
+  width: 100%;
+}
+
+.photoCard {
+
+  min-width: 200px;
+  margin: 10px;
+
+  mat-card-subtitle {
+    width: 280px;
+    padding-bottom: 24px;
+    overflow: hidden;
+  }
+
+}
+
+img {
+
+  max-width: 400px;
+}
+
+mat-card {
+  max-width: 400px;
+}
+
+.rowPhoto {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.rowUpload {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.img {
+  padding: 5px;
+}
+
+.app-upload-img {
+  margin-bottom: 10px;
+}
+
+.backArrow {
+  cursor: pointer;
+  padding: 5px;
+  margin-bottom: 20px;
+  padding-left: 0;
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+}
+
+.alert {
+  margin-top: 20px;
+}
+
+@media only screen and (max-width: 1000px) {
+  .toolbar {
+  }
+  .title {
+    font-size: 1em !important;
+  }
+  .btn {
+    font-size: 0.75em !important;
+  }
+  .mat-toolbar-row {
+    height: 35px !important;
+  }
+  .navbar-fixed-top {
+    margin-left: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.alerteDiv {
+  width: 100%;
+}
+
+mat-toolbar {
+  background-color: #F9FAFB;
+}
+
+.title {
+  display: block;
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.toolContainer {
+  border-bottom: 1px groove;
+  margin-bottom: 20px;
+}
+
+.photoTool {
+
+}
