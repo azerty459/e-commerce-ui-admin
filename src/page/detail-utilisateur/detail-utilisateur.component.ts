@@ -26,7 +26,7 @@ export class DetailUtilisateurComponent implements OnInit {
   public positionAfterTooltip = 'after';
   // Enter, comma
   public separatorKeysCodes = [ENTER, COMMA];
-  public message: string;
+  public message: String;
   public ajout: boolean;
   public utilisateur: Utilisateur;
   public utilisateurModifie: Utilisateur;
@@ -149,14 +149,12 @@ export class DetailUtilisateurComponent implements OnInit {
   public async updateUser() {
     // Verification que les champs requis sont présent
     const retourAPI = await this.utilisateurService.update(this.utilisateurModifie);
-    if (retourAPI != null && retourAPI !== undefined) {
+    if (retourAPI != null) {
       // Si le retourAPI est un utilisateur
       if (retourAPI.constructor.name !== 'String') {
         // Mets à jour la variable utilisateur et utilisateur modifiée
         this.utilisateur = retourAPI;
-        if (this.utilisateur != null && this.utilisateur !== undefined) {
-          this.utilisateurModifie = JSON.parse(JSON.stringify(retourAPI));
-        }
+        this.utilisateurModifie = retourAPI;
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.cacherErreur = true;
         this.cacherAlert = false;
@@ -182,15 +180,12 @@ export class DetailUtilisateurComponent implements OnInit {
     const retourAPI = await this.utilisateurService.add(this.utilisateurModifie);
     // Si le retourAPI est un utilisateur
     if (retourAPI.constructor.name !== 'String') {
-      this.cacherErreur = true;
-      this.cacherAlert = false;
       this.ajout = true;
       this.utilisateur = retourAPI;
       // Mets à jour la variable utilisateur et utilisateur modifiée
-      if (this.utilisateur != null && this.utilisateur !== undefined) {
-        this.utilisateurModifie = JSON.parse(JSON.stringify(retourAPI));
+      if (this.utilisateur != null) {
+        this.utilisateurModifie = retourAPI;
       }
-      this.message = 'L\'utilisateur a été correctement ajouté';
       this.router.navigate(['/admin/utilisateur']);
     } else {
       this.cacherErreur = false;
