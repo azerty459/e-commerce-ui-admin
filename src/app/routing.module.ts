@@ -9,6 +9,7 @@ import {NgModule} from '@angular/core';
 import {UtilisateurComponent} from '../page/utilisateur/utilisateur.component';
 import {DetailUtilisateurComponent} from '../page/detail-utilisateur/detail-utilisateur.component';
 import {LoginComponent} from '../page/login/login.component';
+import {CompteUtilisateurComponent} from '../page/compte-utilisateur/compte-utilisateur.component';
 
 const appRoutes: Routes = [
 
@@ -43,6 +44,11 @@ const appRoutes: Routes = [
   {
     path: 'admin/produit',
     redirectTo: 'admin/produit/1'
+  },
+  {
+    path: 'admin/utilisateur/compte',
+    component: CompteUtilisateurComponent,
+    data: {title: 'Mon Compte'}
   },
   {
     path: 'admin/utilisateur/ajouter',

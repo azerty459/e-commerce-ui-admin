@@ -111,10 +111,17 @@ export class CompteUtilisateurComponent implements OnInit {
       this.utilisateur.role = new Role(0, '');
     } else {
       this.ajout = false;
-      const idUtilisateur = parseInt(this.route.snapshot.paramMap.get('id'), 10);
+      const utilisateurActuel = JSON.parse(localStorage.InfoUser);
+      const idUtilisateur = parseInt(utilisateurActuel.id, 10);
       const retourAPI = await this.utilisateurService.getById(idUtilisateur);
       this.utilisateur = retourAPI;
       this.utilisateurModifie = JSON.parse(JSON.stringify(this.utilisateur));
     }
   }
+
+  // Méthode de retour à la liste des utilisateurs
+  public goBack(): void {
+    this.router.navigate(['/admin/']);
+  }
+
 }

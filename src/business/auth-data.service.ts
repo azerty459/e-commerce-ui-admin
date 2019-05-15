@@ -41,7 +41,7 @@ export class AuthDataService {
     const postResult = this.http.post(environment.api_login_url, {
       query: 'mutation { signinUtilisateur(auth: {email:"' + this.utilisateur.email + '",' +
         'password:"' + this.utilisateur.mdp + '"}){' +
-        'token{utilisateur{email nom prenom}token}}}'
+        'token{utilisateur{id email nom prenom}token}}}'
     });
     // On créer une promesse
     const promise = new Promise<any>((resolve) => {
