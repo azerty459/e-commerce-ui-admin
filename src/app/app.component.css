@@ -9,7 +9,9 @@
 
 .infoUser {
   color: white;
-  margin-left: 28%;
+  position: relative;
+  margin-right: 1em;
+  margin-left: auto;
 }
 
 .white-icon {
