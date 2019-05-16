@@ -9,6 +9,7 @@ import {UtilisateurService} from '../../../e-commerce-ui-common/business/utilisa
 import {Utilisateur} from '../../../e-commerce-ui-common/models/Utilisateur';
 import {RoleService} from '../../../e-commerce-ui-common/business/role.service';
 import {Role} from '../../../e-commerce-ui-common/models/Role';
+import {AuthDataService} from '../../business/auth-data.service';
 
 @Component({
   selector: 'app-compte-utilisateur',
@@ -20,7 +21,7 @@ export class CompteUtilisateurComponent implements OnInit {
 
   public positionAfterTooltip = 'after';
   public message: String;
-  public utilisateur: Utilisateur;
+  public utilisateur: Utilisateur = this.auth.getCurrentUser();
 
   /**
    * Boolean permettant de savoir si le bouton d'annulation dans la toolbar doit être cacher ou non
@@ -53,20 +54,12 @@ export class CompteUtilisateurComponent implements OnInit {
               private route: ActivatedRoute,
               private utilisateurService: UtilisateurService,
               private roleService: RoleService,
-              private router: Router) {
+              private router: Router,
+              private auth: AuthDataService) {
   }
 
   ngOnInit() {
     this.formEditService.clear();
-    this.getUser();
-  }
-
-  async getUser() {
-
-    const utilisateurActuel = JSON.parse(localStorage.InfoUser);
-    const idUtilisateur = parseInt(utilisateurActuel.id, 10);
-    const retourAPI = await this.utilisateurService.getById(idUtilisateur);
-    this.utilisateur = retourAPI;
   }
 
   // Méthode de retour à la liste des utilisateurs
