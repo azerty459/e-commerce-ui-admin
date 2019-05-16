@@ -12,7 +12,6 @@ import {StatistiqueBusiness} from '../../../e-commerce-ui-common/business/statis
 
 export class AccueilComponent implements OnInit {
 
-  public promiseStatistique: Promise<Statistique>;
   public statistique: Statistique;
 
   displayedColumns: string[] = ['name', 'nombreLigne'];
@@ -41,8 +40,8 @@ export class AccueilComponent implements OnInit {
   }
 
   async affichage() {
-    this.promiseStatistique = this.statistiqueBusiness.getStatistique();
-    await this.promiseStatistique.then(
+    const promiseStatistique: Promise<Statistique> = this.statistiqueBusiness.getStatistique();
+    await promiseStatistique.then(
       (value) => {
         this.statistique = value;
         let data = [];
