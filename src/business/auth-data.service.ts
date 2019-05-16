@@ -28,7 +28,6 @@ export class AuthDataService {
       this.messageAlerte.message = '';
       this._router.navigate(['/admin']);
     } else {
-      console.log(response);
       this.messageAlerte.message = response[0]['message'];
     }
   }
