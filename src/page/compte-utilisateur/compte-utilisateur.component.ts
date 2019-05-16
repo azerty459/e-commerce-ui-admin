@@ -1,7 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Modal} from 'ngx-modialog/plugins/bootstrap';
 import {PreviousRouteBusiness} from '../../../e-commerce-ui-common/business/previous-route.service';
 import {FormControl} from '@angular/forms';
@@ -17,18 +16,11 @@ import {Role} from '../../../e-commerce-ui-common/models/Role';
   styleUrls: ['./compte-utilisateur.component.scss']
 })
 export class CompteUtilisateurComponent implements OnInit {
-  @ViewChild('photo') public photo;
-  public selectable = true;
-  public removable = true;
-  public addOnBlur = true;
-  public positionBeforeTooltip = 'before';
+
+
   public positionAfterTooltip = 'after';
-  // Enter, comma
-  public separatorKeysCodes = [ENTER, COMMA];
   public message: String;
-  public ajout: boolean;
   public utilisateur: Utilisateur;
-  public utilisateurModifie: Utilisateur;
 
   /**
    * Boolean permettant de savoir si le bouton d'annulation dans la toolbar doit être cacher ou non
@@ -50,28 +42,6 @@ export class CompteUtilisateurComponent implements OnInit {
    * Form contrôle permettant de gérer la liste déroulante pour la recherche intelligente
    */
   public choixRoleFormControl: FormControl = new FormControl();
-
-  /**
-   * Boolean permettant de cacher l'alerte de succès
-   * @type {boolean}
-   */
-  cacherAlert = true;
-
-  /**
-   * Boolean permettant de cacher l'alerte d'erreur
-   * @type {boolean}
-   */
-  cacherErreur = true;
-
-  /**
-   * indique que la toolbar est en position fixed
-   * @type {boolean}
-   */
-  toolNotFixed = true;
-
-  public typePassword = 'password';
-
-  public classPassword = 'glyphicon glyphicon-eye-open';
 
 
   @ViewChild('roleInput') roleInput: ElementRef;

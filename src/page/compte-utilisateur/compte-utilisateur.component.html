@@ -1,14 +1,9 @@
 <div #toolContainerNotFixed>
   <mat-toolbar class="toolContainer">
     <mat-toolbar-row>
-
     </mat-toolbar-row>
     <mat-toolbar-row>
-
     </mat-toolbar-row>
-    <mat-toolbar-row *ngIf="!cacherAlert || !cacherErreur">
-    </mat-toolbar-row>
-
   </mat-toolbar>
 </div>
 
@@ -49,28 +44,28 @@
         <div class="input-group short-field">
           <h3>Email</h3><br>
           <div>
-            <h4>ici email</h4>
+            <h4>{{utilisateur.email}}</h4>
           </div>
         </div>
 
         <div class="form-group short-field">
           <h3>Nom</h3><br>
           <div>
-            <h4>ici nom</h4>
+            <h4>{{utilisateur.nom}}</h4>
           </div>
         </div>
 
         <div class="form-group short-field">
           <h3>Prénom</h3><br>
           <div>
-            <h4>ici prénom</h4>
+            <h4>{{utilisateur.prenom}}</h4>
           </div>
         </div>
 
         <div class="form-group short-field">
           <h3>Rôle</h3><br>
           <div>
-            <h4>ici rôle</h4>
+            <h4>{{utilisateur.role.nom}}</h4>
           </div>
         </div>
 
