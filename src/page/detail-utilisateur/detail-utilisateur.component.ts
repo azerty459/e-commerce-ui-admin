@@ -156,7 +156,7 @@ export class DetailUtilisateurComponent implements OnInit {
       if (retourAPI.constructor.name !== 'String') {
         // Mets à jour la variable utilisateur et utilisateur modifiée
         this.utilisateur = retourAPI;
-        this.utilisateurModifie = retourAPI;
+        this.utilisateurModifie = JSON.parse(JSON.stringify(this.utilisateur));
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.cacherErreur = true;
         this.cacherAlert = false;
