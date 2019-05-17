@@ -89,7 +89,7 @@ export class AuthDataService {
     return this.http.post(environment.api_login_url, {
       query: 'mutation { signinUtilisateur(auth: {email:"' + email + '",' +
         'password:"' + mdp + '"}){' +
-        'token{utilisateur{id email nom prenom}token}}}'
+        'token{utilisateur{id email nom prenom role{id nom}}token}}}'
     }).toPromise();
   }
 
