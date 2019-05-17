@@ -21,11 +21,11 @@
       <div *ngIf="messageAlerte.message" class="messageAlerte">{{messageAlerte.message}}</div>
       <div class="loginForm">
         <mat-form-field>
-          <input [(ngModel)]="utilisateur.email" matInput placeholder="Email">
+          <input [(ngModel)]="email" matInput placeholder="Email">
         </mat-form-field>
 
         <mat-form-field>
-          <input [(ngModel)]="utilisateur.mdp" [type]="hide ? 'password' : 'text'" matInput placeholder="Mot de passe">
+          <input [(ngModel)]="mdp" [type]="hide ? 'password' : 'text'" matInput placeholder="Mot de passe">
           <mat-icon (click)="hide = !hide" matSuffix>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </mat-form-field>
 
@@ -35,7 +35,7 @@
           </div>
           <div class="optionLien"><a>mot de passe oublié?</a></div>
         </div>
-        <button (click)="signIn()" [disabled]="utilisateur.mdp ==='' || utilisateur.email ===''" color="primary"
+        <button (click)="signIn()" [disabled]="mdp ==='' || email ===''" color="primary"
                 mat-raised-button>Se connecter
         </button>
 

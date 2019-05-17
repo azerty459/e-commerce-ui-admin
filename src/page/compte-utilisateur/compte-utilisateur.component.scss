@@ -1,0 +1,51 @@
+// Longueur des champs
+$short-field-width: 12%;
+$short-field-min-width: 150px;
+$long-field-width: 35%;
+$long-field-min-width: 200px;
+
+.short-field {
+  width: $short-field-width;
+  min-width: $short-field-min-width;
+}
+
+.long-field {
+  width: $long-field-width;
+  min-width: $long-field-min-width;
+}
+
+.navbar-fixed-top {
+  left: 14%;
+  //audessus du main endessous du navbar de gauche
+  z-index: 3;
+  right: 0;
+  margin-right: 15px;
+}
+
+.mat-form-field-wrapper {
+  width: 100%;
+}
+
+.backArrow {
+  cursor: pointer;
+  padding: 5px;
+  margin-bottom: 20px;
+  padding-left: 0;
+}
+
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.title {
+  display: block;
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.toolContainer {
+  border-bottom: 1px groove;
+  margin-bottom: 20px;
+}

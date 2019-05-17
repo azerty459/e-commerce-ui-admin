@@ -1,0 +1,74 @@
+<div>
+  <mat-toolbar class="toolContainer">
+    <mat-toolbar-row>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+    </mat-toolbar-row>
+  </mat-toolbar>
+</div>
+
+<div *ngIf="utilisateur">
+  <div class="navbar-fixed-top">
+    <mat-toolbar class="toolContainer">
+
+      <mat-toolbar-row>
+        <div class="title">
+          {{utilisateur.email + ' - ' + utilisateur.id }}
+        </div>
+      </mat-toolbar-row>
+
+      <mat-toolbar-row>
+        <div>
+          <div>
+            <i (click)="goBack()"
+               class="material-icons backArrow"
+               matTooltip="Revenir en arrière">arrow_back</i>
+          </div>
+        </div>
+      </mat-toolbar-row>
+
+    </mat-toolbar>
+  </div>
+
+  <div>
+
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+
+        <h2>Détails utilisateur</h2>
+
+      </mat-expansion-panel-header>
+
+      <div class="flex-container">
+        <div class="short-field">
+          <h3>Email</h3><br>
+          <div>
+            <h4>{{utilisateur.email}}</h4>
+          </div>
+        </div>
+
+        <div class="short-field">
+          <h3>Nom</h3><br>
+          <div>
+            <h4>{{utilisateur.nom}}</h4>
+          </div>
+        </div>
+
+        <div class="short-field">
+          <h3>Prénom</h3><br>
+          <div>
+            <h4>{{utilisateur.prenom}}</h4>
+          </div>
+        </div>
+
+        <div class="short-field">
+          <h3>Rôle</h3><br>
+          <div>
+            <h4>{{utilisateur.role.nom}}</h4>
+          </div>
+        </div>
+      </div>
+
+    </mat-expansion-panel>
+  </div>
+</div>

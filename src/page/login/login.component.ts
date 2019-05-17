@@ -3,7 +3,6 @@
  */
 import {Component, OnInit} from '@angular/core';
 import {AuthDataService} from '../../business/auth-data.service';
-import {Utilisateur} from '../../../e-commerce-ui-common/models/Utilisateur';
 import {MessageAlerte} from '../../../e-commerce-ui-common/models/MessageAlerte';
 
 @Component({
@@ -14,7 +13,8 @@ import {MessageAlerte} from '../../../e-commerce-ui-common/models/MessageAlerte'
 
 
 export class LoginComponent implements OnInit {
-  public utilisateur: Utilisateur = this.authData.utilisateur;
+  public email: string;
+  public mdp: string;
   public messageAlerte: MessageAlerte = this.authData.messageAlerte;
   public hide = true;
 
@@ -22,18 +22,20 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.utilisateur.email = '';
-    this.utilisateur.mdp = '';
+    // Deconnexion si deja connecté
     if (this.authData.isLogged()) {
       this.authData.logout();
     }
+    // Inialise les champs
+    this.email = '';
+    this.mdp = '';
   }
 
   public signIn() {
-    if (this.utilisateur.email === '' || this.utilisateur.mdp === '') {
-      console.log('champs vide');
+    if (this.email === '' || this.mdp === '') {
+      this.messageAlerte.message = 'Merci d\'entrer un email et un mot de passe';
     } else {
-      this.authData.signIn();
+      this.authData.signIn(this.email, this.mdp);
     }
   }
 }

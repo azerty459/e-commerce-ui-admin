@@ -4,8 +4,7 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 import {PreviousRouteBusiness} from '../../e-commerce-ui-common/business/previous-route.service';
 import {AuthDataService} from '../business/auth-data.service';
-import {Token} from '../../e-commerce-ui-common/models/Token';
-import {AuthInterceptor} from '../../e-commerce-ui-common/utilitaires/AuthInterceptor';
+import {AuthInterceptor} from '../utilitaires/AuthInterceptor';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {Utilisateur} from '../../e-commerce-ui-common/models/Utilisateur';
 
@@ -16,7 +15,6 @@ import {Utilisateur} from '../../e-commerce-ui-common/models/Utilisateur';
 })
 
 export class AppComponent implements OnInit, DoCheck {
-  public token: Token = this.authData.token;
   public modelRef: BsModalRef;
   public user: Utilisateur;
 
@@ -71,8 +69,8 @@ export class AppComponent implements OnInit, DoCheck {
   }
 
   public getInfoUser() {
-    if (localStorage.InfoUser != undefined) {
-      this.user = JSON.parse(localStorage.InfoUser);
+    if (this.authData.isSet()) {
+      this.user = this.authData.getCurrentUser();
     }
   }
 

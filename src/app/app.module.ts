@@ -32,12 +32,13 @@ import {RoleService} from '../../e-commerce-ui-common/business/role.service';
 import {AlerteSnackBarComponent} from '../utilitaires/alerteSnackBar/alerteSnackBar.component';
 import {LoginComponent} from '../page/login/login.component';
 import {AuthDataService} from '../business/auth-data.service';
-import {AuthInterceptor} from '../../e-commerce-ui-common/utilitaires/AuthInterceptor';
+import {AuthInterceptor} from '../utilitaires/AuthInterceptor';
 import {FiltreService} from '../../e-commerce-ui-common/business/filtre.service';
 import {ProduiDataService} from '../../e-commerce-ui-common/business/data/produit-data.service';
 import {ChartsModule} from 'ng2-charts';
 import {MatTableModule} from '@angular/material/table';
 import {StatistiqueBusiness} from '../../e-commerce-ui-common/business/statistique.service';
+import {CompteUtilisateurComponent} from '../page/compte-utilisateur/compte-utilisateur.component';
 
 @NgModule({
   declarations: [
@@ -49,12 +50,12 @@ import {StatistiqueBusiness} from '../../e-commerce-ui-common/business/statistiq
     UploadImgComponent,
     ErreurComponent,
     ArbreCategorieComponent,
-
     UtilisateurComponent,
     DetailUtilisateurComponent,
     AlerteSnackBarComponent,
     ModalBackdropComponent,
-    ModalContainerComponent
+    ModalContainerComponent,
+    CompteUtilisateurComponent
   ],
   imports: [
     // AlertModule.forRoot(),
