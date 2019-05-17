@@ -11,6 +11,7 @@ import {UtilisateurService} from '../../../e-commerce-ui-common/business/utilisa
 import {Utilisateur} from '../../../e-commerce-ui-common/models/Utilisateur';
 import {RoleService} from '../../../e-commerce-ui-common/business/role.service';
 import {Role} from '../../../e-commerce-ui-common/models/Role';
+import {AuthDataService} from '../../business/auth-data.service';
 
 @Component({
   selector: 'app-detail-utilisateur',
@@ -84,7 +85,8 @@ export class DetailUtilisateurComponent implements OnInit {
               private route: ActivatedRoute,
               private utilisateurService: UtilisateurService,
               private roleService: RoleService,
-              private router: Router) {
+              private router: Router,
+              private auth: AuthDataService) {
   }
 
   ngOnInit() {
@@ -162,6 +164,10 @@ export class DetailUtilisateurComponent implements OnInit {
         this.cacherBoutonAnnulation = true;
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.formEditService.setDirty(false);
+        // Si c'est l'utilisateur courrant on met à jour ces infos
+        if (this.auth.getCurrentUser().id === this.utilisateur.id) {
+          this.auth.updateCurrentUserInfo(this.utilisateur);
+        }
       } else {
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.cacherErreur = false;

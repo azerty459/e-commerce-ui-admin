@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {Token} from '../../e-commerce-ui-common/models/Token';
 import {Router} from '@angular/router';
 import {MessageAlerte} from '../../e-commerce-ui-common/models/MessageAlerte';
+import {UtilisateurService} from '../../e-commerce-ui-common/business/utilisateur.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AuthDataService {
   public token = new Token();
   public messageAlerte = new MessageAlerte();
 
-  constructor(private http: HttpClient, private _router: Router) {
+  constructor(private http: HttpClient, private router: Router, private utilisateurService: UtilisateurService) {
     if (sessionStorage.getItem('token') !== null) {
       this.token.connecte = true;
       this.token.token = sessionStorage.token;
@@ -26,7 +27,7 @@ export class AuthDataService {
     if (response['signinUtilisateur'] !== undefined) {
       this.setToken(response['signinUtilisateur'].token.token, response['signinUtilisateur'].token.utilisateur);
       this.messageAlerte.message = '';
-      this._router.navigate(['/admin']);
+      this.router.navigate(['/admin']);
     } else {
       this.messageAlerte.message = response[0]['message'];
     }
@@ -41,7 +42,21 @@ export class AuthDataService {
 
   public logout() {
     this.unsetToken();
-    this._router.navigate(['/admin/login']);
+    this.router.navigate(['/admin/login']);
+  }
+
+  /**
+   * Met à jour les informations sur l'utilisateur courrant
+   * Si aucun parametre n'est passé ou que l'id ne correspond pas à celui de l'utilisateur courant le serveur
+   * sera directement intérogé
+   * @param user Les nouvelles informations de l'utilisateur
+   */
+  public async updateCurrentUserInfo(user?: Utilisateur) {
+    if (user !== undefined && user.id === this.token.utilisateur.id) {
+      this.token.utilisateur = user;
+    } else {
+      this.token.utilisateur = await this.utilisateurService.getById(this.token.utilisateur.id);
+    }
   }
 
   public isSet(): boolean {
