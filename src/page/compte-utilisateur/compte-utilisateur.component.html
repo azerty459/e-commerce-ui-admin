@@ -1,4 +1,4 @@
-<div #toolContainerNotFixed>
+<div>
   <mat-toolbar class="toolContainer">
     <mat-toolbar-row>
     </mat-toolbar-row>
@@ -18,9 +18,9 @@
       </mat-toolbar-row>
 
       <mat-toolbar-row>
-        <div class="toolbar">
-          <div class="leftTool">
-            <i (click)="goBack()" [matTooltipPosition]="positionAfterTooltip"
+        <div>
+          <div>
+            <i (click)="goBack()"
                class="material-icons backArrow"
                matTooltip="Revenir en arrière">arrow_back</i>
           </div>
@@ -30,10 +30,10 @@
     </mat-toolbar>
   </div>
 
-  <div class="infoUtilisateur">
+  <div>
 
     <mat-expansion-panel [expanded]="true">
-      <mat-expansion-panel-header class="titre">
+      <mat-expansion-panel-header>
 
         <h2>Détails utilisateur</h2>
 
@@ -41,28 +41,28 @@
 
       <div class="flex-container">
 
-        <div class="input-group short-field">
+        <div class="short-field">
           <h3>Email</h3><br>
           <div>
             <h4>{{utilisateur.email}}</h4>
           </div>
         </div>
 
-        <div class="form-group short-field">
+        <div class="short-field">
           <h3>Nom</h3><br>
           <div>
             <h4>{{utilisateur.nom}}</h4>
           </div>
         </div>
 
-        <div class="form-group short-field">
+        <div class="short-field">
           <h3>Prénom</h3><br>
           <div>
             <h4>{{utilisateur.prenom}}</h4>
           </div>
         </div>
 
-        <div class="form-group short-field">
+        <div class="short-field">
           <h3>Rôle</h3><br>
           <div>
             <h4>{{utilisateur.role.nom}}</h4>
@@ -72,8 +72,8 @@
       </div>
 
     </mat-expansion-panel>
-
   </div>
+</div>
 
 
 
