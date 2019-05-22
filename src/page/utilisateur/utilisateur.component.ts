@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Modal} from 'ngx-modialog/plugins/bootstrap';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {PaginationService} from '../../../e-commerce-ui-common/business/pagination.service';
 import {UtilisateurService} from '../../../e-commerce-ui-common/business/utilisateur.service';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {Utilisateur} from '../../../e-commerce-ui-common/models/Utilisateur';
 
 @Component({
@@ -11,15 +11,17 @@ import {Utilisateur} from '../../../e-commerce-ui-common/models/Utilisateur';
   styleUrls: ['./utilisateur.component.css']
 })
 export class UtilisateurComponent implements OnInit {
-
-  // Pagination
+  public modal: BsModalRef;
+  public utilisateurSelected: Utilisateur;
   public messagesParPage = 5;
   private pageActuelURL;
 
-  constructor(private modal: Modal,
-              public paginationService: PaginationService,
-              public utilisateurService: UtilisateurService,
-              private activatedRoute: ActivatedRoute) {
+  constructor(
+    private modalService: BsModalService,
+    public paginationService: PaginationService,
+    public utilisateurService: UtilisateurService,
+    private activatedRoute: ActivatedRoute
+  ) {
     // Récupère le params dans la page pour la pagination /page/'1'
     this.activatedRoute.params.subscribe(params => {
         // radix à 10 pour un décimal
@@ -62,26 +64,17 @@ export class UtilisateurComponent implements OnInit {
     this.display();
   }
 
-  // Méthode pour supprimer un utilisateur
-  deleteUser(utilisateur: Utilisateur) {
-    const dialogRef = this.modal.confirm()
-      .size('lg')
-      .isBlocking(true)
-      .showClose(false)
-      .keyboard(27)
-      .title('Suppression de ' + utilisateur.email + ' - ' + utilisateur.id)
-      .body('Comfirmez vous la suppression de ' + utilisateur.email + ' - ' + utilisateur.id + '?')
-      .okBtn('Comfirmer la suppression')
-      .okBtnClass('btn btn-danger')
-      .cancelBtn('Annuler la suppression')
-      .open();
-    dialogRef.result
-      .then(async () => {
-        const supprimer = await this.utilisateurService.delete(utilisateur);
-        if (supprimer) {
-          this.display();
-        }
-      })
-      .catch(() => null); // Pour éviter l'erreur de promise dans console.log
+  public confirmModal(content: TemplateRef<any>, user: Utilisateur) {
+    this.utilisateurSelected = new Utilisateur(user.id, user.email, user.prenom, user.nom);
+    if (this.utilisateurSelected.nom === '' && this.utilisateurSelected.nom === '') {
+      this.utilisateurSelected.nom = 'Anonyme';
+    }
+    this.modal = this.modalService.show(content, {class: 'modal-md'});
+  }
+
+  public async deleteUser() {
+    this.modal.hide();
+    await this.utilisateurService.delete(this.utilisateurSelected);
+    this.display();
   }
 }

@@ -69,7 +69,8 @@
                   </a>
                 </td>
                 <td>
-                  <button (click)="deleteUser(utilisateur)" class="btn btn-danger centrer-block" type="button"><b
+                  <button (click)="confirmModal(deleteModal, utilisateur)" class="btn btn-danger centrer-block"
+                          type="button"><b
                     class="noShow">Supprimer</b><i class="material-icons">delete</i></button>
                 </td>
               </tr>
@@ -92,3 +93,21 @@
     </div>
   </div>
 </div>
+
+<ng-template #deleteModal>
+  <div class="modal-header">
+    <button (click)="modal.hide()" aria-describedby="modal-title" class="close" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="modal-title">Supprimer
+      l'utilisateur {{utilisateurSelected.nom}} {{utilisateurSelected.prenom}}</h4>
+  </div>
+  <div class="modal-body">
+    <p><strong>&Ecirc;tes-vous sur de vouloir vous supprimer l'utilisateur ?</strong></p>
+    <p>Attention cette action est irr&eacute;versible.</p>
+  </div>
+  <div class="modal-footer">
+    <button (click)="modal.hide()" class="btn btn-outline-secondary" type="button">Annuler</button>
+    <button (click)="deleteUser()" class="btn btn-danger" type="button">Supprimer</button>
+  </div>
+</ng-template>
