@@ -15,7 +15,7 @@ import {Utilisateur} from '../../e-commerce-ui-common/models/Utilisateur';
 })
 
 export class AppComponent implements OnInit, DoCheck {
-  public modelRef: BsModalRef;
+  public modal: BsModalRef;
   public user: Utilisateur;
 
   constructor(
@@ -52,11 +52,7 @@ export class AppComponent implements OnInit, DoCheck {
   }
 
   public confirmModal(content: TemplateRef<any>) {
-    this.modelRef = this.modalService.show(content, {class: 'modal-md'});
-  }
-
-  public closeConfirmModal() {
-    this.modelRef.hide();
+    this.modal = this.modalService.show(content, {class: 'modal-md'});
   }
 
   public goHome() {
@@ -64,7 +60,7 @@ export class AppComponent implements OnInit, DoCheck {
   }
 
   public logout() {
-    this.modelRef.hide();
+    this.modal.hide();
     this.authData.logout();
   }
 

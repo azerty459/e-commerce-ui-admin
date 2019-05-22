@@ -9,10 +9,11 @@
           <mat-icon aria-label="Example icon-button with a heart icon" class="white-icon">exit_to_app</mat-icon>
         </button>
         <div class=" infoUser">
-         <a routerLink="/admin/utilisateur/compte" routerLinkActive="active">
-           <span *ngIf="user && user.nom !== '' && user.prenom !== ''; else anonyme">{{user.nom}} {{user.prenom}}</span>
-           <ng-template #anonyme>Anonyme</ng-template>
-         </a>
+          <a routerLink="/admin/utilisateur/compte" routerLinkActive="active">
+            <span
+              *ngIf="user && user.nom !== '' && user.prenom !== ''; else anonyme">{{user.nom}} {{user.prenom}}</span>
+            <ng-template #anonyme>Anonyme</ng-template>
+          </a>
         </div>
       </div>
       <ul id="sidebarnav">
@@ -37,7 +38,7 @@
 
 <ng-template #logoutModal>
   <div class="modal-header">
-    <button (click)="closeConfirmModal()" aria-describedby="modal-title" class="close" type="button">
+    <button (click)="modal.hide()" aria-describedby="modal-title" class="close" type="button">
       <span aria-hidden="true">&times;</span>
     </button>
     <h4 class="modal-title" id="modal-title">D&eacute;connexion</h4>
@@ -47,7 +48,7 @@
     <p>Toutes les informations non sauvegard&eacute;es seront perdues.</p>
   </div>
   <div class="modal-footer">
-    <button (click)="closeConfirmModal()" class="btn btn-outline-secondary" type="button">Annuler</button>
+    <button (click)="modal.hide()" class="btn btn-outline-secondary" type="button">Annuler</button>
     <button (click)="logout()" class="btn btn-danger" type="button">D&eacute;connexion</button>
   </div>
 </ng-template>
