@@ -1,8 +1,10 @@
 // Longueur des champs
-$short-field-width: 12%;
+$short-field-width: 15%;
 $short-field-min-width: 150px;
-$long-field-width: 35%;
-$long-field-min-width: 200px;
+$medium-field-width: 24%;
+$medium-field-min-width: 250px;
+$long-field-width: 32%;
+$long-field-min-width: 350px;
 
 // Couleurs
 $navbar-color: #F9FAFB;
@@ -24,6 +26,11 @@ $navbar-color: #F9FAFB;
 .short-field {
   width: $short-field-width;
   min-width: $short-field-min-width;
+}
+
+.medium-field {
+  width: $medium-field-width;
+  min-width: $medium-field-min-width;
 }
 
 .long-field {
@@ -134,9 +141,6 @@ mat-card {
   }
   .title {
     font-size: 1em !important;
-  }
-  .btn {
-    font-size: 0.75em !important;
   }
   .mat-toolbar-row {
     height: 35px !important;

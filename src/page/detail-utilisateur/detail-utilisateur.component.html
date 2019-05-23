@@ -83,6 +83,41 @@
                      id="emailUtilisateur"
                      name="emailUtilisateur" type="text">
             </div>
+            <!-- Nom -->
+            <div class="form-group long-field">
+              <label for="nomUtilisateur">Nom</label>
+              <input (input)="changeBtnState()" [(ngModel)]="utilisateurModifie.nom"
+                     class="form-control form-control-lg"
+                     id="nomUtilisateur"
+                     name="nomUtilisateur" type="text">
+            </div>
+            <!-- Prenom -->
+            <div class="form-group long-field">
+              <label for="prenomUtilisateur">Prénom</label>
+              <input (input)="changeBtnState()" [(ngModel)]="utilisateurModifie.prenom"
+                     class="form-control form-control-lg"
+                     id="prenomUtilisateur"
+                     name="prenomUtilisateur" type="text">
+            </div>
+          </div>
+        </form>
+      </mat-expansion-panel>
+
+      <!-- Mot de passe -->
+      <mat-expansion-panel [expanded]="true">
+        <!-- Titre & Description -->
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Mot de passe
+          </mat-panel-title>
+          <mat-panel-description>
+            <!-- TODO faire message pour indiquer que mdp modif uniquement si remplit et un autre pour la creation -->
+            <div class="descriptionPanel">Modifier le mot de passe de l'utilisateur</div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <!-- Contenu -->
+        <form id="formUtilisateur">
+          <div class="flex-container">
             <!-- Mot de passe -->
             <div class="input-group long-field">
               <label for="mdpUtilisateur">Mot de passe</label>
@@ -97,22 +132,15 @@
                 </button>
               </div>
             </div>
-            <!-- Nom -->
-            <div *ngIf="!ajout" class="form-group short-field">
-              <label for="nomUtilisateur">Nom</label>
-              <input (input)="changeBtnState()" [(ngModel)]="utilisateurModifie.nom"
+            <!-- Verification mot de passe -->
+            <div class="input-group long-field">
+              <label for="verifMdpUtilisateur">R&eacute;&eacute;crire mot de passe</label>
+              <input [type]="typePassword"
                      class="form-control form-control-lg"
-                     id="nomUtilisateur"
-                     name="nomUtilisateur" type="text">
+                     id="verifMdpUtilisateur" name="verifMdpUtilisateur"
+                     placeholder="Non affiché pour des raisons de sécurité">
             </div>
-            <!-- Prenom -->
-            <div *ngIf="!ajout" class="form-group short-field">
-              <label for="prenomUtilisateur">Prénom</label>
-              <input (input)="changeBtnState()" [(ngModel)]="utilisateurModifie.prenom"
-                     class="form-control form-control-lg"
-                     id="prenomUtilisateur"
-                     name="prenomUtilisateur" type="text">
-            </div>
+            <!-- TODO Mettre un indicateur de force du mot de passe ? -->
           </div>
         </form>
       </mat-expansion-panel>
@@ -137,6 +165,7 @@
         </mat-form-field>
       </mat-expansion-panel>
     </mat-accordion>
+
   </div>
 
 
