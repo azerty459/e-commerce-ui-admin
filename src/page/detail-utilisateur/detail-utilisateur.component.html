@@ -1,76 +1,69 @@
-<div #toolContainerNotFixed>
-  <mat-toolbar class="toolContainer">
-    <mat-toolbar-row>
-
-    </mat-toolbar-row>
-    <mat-toolbar-row>
-
-    </mat-toolbar-row>
-    <mat-toolbar-row *ngIf="!cacherAlert || !cacherErreur">
-    </mat-toolbar-row>
-
-  </mat-toolbar>
-</div>
-
 <div *ngIf="utilisateur">
+
+
+  <!-- Header de la page d'edition (fixer en haut de la page) -->
   <div class="navbar-fixed-top">
     <mat-toolbar class="toolContainer">
+
+      <!-- Titre -->
       <mat-toolbar-row>
         <div class="title">
           {{ajout ? 'Ajout d\'utilisateur' : '' + utilisateur.email + ' - ' + utilisateur.id }}
         </div>
       </mat-toolbar-row>
+
+      <!-- Les btn -->
       <mat-toolbar-row>
         <div class="toolbar">
+          <!-- Btn retour arriere -->
           <div class="leftTool">
-            <i (click)="goBack()" [matTooltipPosition]="positionAfterTooltip"
-               class="material-icons backArrow"
-               matTooltip="Revenir en arrière">arrow_back</i>
+            <i (click)="goBack()" class="material-icons backArrow"
+               matTooltip="Revenir en arrière"
+               matTooltipPosition="after">arrow_back</i>
           </div>
+          <!-- Btn validation/annuler/suppr -->
           <div class="rightTool">
-
-            <button (click)="addUser()" *ngIf="ajout" class="btn btn-success" type="submit">
-              Ajouter l'utilisateur
-            </button>
-
-            <button (click)="confirmModal(deleteModal)" *ngIf="! ajout" [matTooltipPosition]="'below'"
-                    class="btn btn-danger pull-right centrer-block"
-                    matTooltip="Supprimer l'utilisateur" type="button">
+            <button (click)="confirmModal(deleteModal)" *ngIf="!ajout"
+                    class="btn btn-danger pull-right centrer-block" matTooltip="Supprimer l'utilisateur"
+                    matTooltipPosition="below" type="button">
               <b class="noShow">Supprimer</b>
               <i class="material-icons">delete</i>
             </button>
-
-            <button (click)="saveModification()" *ngIf="! ajout" [disabled]="cacherBoutonAnnulation"
-                    [matTooltipPosition]="'below'"
-                    class="btn btn-success pull-right centrer-block"
-                    matTooltip="Enregistrer les modifications" type="button">
+            <button (click)="saveUser()" [disabled]="desactiverBtn"
+                    class="btn btn-success pull-right centrer-block" matTooltip="Enregistrer les modifications"
+                    matTooltipPosition="below" type="button">
               <b class="noShow">Sauvegarder</b>
               <i class="material-icons">save</i>
             </button>
-
-            <button (click)="cancelModification(utilisateur)" *ngIf="! ajout" [disabled]="cacherBoutonAnnulation"
-                    [matTooltipPosition]="'below'" class="btn btn-warning pull-right centrer-block"
-                    matTooltip="Annuler les modifications" type="button">
+            <button (click)="cancelModification()" *ngIf="!ajout" [disabled]="desactiverBtn"
+                    class="btn btn-warning pull-right centrer-block" matTooltip="Annuler les modifications"
+                    matTooltipPosition="below" type="button">
               <b class="noShow">Annuler</b>
               <i class="material-icons">settings_backup_restore</i>
             </button>
-
           </div>
         </div>
       </mat-toolbar-row>
-      <mat-toolbar-row *ngIf="!cacherAlert || !cacherErreur">
+
+      <!-- Message d'alerte -->
+      <mat-toolbar-row *ngIf="!cacherSucces || !cacherErreur">
         <div class="alerteDiv">
-          <div *ngIf="!cacherAlert" [hidden]="cacherAlert" class="alert alert-success" role="alert">{{message}}</div>
+          <div *ngIf="!cacherSucces" [hidden]="cacherSucces" class="alert alert-success" role="alert">{{message}}</div>
           <div *ngIf="!cacherErreur" [hidden]="cacherErreur" class="alert alert-danger" role="alert">{{message}}</div>
         </div>
       </mat-toolbar-row>
+
     </mat-toolbar>
   </div>
 
 
-  <div *ngIf="utilisateurModifie">
+  <!-- Zone edition utilisateur -->
+  <div *ngIf="utilisateurModifie" class="content">
     <mat-accordion multi="true">
+
+      <!-- Detail de l'utilisateur -->
       <mat-expansion-panel [expanded]="true">
+        <!-- Titre & Description -->
         <mat-expansion-panel-header>
           <mat-panel-title>
             Détails
@@ -79,41 +72,43 @@
             <div class="descriptionPanel">Modifier les details de l'utilisateur</div>
           </mat-panel-description>
         </mat-expansion-panel-header>
+        <!-- Contenu -->
         <form id="formUtilisateur">
           <div class="flex-container">
-
+            <!-- Email -->
             <div class="input-group long-field">
               <label for="emailUtilisateur">Email</label>
-              <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.email"
+              <input (input)="changeBtnState()" [(ngModel)]="utilisateurModifie.email"
                      class="form-control form-control-lg"
                      id="emailUtilisateur"
                      name="emailUtilisateur" type="text">
             </div>
-
+            <!-- Mot de passe -->
             <div class="input-group long-field">
               <label for="mdpUtilisateur">Mot de passe</label>
-              <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.mdp" [type]="typePassword"
+              <input (input)="changeBtnState()" [(ngModel)]="utilisateurModifie.mdp" [type]="typePassword"
                      class="form-control form-control-lg"
                      id="mdpUtilisateur" name="mdpUtilisateur"
                      placeholder="Non affiché pour des raisons de sécurité">
+              <!-- Affiche cache le mot de passe -->
               <div class="input-group-btn">
                 <button (click)="hidePassword()" class="btn btn-default">
-                  <i [class]="classPassword"></i>
+                  <i [class]="iconPassword"></i>
                 </button>
               </div>
             </div>
-
+            <!-- Nom -->
             <div *ngIf="!ajout" class="form-group short-field">
               <label for="nomUtilisateur">Nom</label>
-              <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.nom"
+              <input (input)="changeBtnState()" [(ngModel)]="utilisateurModifie.nom"
                      class="form-control form-control-lg"
                      id="nomUtilisateur"
                      name="nomUtilisateur" type="text">
             </div>
-
+            <!-- Prenom -->
             <div *ngIf="!ajout" class="form-group short-field">
-              <label for="nomUtilisateur">Prénom</label>
-              <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.prenom"
+              <label for="prenomUtilisateur">Prénom</label>
+              <input (input)="changeBtnState()" [(ngModel)]="utilisateurModifie.prenom"
                      class="form-control form-control-lg"
                      id="prenomUtilisateur"
                      name="prenomUtilisateur" type="text">
@@ -122,7 +117,9 @@
         </form>
       </mat-expansion-panel>
 
+      <!-- Choix du role -->
       <mat-expansion-panel [expanded]="true">
+        <!-- Titre & Description -->
         <mat-expansion-panel-header>
           <mat-panel-title>
             Rôles
@@ -131,10 +128,10 @@
             <div class="descriptionPanel">Modifier les rôles de l'utilisateur</div>
           </mat-panel-description>
         </mat-expansion-panel-header>
-
+        <!-- Contenu -->
         <mat-form-field>
           <mat-label>role</mat-label>
-          <mat-select [(value)]="utilisateurModifie.role.id">
+          <mat-select (selectionChange)="changeBtnState()" [(value)]="utilisateurModifie.role.id">
             <mat-option *ngFor="let role of roles" [value]="role.id">{{role.nom}}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -142,6 +139,8 @@
     </mat-accordion>
   </div>
 
+
+  <!-- Modal suppression utilisateur -->
   <ng-template #deleteModal>
     <div class="modal-header">
       <button (click)="modal.hide()" aria-describedby="modal-title" class="close" type="button">
@@ -159,3 +158,6 @@
       <button (click)="deleteUser()" class="btn btn-danger" type="button">Supprimer</button>
     </div>
   </ng-template>
+
+
+</div>
