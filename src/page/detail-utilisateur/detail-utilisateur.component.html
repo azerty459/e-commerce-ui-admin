@@ -33,7 +33,7 @@
               Ajouter l'utilisateur
             </button>
 
-            <button (click)="deleteUser(utilisateur)" *ngIf="! ajout" [matTooltipPosition]="'below'"
+            <button (click)="confirmModal(deleteModal)" *ngIf="! ajout" [matTooltipPosition]="'below'"
                     class="btn btn-danger pull-right centrer-block"
                     matTooltip="Supprimer l'utilisateur" type="button">
               <b class="noShow">Supprimer</b>
@@ -142,12 +142,20 @@
     </mat-accordion>
   </div>
 
-
-
-
-
-
-
-
-
-
+  <ng-template #deleteModal>
+    <div class="modal-header">
+      <button (click)="modal.hide()" aria-describedby="modal-title" class="close" type="button">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="modal-title" id="modal-title">Supprimer
+        l'utilisateur {{utilisateur.nom}} {{utilisateur.prenom}}</h4>
+    </div>
+    <div class="modal-body">
+      <p><strong>&Ecirc;tes-vous sur de vouloir vous supprimer l'utilisateur ?</strong></p>
+      <p>Attention cette action est irr&eacute;versible.</p>
+    </div>
+    <div class="modal-footer">
+      <button (click)="modal.hide()" class="btn btn-outline-secondary" type="button">Annuler</button>
+      <button (click)="deleteUser()" class="btn btn-danger" type="button">Supprimer</button>
+    </div>
+  </ng-template>

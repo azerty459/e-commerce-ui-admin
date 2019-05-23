@@ -1,8 +1,7 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Modal} from 'ngx-modialog/plugins/bootstrap';
 import {PreviousRouteBusiness} from '../../../e-commerce-ui-common/business/previous-route.service';
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
@@ -12,6 +11,7 @@ import {Utilisateur} from '../../../e-commerce-ui-common/models/Utilisateur';
 import {RoleService} from '../../../e-commerce-ui-common/business/role.service';
 import {Role} from '../../../e-commerce-ui-common/models/Role';
 import {AuthDataService} from '../../business/auth-data.service';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-detail-utilisateur',
@@ -31,62 +31,53 @@ export class DetailUtilisateurComponent implements OnInit {
   public ajout: boolean;
   public utilisateur: Utilisateur;
   public utilisateurModifie: Utilisateur;
-
   /**
    * Boolean permettant de savoir si le bouton d'annulation dans la toolbar doit être cacher ou non
    * @type {boolean}
    */
   public cacherBoutonAnnulation = true;
-
   /**
    * Observable d'un tableau d'objets de role
    */
   public roleObservable: Observable<Role[]>;
-
   /**
    * Tableau contenant toutes les roles
    */
   public roles: Role[];
-
   /**
    * Form contrôle permettant de gérer la liste déroulante pour la recherche intelligente
    */
   public choixRoleFormControl: FormControl = new FormControl();
-
   /**
    * Boolean permettant de cacher l'alerte de succès
    * @type {boolean}
    */
   cacherAlert = true;
-
   /**
    * Boolean permettant de cacher l'alerte d'erreur
    * @type {boolean}
    */
   cacherErreur = true;
-
   /**
    * indique que la toolbar est en position fixed
    * @type {boolean}
    */
   toolNotFixed = true;
-
   public typePassword = 'password';
-
   public classPassword = 'glyphicon glyphicon-eye-open';
-
-
   @ViewChild('roleInput') roleInput: ElementRef;
   @ViewChild('toolContainerNotFixed', {read: ElementRef}) toolContainerNotFixed: ElementRef;
+  private modal: BsModalRef;
 
-  constructor(private modal: Modal,
-              private formEditService: FormEditService,
-              private previousRouteBusiness: PreviousRouteBusiness,
-              private route: ActivatedRoute,
-              private utilisateurService: UtilisateurService,
-              private roleService: RoleService,
-              private router: Router,
-              private auth: AuthDataService) {
+  constructor(
+    private modalService: BsModalService,
+    private formEditService: FormEditService,
+    private previousRouteBusiness: PreviousRouteBusiness,
+    private route: ActivatedRoute,
+    private utilisateurService: UtilisateurService,
+    private roleService: RoleService,
+    private router: Router,
+    private auth: AuthDataService) {
   }
 
   ngOnInit() {
@@ -200,8 +191,18 @@ export class DetailUtilisateurComponent implements OnInit {
     }
   }
 
+  public confirmModal(content: TemplateRef<any>) {
+    this.modal = this.modalService.show(content, {class: 'modal-md'});
+  }
+
+  public async deleteUser() {
+    this.modal.hide();
+    await this.utilisateurService.delete(this.utilisateur);
+    this.goBack();
+  }
+
   // Méthode permettante de gérer la supprésion d'utilisateur
-  public deleteUser(utilisateur: Utilisateur) {
+  /*public deleteUser(utilisateur: Utilisateur) {
     // Pop-up gérant la suppression d'un utilisateur
     const dialogRef = this.modal.confirm()
       .size('lg')
@@ -226,7 +227,7 @@ export class DetailUtilisateurComponent implements OnInit {
       })
       // Pour éviter l'erreur de promise dans console.log
       .catch(() => null);
-  }
+  }*/
 
   // Supprime une rôle de la liste
   public deleteRole(role: any): void {
