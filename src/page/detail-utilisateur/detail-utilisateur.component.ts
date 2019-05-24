@@ -9,7 +9,7 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {
   passwordStrengthValidator,
-  sameAsPasswordValidator
+  samePasswordAndVerification
 } from '../../../e-commerce-ui-common/directive/password.directive';
 
 @Component({
@@ -99,7 +99,6 @@ export class DetailUtilisateurComponent implements OnInit {
   ngOnInit() {
     this.ajout = (this.route.snapshot.routeConfig.path === 'admin/utilisateur/ajouter');
     this.setupUser().then(() => {
-      console.log('Ici');
       this.setupForm();
       this.isLoad = true;
     });
@@ -108,7 +107,6 @@ export class DetailUtilisateurComponent implements OnInit {
   // Méthode de retour à la liste des utilisateurs
   public goBack(): void {
     this.router.navigate(['/admin/utilisateur']);
-    this.changeBtnState();
   }
 
   // Permets de gérer le bouton 'oeil' dans l'input mot de passe
@@ -133,26 +131,27 @@ export class DetailUtilisateurComponent implements OnInit {
     return this.formDetail.valid && this.formMdp.valid && this.formRole.valid;
   }
 
-  // Méthode permettante de comparé l'objet utilisateur avec utilisateurModifier
-  public changeBtnState(): void {
-
-  }
-
   public cancelModification() {
     this.utilisateurModifie = Utilisateur.clone(this.utilisateur);
     this.desactiverBtn = true;
   }
 
   public saveUser(): void {
+    // Verif des données
+    /*if (sameAsVerificationValidator(this.formMdp.controls.mdp) !== null) {
+      alert('nop');
+      return;
+    }*/
     // Recup info du formulaire
     const detail = this.formDetail.value;
     const role = this.formRole.value;
+    const mdp = this.formMdp.value;
     this.utilisateurModifie = new Utilisateur(
       this.utilisateur.id,
       detail.email,
       detail.prenom,
       detail.nom,
-      'aze'
+      mdp.mdp
     );
     this.utilisateurModifie.role = new Role(
       role.id,
@@ -216,7 +215,6 @@ export class DetailUtilisateurComponent implements OnInit {
     }
   }
 
-
   public confirmModal(content: TemplateRef<any>) {
     this.modal = this.modalService.show(content, {class: 'modal-md'});
   }
@@ -240,8 +238,6 @@ export class DetailUtilisateurComponent implements OnInit {
       const idUtilisateur = parseInt(this.route.snapshot.paramMap.get('id'), 10);
       this.utilisateur = await this.utilisateurService.getById(idUtilisateur);
     }
-    // Creation du nouvel utilisateur
-    this.utilisateurModifie = Utilisateur.clone(this.utilisateur);
   }
 
   private setupForm(): void {
@@ -261,15 +257,15 @@ export class DetailUtilisateurComponent implements OnInit {
       ]),
       'verifMdp': new FormControl('', [
         Validators.required,
-        sameAsPasswordValidator
       ])
-    });
+    }, samePasswordAndVerification);
     // Formulaire role
     this.formRole = new FormGroup({
       'id': new FormControl(this.utilisateur.role.id, [
         Validators.required
       ])
     });
+    console.log();
   }
 
 }
