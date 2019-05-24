@@ -69,7 +69,10 @@
             Détails
           </mat-panel-title>
           <mat-panel-description>
-            <div class="descriptionPanel">Modifier les details de l'utilisateur</div>
+            <div class="descriptionPanel">
+              <span *ngIf="ajout; else elseDetailDetail">Détails du nouveau compte utilisateur</span>
+              <ng-template #elseDetailDetail>Modification des details de l'utilisateur</ng-template>
+            </div>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <!-- Contenu -->
@@ -108,8 +111,10 @@
             Mot de passe
           </mat-panel-title>
           <mat-panel-description>
-            <!-- TODO faire message pour indiquer que mdp modif uniquement si remplit et un autre pour la creation -->
-            <div class="descriptionPanel">Modifier le mot de passe de l'utilisateur</div>
+            <div class="descriptionPanel">
+              <span *ngIf="ajout; else elseDetailMdp">Entrez le mot de passe du nouveau compte utilisateur</span>
+              <ng-template #elseDetailMdp>Le mot de passe ne sera modifié que si le champ est renseigné</ng-template>
+            </div>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <!-- Contenu -->
@@ -150,7 +155,10 @@
             Rôles
           </mat-panel-title>
           <mat-panel-description>
-            <div class="descriptionPanel">Modifier les rôles de l'utilisateur</div>
+            <div class="descriptionPanel">
+              <span *ngIf="ajout; else elseDetailRole">Role du nouveau compte utilisateur</span>
+              <ng-template #elseDetailRole>Modification du role de l'utilisateur</ng-template>
+            </div>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <!-- Contenu -->
