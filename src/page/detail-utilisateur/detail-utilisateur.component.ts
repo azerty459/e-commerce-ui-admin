@@ -9,6 +9,7 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {
   passwordStrengthValidator,
+  passwordStrengthValidatorOptional,
   samePasswordAndVerification
 } from '../../../e-commerce-ui-common/directive/password.directive';
 
@@ -137,11 +138,6 @@ export class DetailUtilisateurComponent implements OnInit {
   }
 
   public saveUser(): void {
-    // Verif des données
-    /*if (sameAsVerificationValidator(this.formMdp.controls.mdp) !== null) {
-      alert('nop');
-      return;
-    }*/
     // Recup info du formulaire
     const detail = this.formDetail.value;
     const role = this.formRole.value;
@@ -249,15 +245,17 @@ export class DetailUtilisateurComponent implements OnInit {
       'prenom': new FormControl(this.utilisateur.prenom),
       'nom': new FormControl(this.utilisateur.nom)
     });
-    // Formulaire MdP
+    // Formulaire MdP (change ne fonction de ajout ou modif)
+    const validator = [];
+    if (this.ajout) {
+      validator.push(Validators.required);
+      validator.push(passwordStrengthValidator);
+    } else {
+      validator.push(passwordStrengthValidatorOptional);
+    }
     this.formMdp = new FormGroup({
-      'mdp': new FormControl('', [
-        Validators.required,
-        passwordStrengthValidator,
-      ]),
-      'verifMdp': new FormControl('', [
-        Validators.required,
-      ])
+      'mdp': new FormControl('', validator),
+      'verifMdp': new FormControl('', validator)
     }, samePasswordAndVerification);
     // Formulaire role
     this.formRole = new FormGroup({
