@@ -6,6 +6,7 @@ import {RoleService} from '../../../e-commerce-ui-common/business/role.service';
 import {Role} from '../../../e-commerce-ui-common/models/Role';
 import {AuthDataService} from '../../business/auth-data.service';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-detail-utilisateur',
@@ -26,9 +27,15 @@ export class DetailUtilisateurComponent implements OnInit {
   public utilisateur: Utilisateur;
 
   /**
-   * L'utilisateur modifié avec la valeur des champs du formulaire
+   * L'utilisateur modifié avec la valeur des champs du formDetail
    */
   public utilisateurModifie: Utilisateur;
+
+  public formDetail: FormGroup;
+
+  public formMdp: FormGroup;
+
+  public formRole: FormGroup;
 
   /**
    * Tableau contenant toutes les roles
@@ -84,6 +91,7 @@ export class DetailUtilisateurComponent implements OnInit {
   }
 
   async ngOnInit() {
+    /* --- Setup des données de la page --- */
     this.ajout = (this.route.snapshot.routeConfig.path === 'admin/utilisateur/ajouter');
     // Recuperation des roles
     this.roles = await this.roleService.getAll();
@@ -99,12 +107,9 @@ export class DetailUtilisateurComponent implements OnInit {
     }
     // Creation du nouvel utilisateur
     this.utilisateurModifie = Utilisateur.clone(this.utilisateur);
-  }
-
-  public userIsModified(): boolean {
-    console.log(this.utilisateur);
-    console.log(this.utilisateurModifie);
-    return !Utilisateur.equals(this.utilisateur, this.utilisateurModifie);
+    /* --- Setup des formulaires --- */
+    this.setupForm();
+    console.log(this.formDetail);
   }
 
   // Méthode de retour à la liste des utilisateurs
@@ -128,9 +133,13 @@ export class DetailUtilisateurComponent implements OnInit {
     }
   }
 
+  public formIsValid(): boolean {
+    return this.formDetail.valid && this.formRole.valid;
+  }
+
   // Méthode permettante de comparé l'objet utilisateur avec utilisateurModifier
   public changeBtnState(): void {
-    this.desactiverBtn = !this.userIsModified();
+
   }
 
   public cancelModification() {
@@ -139,6 +148,21 @@ export class DetailUtilisateurComponent implements OnInit {
   }
 
   public saveUser(): void {
+    // Recup info du formulaire
+    const detail = this.formDetail.value;
+    const role = this.formRole.value;
+    this.utilisateurModifie = new Utilisateur(
+      this.utilisateur.id,
+      detail.email,
+      detail.prenom,
+      detail.nom,
+      'aze'
+    );
+    this.utilisateurModifie.role = new Role(
+      role.id,
+      this.utilisateur.role.nom
+    );
+    // Sauvegarde l'utilisateur
     if (this.ajout) {
       this.addUser();
     } else {
@@ -205,6 +229,21 @@ export class DetailUtilisateurComponent implements OnInit {
     this.modal.hide();
     await this.utilisateurService.delete(this.utilisateur);
     this.goBack();
+  }
+
+  private setupForm(): void {
+    // Formulaire detail
+    this.formDetail = new FormGroup({
+      'email': new FormControl(this.utilisateur.email),
+      'prenom': new FormControl(this.utilisateur.prenom),
+      'nom': new FormControl(this.utilisateur.nom)
+    });
+    // Formulaire role
+    this.formRole = new FormGroup({
+      'id': new FormControl(this.utilisateur.role.id, [
+        Validators.required
+      ])
+    });
   }
 
 }

@@ -29,13 +29,13 @@
               <b class="noShow">Supprimer</b>
               <i class="material-icons">delete</i>
             </button>
-            <button (click)="saveUser()" [disabled]="desactiverBtn"
+            <button (click)="saveUser()" [disabled]="!formIsValid()"
                     class="btn btn-success pull-right centrer-block" matTooltip="Enregistrer les modifications"
-                    matTooltipPosition="below" type="button">
+                    matTooltipPosition="below" type="submit">
               <b class="noShow">Sauvegarder</b>
               <i class="material-icons">save</i>
             </button>
-            <button (click)="cancelModification()" *ngIf="!ajout" [disabled]="desactiverBtn"
+            <button (click)="cancelModification()" *ngIf="!ajout" [disabled]="!formIsValid()"
                     class="btn btn-warning pull-right centrer-block" matTooltip="Annuler les modifications"
                     matTooltipPosition="below" type="button">
               <b class="noShow">Annuler</b>
@@ -73,29 +73,26 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <!-- Contenu -->
-        <form id="formUtilisateur">
+        <form [formGroup]="formDetail" id="formUtilisateur">
           <div class="flex-container">
             <!-- Email -->
             <div class="input-group long-field">
               <label for="emailUtilisateur">Email</label>
-              <input (input)="changeBtnState()" [(ngModel)]="utilisateurModifie.email"
-                     class="form-control form-control-lg"
+              <input class="form-control form-control-lg" formControlName="email"
                      id="emailUtilisateur"
-                     name="emailUtilisateur" type="text">
+                     name="emailUtilisateur" required type="text">
             </div>
             <!-- Nom -->
             <div class="form-group long-field">
               <label for="nomUtilisateur">Nom</label>
-              <input (input)="changeBtnState()" [(ngModel)]="utilisateurModifie.nom"
-                     class="form-control form-control-lg"
+              <input class="form-control form-control-lg" formControlName="nom"
                      id="nomUtilisateur"
                      name="nomUtilisateur" type="text">
             </div>
             <!-- Prenom -->
             <div class="form-group long-field">
               <label for="prenomUtilisateur">Prénom</label>
-              <input (input)="changeBtnState()" [(ngModel)]="utilisateurModifie.prenom"
-                     class="form-control form-control-lg"
+              <input class="form-control form-control-lg" formControlName="prenom"
                      id="prenomUtilisateur"
                      name="prenomUtilisateur" type="text">
             </div>
@@ -116,7 +113,7 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <!-- Contenu -->
-        <form id="formUtilisateur">
+        <form id="formUtilisateurMdp">
           <div class="flex-container">
             <!-- Mot de passe -->
             <div class="input-group long-field">
@@ -140,7 +137,7 @@
                      id="verifMdpUtilisateur" name="verifMdpUtilisateur"
                      placeholder="Non affiché pour des raisons de sécurité">
             </div>
-            <!-- TODO Mettre un indicateur de force du mot de passe ? -->
+            <!-- TODO Mettre un indicateur de force du mot de passe ? ou message d'erreur -->
           </div>
         </form>
       </mat-expansion-panel>
@@ -157,9 +154,9 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <!-- Contenu -->
-        <mat-form-field>
+        <mat-form-field [formGroup]="formRole">
           <mat-label>role</mat-label>
-          <mat-select (selectionChange)="changeBtnState()" [(value)]="utilisateurModifie.role.id">
+          <mat-select formControlName="id">
             <mat-option *ngFor="let role of roles" [value]="role.id">{{role.nom}}</mat-option>
           </mat-select>
         </mat-form-field>
