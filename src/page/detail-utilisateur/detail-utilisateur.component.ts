@@ -7,6 +7,10 @@ import {Role} from '../../../e-commerce-ui-common/models/Role';
 import {AuthDataService} from '../../business/auth-data.service';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {
+  passwordStrengthValidator,
+  sameAsPasswordValidator
+} from '../../../e-commerce-ui-common/directive/password.directive';
 
 @Component({
   selector: 'app-detail-utilisateur',
@@ -14,6 +18,8 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./detail-utilisateur.component.scss']
 })
 export class DetailUtilisateurComponent implements OnInit {
+
+  public isLoad = false;
 
   /**
    * Si on ajoute ou non un utilisateur
@@ -90,25 +96,13 @@ export class DetailUtilisateurComponent implements OnInit {
   ) {
   }
 
-  async ngOnInit() {
-    /* --- Setup des données de la page --- */
+  ngOnInit() {
     this.ajout = (this.route.snapshot.routeConfig.path === 'admin/utilisateur/ajouter');
-    // Recuperation des roles
-    this.roles = await this.roleService.getAll();
-    // Recupère l'utilisateur
-    if (this.ajout) {
-      // Si c'est un ajout d'utilisateur
-      this.utilisateur = new Utilisateur(0, '', '', '');
-      this.utilisateur.role = this.roles[0];
-    } else {
-      // Sinon c'est une modification
-      const idUtilisateur = parseInt(this.route.snapshot.paramMap.get('id'), 10);
-      this.utilisateur = await this.utilisateurService.getById(idUtilisateur);
-    }
-    // Creation du nouvel utilisateur
-    this.utilisateurModifie = Utilisateur.clone(this.utilisateur);
-    /* --- Setup des formulaires --- */
-    this.setupForm();
+    this.setupUser().then(() => {
+      console.log('Ici');
+      this.setupForm();
+      this.isLoad = true;
+    });
   }
 
   // Méthode de retour à la liste des utilisateurs
@@ -133,7 +127,10 @@ export class DetailUtilisateurComponent implements OnInit {
   }
 
   public formIsValid(): boolean {
-    return this.formDetail.valid && this.formRole.valid;
+    if (this.formDetail === undefined || this.formMdp === undefined || this.formRole === undefined) {
+      return false;
+    }
+    return this.formDetail.valid && this.formMdp.valid && this.formRole.valid;
   }
 
   // Méthode permettante de comparé l'objet utilisateur avec utilisateurModifier
@@ -230,6 +227,23 @@ export class DetailUtilisateurComponent implements OnInit {
     this.goBack();
   }
 
+  private async setupUser() {
+    // Recuperation des roles
+    this.roles = await this.roleService.getAll();
+    // Recupère l'utilisateur
+    if (this.ajout) {
+      // Si c'est un ajout d'utilisateur
+      this.utilisateur = new Utilisateur(0, '', '', '');
+      this.utilisateur.role = this.roles[0];
+    } else {
+      // Sinon c'est une modification
+      const idUtilisateur = parseInt(this.route.snapshot.paramMap.get('id'), 10);
+      this.utilisateur = await this.utilisateurService.getById(idUtilisateur);
+    }
+    // Creation du nouvel utilisateur
+    this.utilisateurModifie = Utilisateur.clone(this.utilisateur);
+  }
+
   private setupForm(): void {
     // Formulaire detail
     this.formDetail = new FormGroup({
@@ -238,6 +252,17 @@ export class DetailUtilisateurComponent implements OnInit {
       ]),
       'prenom': new FormControl(this.utilisateur.prenom),
       'nom': new FormControl(this.utilisateur.nom)
+    });
+    // Formulaire MdP
+    this.formMdp = new FormGroup({
+      'mdp': new FormControl('', [
+        Validators.required,
+        passwordStrengthValidator,
+      ]),
+      'verifMdp': new FormControl('', [
+        Validators.required,
+        sameAsPasswordValidator
+      ])
     });
     // Formulaire role
     this.formRole = new FormGroup({

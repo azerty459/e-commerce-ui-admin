@@ -58,7 +58,7 @@
 
 
   <!-- Zone edition utilisateur -->
-  <div *ngIf="utilisateurModifie" class="content">
+  <div *ngIf="isLoad" class="content">
     <mat-accordion multi="true">
 
       <!-- Detail de l'utilisateur -->
@@ -113,13 +113,13 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <!-- Contenu -->
-        <form id="formUtilisateurMdp">
+        <form [formGroup]="formMdp" id="formUtilisateurMdp">
           <div class="flex-container">
             <!-- Mot de passe -->
             <div class="input-group long-field">
               <label for="mdpUtilisateur">Mot de passe</label>
-              <input (input)="changeBtnState()" [(ngModel)]="utilisateurModifie.mdp" [type]="typePassword"
-                     class="form-control form-control-lg"
+              <input [type]="typePassword" class="form-control form-control-lg"
+                     formControlName="mdp"
                      id="mdpUtilisateur" name="mdpUtilisateur"
                      placeholder="Non affiché pour des raisons de sécurité">
               <!-- Affiche cache le mot de passe -->
@@ -132,8 +132,8 @@
             <!-- Verification mot de passe -->
             <div class="input-group long-field">
               <label for="verifMdpUtilisateur">R&eacute;&eacute;crire mot de passe</label>
-              <input [type]="typePassword"
-                     class="form-control form-control-lg"
+              <input [type]="typePassword" class="form-control form-control-lg"
+                     formControlName="verifMdp"
                      id="verifMdpUtilisateur" name="verifMdpUtilisateur"
                      placeholder="Non affiché pour des raisons de sécurité">
             </div>
