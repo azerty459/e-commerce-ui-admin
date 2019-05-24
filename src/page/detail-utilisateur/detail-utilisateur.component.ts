@@ -109,7 +109,6 @@ export class DetailUtilisateurComponent implements OnInit {
     this.utilisateurModifie = Utilisateur.clone(this.utilisateur);
     /* --- Setup des formulaires --- */
     this.setupForm();
-    console.log(this.formDetail);
   }
 
   // Méthode de retour à la liste des utilisateurs
@@ -234,7 +233,9 @@ export class DetailUtilisateurComponent implements OnInit {
   private setupForm(): void {
     // Formulaire detail
     this.formDetail = new FormGroup({
-      'email': new FormControl(this.utilisateur.email),
+      'email': new FormControl(this.utilisateur.email, [
+        Validators.required
+      ]),
       'prenom': new FormControl(this.utilisateur.prenom),
       'nom': new FormControl(this.utilisateur.nom)
     });
