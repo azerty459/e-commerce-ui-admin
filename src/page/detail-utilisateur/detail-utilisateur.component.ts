@@ -33,11 +33,6 @@ export class DetailUtilisateurComponent implements OnInit {
    */
   public utilisateur: Utilisateur;
 
-  /**
-   * L'utilisateur modifié avec la valeur des champs du formDetail
-   */
-  public utilisateurModifie: Utilisateur;
-
   public formDetail: FormGroup;
 
   public formMdp: FormGroup;
@@ -125,53 +120,38 @@ export class DetailUtilisateurComponent implements OnInit {
     }
   }
 
-  public formIsValid(): boolean {
+  public dataAreValid(): boolean {
     if (this.formDetail === undefined || this.formMdp === undefined || this.formRole === undefined) {
+      return false;
+    }
+    if (Utilisateur.equals(this.utilisateur, this.getUserFromForm())) {
       return false;
     }
     return this.formDetail.valid && this.formMdp.valid && this.formRole.valid;
   }
 
   public cancelModification() {
-    this.utilisateurModifie = Utilisateur.clone(this.utilisateur);
-    this.desactiverBtn = true;
+    this.setupForm();
   }
 
   public saveUser(): void {
     // Recup info du formulaire
-    const detail = this.formDetail.value;
-    const role = this.formRole.value;
-    const mdp = this.formMdp.value;
-    this.utilisateurModifie = new Utilisateur(
-      this.utilisateur.id,
-      detail.email,
-      detail.prenom,
-      detail.nom,
-      mdp.mdp
-    );
-    this.utilisateurModifie.role = new Role(
-      role.id,
-      this.utilisateur.role.nom
-    );
+    const utilisateur = this.getUserFromForm();
     // Sauvegarde l'utilisateur
     if (this.ajout) {
-      this.addUser();
+      this.addUser(utilisateur);
     } else {
-      this.updateUser();
+      this.updateUser(utilisateur);
     }
   }
 
   // Méthode permettante l'ajout d'une utilisateur
-  public async addUser() {
-    const retourAPI = await this.utilisateurService.add(this.utilisateurModifie);
+  public async addUser(nouvelUtilisateur: Utilisateur) {
+    const retourAPI = await this.utilisateurService.add(nouvelUtilisateur);
     // Si le retourAPI est un utilisateur
     if (retourAPI.constructor.name !== 'String') {
       this.ajout = true;
       this.utilisateur = retourAPI;
-      // Mets à jour la variable utilisateur et utilisateur modifiée
-      if (this.utilisateur != null) {
-        this.utilisateurModifie = retourAPI;
-      }
       this.router.navigate(['/admin/utilisateur']);
     } else {
       this.cacherErreur = false;
@@ -180,15 +160,14 @@ export class DetailUtilisateurComponent implements OnInit {
     }
   }
 
-  public async updateUser() {
+  public async updateUser(utilisateurModifie: Utilisateur) {
     // Verification que les champs requis sont présent
-    const retourAPI = await this.utilisateurService.update(this.utilisateurModifie);
+    const retourAPI = await this.utilisateurService.update(utilisateurModifie);
     if (retourAPI != null) {
       // Si le retourAPI est un utilisateur
       if (retourAPI.constructor.name !== 'String') {
         // Mets à jour la variable utilisateur et utilisateur modifiée
         this.utilisateur = retourAPI;
-        this.utilisateurModifie = JSON.parse(JSON.stringify(this.utilisateur));
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.cacherErreur = true;
         this.cacherSucces = false;
@@ -263,7 +242,24 @@ export class DetailUtilisateurComponent implements OnInit {
         Validators.required
       ])
     });
-    console.log();
+  }
+
+  private getUserFromForm(): Utilisateur {
+    const detail = this.formDetail.value;
+    const role = this.formRole.value;
+    const mdp = this.formMdp.value;
+    const utilisateur = new Utilisateur(
+      this.utilisateur.id,
+      detail.email,
+      detail.prenom,
+      detail.nom,
+      mdp.mdp
+    );
+    utilisateur.role = new Role(
+      role.id,
+      this.utilisateur.role.nom
+    );
+    return utilisateur;
   }
 
 }

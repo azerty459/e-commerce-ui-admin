@@ -29,13 +29,13 @@
               <b class="noShow">Supprimer</b>
               <i class="material-icons">delete</i>
             </button>
-            <button (click)="saveUser()" [disabled]="!formIsValid()"
+            <button (click)="saveUser()" [disabled]="!dataAreValid()"
                     class="btn btn-success pull-right centrer-block" matTooltip="Enregistrer les modifications"
                     matTooltipPosition="below" type="submit">
               <b class="noShow">Sauvegarder</b>
               <i class="material-icons">save</i>
             </button>
-            <button (click)="cancelModification()" *ngIf="!ajout" [disabled]="!formIsValid()"
+            <button (click)="cancelModification()" *ngIf="!ajout"
                     class="btn btn-warning pull-right centrer-block" matTooltip="Annuler les modifications"
                     matTooltipPosition="below" type="button">
               <b class="noShow">Annuler</b>
