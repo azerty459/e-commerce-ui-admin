@@ -20,6 +20,9 @@ import {
 })
 export class DetailUtilisateurComponent implements OnInit {
 
+  /**
+   * Indique si les données pour l'affichage de la page sont chargées
+   */
   public isLoad = false;
 
   /**
@@ -33,10 +36,19 @@ export class DetailUtilisateurComponent implements OnInit {
    */
   public utilisateur: Utilisateur;
 
+  /**
+   * La zone de formulaire des details
+   */
   public formDetail: FormGroup;
 
+  /**
+   * La zone de formulaire du mot de passe
+   */
   public formMdp: FormGroup;
 
+  /**
+   * La zone de formulaire du role
+   */
   public formRole: FormGroup;
 
   /**
@@ -100,12 +112,16 @@ export class DetailUtilisateurComponent implements OnInit {
     });
   }
 
-  // Méthode de retour à la liste des utilisateurs
+  /**
+   * Retourne sur la liste des utilisateurs
+   */
   public goBack(): void {
     this.router.navigate(['/admin/utilisateur']);
   }
 
-  // Permets de gérer le bouton 'oeil' dans l'input mot de passe
+  /**
+   * Cache/affiche le mot de passe
+   */
   public hidePassword(): void {
     if (this.typePassword === 'password') {
       // Permets de définir le input de type:
@@ -120,6 +136,10 @@ export class DetailUtilisateurComponent implements OnInit {
     }
   }
 
+  /**
+   * Verifie si les données du formulaire sont valide
+   * et si elle sont différentes de l'utilisateur en cours de modification (si modification)
+   */
   public dataAreValid(): boolean {
     if (this.formDetail === undefined || this.formMdp === undefined || this.formRole === undefined) {
       return false;
@@ -130,10 +150,16 @@ export class DetailUtilisateurComponent implements OnInit {
     return this.formDetail.valid && this.formMdp.valid && this.formRole.valid;
   }
 
-  public cancelModification() {
+  /**
+   * Annule les modifications effectuées
+   */
+  public cancelModification(): void {
     this.setupForm();
   }
 
+  /**
+   * Sauvegarde l'utilisateur
+   */
   public saveUser(): void {
     // Recup info du formulaire
     const utilisateur = this.getUserFromForm();
@@ -145,7 +171,11 @@ export class DetailUtilisateurComponent implements OnInit {
     }
   }
 
-  // Méthode permettante l'ajout d'une utilisateur
+
+  /**
+   * Ajoute un utilisateur
+   * @param nouvelUtilisateur
+   */
   public async addUser(nouvelUtilisateur: Utilisateur) {
     const retourAPI = await this.utilisateurService.add(nouvelUtilisateur);
     // Si le retourAPI est un utilisateur
@@ -160,6 +190,10 @@ export class DetailUtilisateurComponent implements OnInit {
     }
   }
 
+  /**
+   * Met à jour un utilisateur
+   * @param utilisateurModifie
+   */
   public async updateUser(utilisateurModifie: Utilisateur) {
     // Verification que les champs requis sont présent
     const retourAPI = await this.utilisateurService.update(utilisateurModifie);
@@ -190,16 +224,26 @@ export class DetailUtilisateurComponent implements OnInit {
     }
   }
 
+  /**
+   * Affiche un modal de confirmation
+   * @param content
+   */
   public confirmModal(content: TemplateRef<any>) {
     this.modal = this.modalService.show(content, {class: 'modal-md'});
   }
 
+  /**
+   * Supprime un utilisateur
+   */
   public async deleteUser() {
     this.modal.hide();
     await this.utilisateurService.delete(this.utilisateur);
     this.goBack();
   }
 
+  /**
+   * Recupere les infos de l'utlisateur à modifier
+   */
   private async setupUser() {
     // Recuperation des roles
     this.roles = await this.roleService.getAll();
@@ -215,6 +259,9 @@ export class DetailUtilisateurComponent implements OnInit {
     }
   }
 
+  /**
+   * Création des formulaires
+   */
   private setupForm(): void {
     // Formulaire detail
     this.formDetail = new FormGroup({
@@ -244,6 +291,9 @@ export class DetailUtilisateurComponent implements OnInit {
     });
   }
 
+  /**
+   * Création de l'utilisateur correspondant aux valeurs des champs du formulaire
+   */
   private getUserFromForm(): Utilisateur {
     const detail = this.formDetail.value;
     const role = this.formRole.value;
