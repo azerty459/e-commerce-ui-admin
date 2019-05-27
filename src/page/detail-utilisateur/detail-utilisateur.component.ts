@@ -167,7 +167,6 @@ export class DetailUtilisateurComponent implements OnInit {
       this.cacherErreur = false;
       return;
     }
-    console.log('ici');
     // Recup info du formulaire
     const utilisateur = this.getUserFromForm();
     // Sauvegarde l'utilisateur
