@@ -161,6 +161,13 @@ export class DetailUtilisateurComponent implements OnInit {
    * Sauvegarde l'utilisateur
    */
   public saveUser(): void {
+    // Verif info formulaire
+    if (!this.dataAreValid()) {
+      this.message = 'Données du formulaire invalide';
+      this.cacherErreur = false;
+      return;
+    }
+    console.log('ici');
     // Recup info du formulaire
     const utilisateur = this.getUserFromForm();
     // Sauvegarde l'utilisateur
