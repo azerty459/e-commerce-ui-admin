@@ -1,120 +1,101 @@
-<div #toolContainerNotFixed>
-  <mat-toolbar class="toolContainer">
-    <mat-toolbar-row>
-
-    </mat-toolbar-row>
-    <mat-toolbar-row>
-
-    </mat-toolbar-row>
-    <mat-toolbar-row *ngIf="!cacherAlert || !cacherErreur">
-    </mat-toolbar-row>
-
-  </mat-toolbar>
-</div>
-
 <div *ngIf="utilisateur">
+
+
+  <!-- Header de la page d'edition (fixer en haut de la page) -->
   <div class="navbar-fixed-top">
     <mat-toolbar class="toolContainer">
+
+      <!-- Titre -->
       <mat-toolbar-row>
         <div class="title">
           {{ajout ? 'Ajout d\'utilisateur' : '' + utilisateur.email + ' - ' + utilisateur.id }}
         </div>
       </mat-toolbar-row>
+
+      <!-- Les btn -->
       <mat-toolbar-row>
         <div class="toolbar">
+          <!-- Btn retour arriere -->
           <div class="leftTool">
-            <i (click)="goBack()" [matTooltipPosition]="positionAfterTooltip"
-               class="material-icons backArrow"
-               matTooltip="Revenir en arrière">arrow_back</i>
+            <i (click)="goBack()" class="material-icons backArrow"
+               matTooltip="Revenir en arrière"
+               matTooltipPosition="after">arrow_back</i>
           </div>
+          <!-- Btn validation/annuler/suppr -->
           <div class="rightTool">
-
-            <button (click)="addUser()" *ngIf="ajout" class="btn btn-success" type="submit">
-              Ajouter l'utilisateur
-            </button>
-
-            <button (click)="confirmModal(deleteModal)" *ngIf="! ajout" [matTooltipPosition]="'below'"
-                    class="btn btn-danger pull-right centrer-block"
-                    matTooltip="Supprimer l'utilisateur" type="button">
+            <button (click)="confirmModal(deleteModal)" *ngIf="!ajout"
+                    class="btn btn-danger pull-right centrer-block" matTooltip="Supprimer l'utilisateur"
+                    matTooltipPosition="below" type="button">
               <b class="noShow">Supprimer</b>
               <i class="material-icons">delete</i>
             </button>
-
-            <button (click)="saveModification()" *ngIf="! ajout" [disabled]="cacherBoutonAnnulation"
-                    [matTooltipPosition]="'below'"
-                    class="btn btn-success pull-right centrer-block"
-                    matTooltip="Enregistrer les modifications" type="button">
+            <button (click)="saveUser()" [disabled]="!dataAreValid()"
+                    class="btn btn-success pull-right centrer-block" matTooltip="Enregistrer les modifications"
+                    matTooltipPosition="below" type="submit">
               <b class="noShow">Sauvegarder</b>
               <i class="material-icons">save</i>
             </button>
-
-            <button (click)="cancelModification(utilisateur)" *ngIf="! ajout" [disabled]="cacherBoutonAnnulation"
-                    [matTooltipPosition]="'below'" class="btn btn-warning pull-right centrer-block"
-                    matTooltip="Annuler les modifications" type="button">
+            <button (click)="cancelModification()" *ngIf="!ajout"
+                    class="btn btn-warning pull-right centrer-block" matTooltip="Annuler les modifications"
+                    matTooltipPosition="below" type="button">
               <b class="noShow">Annuler</b>
               <i class="material-icons">settings_backup_restore</i>
             </button>
-
           </div>
         </div>
       </mat-toolbar-row>
-      <mat-toolbar-row *ngIf="!cacherAlert || !cacherErreur">
+
+      <!-- Message d'alerte -->
+      <mat-toolbar-row *ngIf="!cacherSucces || !cacherErreur">
         <div class="alerteDiv">
-          <div *ngIf="!cacherAlert" [hidden]="cacherAlert" class="alert alert-success" role="alert">{{message}}</div>
+          <div *ngIf="!cacherSucces" [hidden]="cacherSucces" class="alert alert-success" role="alert">{{message}}</div>
           <div *ngIf="!cacherErreur" [hidden]="cacherErreur" class="alert alert-danger" role="alert">{{message}}</div>
         </div>
       </mat-toolbar-row>
+
     </mat-toolbar>
   </div>
 
 
-  <div *ngIf="utilisateurModifie">
+  <!-- Zone edition utilisateur -->
+  <div *ngIf="isLoad" class="content">
     <mat-accordion multi="true">
+
+      <!-- Detail de l'utilisateur -->
       <mat-expansion-panel [expanded]="true">
+        <!-- Titre & Description -->
         <mat-expansion-panel-header>
           <mat-panel-title>
             Détails
           </mat-panel-title>
           <mat-panel-description>
-            <div class="descriptionPanel">Modifier les details de l'utilisateur</div>
+            <div class="descriptionPanel">
+              <span *ngIf="ajout; else elseDetailDetail">Détails du nouveau compte utilisateur</span>
+              <ng-template #elseDetailDetail>Modification des details de l'utilisateur</ng-template>
+            </div>
           </mat-panel-description>
         </mat-expansion-panel-header>
-        <form id="formUtilisateur">
+        <!-- Contenu -->
+        <form [formGroup]="formDetail" id="formUtilisateur">
           <div class="flex-container">
-
+            <!-- Email -->
             <div class="input-group long-field">
               <label for="emailUtilisateur">Email</label>
-              <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.email"
-                     class="form-control form-control-lg"
+              <input class="form-control form-control-lg" formControlName="email"
                      id="emailUtilisateur"
-                     name="emailUtilisateur" type="text">
+                     name="emailUtilisateur" required type="text">
             </div>
-
-            <div class="input-group long-field">
-              <label for="mdpUtilisateur">Mot de passe</label>
-              <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.mdp" [type]="typePassword"
-                     class="form-control form-control-lg"
-                     id="mdpUtilisateur" name="mdpUtilisateur"
-                     placeholder="Non affiché pour des raisons de sécurité">
-              <div class="input-group-btn">
-                <button (click)="hidePassword()" class="btn btn-default">
-                  <i [class]="classPassword"></i>
-                </button>
-              </div>
-            </div>
-
-            <div *ngIf="!ajout" class="form-group short-field">
+            <!-- Nom -->
+            <div class="form-group long-field">
               <label for="nomUtilisateur">Nom</label>
-              <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.nom"
-                     class="form-control form-control-lg"
+              <input class="form-control form-control-lg" formControlName="nom"
                      id="nomUtilisateur"
                      name="nomUtilisateur" type="text">
             </div>
-
-            <div *ngIf="!ajout" class="form-group short-field">
-              <label for="nomUtilisateur">Prénom</label>
-              <input (input)="comparedUserWithUserModif()" [(ngModel)]="utilisateurModifie.prenom"
-                     class="form-control form-control-lg"
+            <!-- Prenom -->
+            <div class="form-group long-field">
+              <label for="prenomUtilisateur">Prénom</label>
+              <input class="form-control form-control-lg" formControlName="prenom"
                      id="prenomUtilisateur"
                      name="prenomUtilisateur" type="text">
             </div>
@@ -122,26 +103,78 @@
         </form>
       </mat-expansion-panel>
 
+      <!-- Mot de passe -->
       <mat-expansion-panel [expanded]="true">
+        <!-- Titre & Description -->
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Mot de passe
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="descriptionPanel">
+              <span *ngIf="ajout; else elseDetailMdp">Entrez le mot de passe du nouveau compte utilisateur</span>
+              <ng-template #elseDetailMdp>Le mot de passe ne sera modifié que si le champ est renseigné</ng-template>
+            </div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <!-- Contenu -->
+        <form [formGroup]="formMdp" id="formUtilisateurMdp">
+          <div class="flex-container">
+            <!-- Mot de passe -->
+            <div class="input-group long-field">
+              <label for="mdpUtilisateur">Mot de passe</label>
+              <input [type]="typePassword" class="form-control form-control-lg"
+                     formControlName="mdp"
+                     id="mdpUtilisateur" name="mdpUtilisateur"
+                     placeholder="Non affiché pour des raisons de sécurité">
+              <!-- Affiche cache le mot de passe -->
+              <div class="input-group-btn">
+                <button (click)="hidePassword()" class="btn btn-default">
+                  <i [class]="iconPassword"></i>
+                </button>
+              </div>
+            </div>
+            <!-- Verification mot de passe -->
+            <div class="input-group long-field">
+              <label for="verifMdpUtilisateur">R&eacute;&eacute;crire mot de passe</label>
+              <input [type]="typePassword" class="form-control form-control-lg"
+                     formControlName="verifMdp"
+                     id="verifMdpUtilisateur" name="verifMdpUtilisateur"
+                     placeholder="Non affiché pour des raisons de sécurité">
+            </div>
+            <!-- TODO Mettre un indicateur de force du mot de passe ? ou message d'erreur -->
+          </div>
+        </form>
+      </mat-expansion-panel>
+
+      <!-- Choix du role -->
+      <mat-expansion-panel [expanded]="true">
+        <!-- Titre & Description -->
         <mat-expansion-panel-header>
           <mat-panel-title>
             Rôles
           </mat-panel-title>
           <mat-panel-description>
-            <div class="descriptionPanel">Modifier les rôles de l'utilisateur</div>
+            <div class="descriptionPanel">
+              <span *ngIf="ajout; else elseDetailRole">Role du nouveau compte utilisateur</span>
+              <ng-template #elseDetailRole>Modification du role de l'utilisateur</ng-template>
+            </div>
           </mat-panel-description>
         </mat-expansion-panel-header>
-
-        <mat-form-field>
+        <!-- Contenu -->
+        <mat-form-field [formGroup]="formRole">
           <mat-label>role</mat-label>
-          <mat-select [(value)]="utilisateurModifie.role.id">
+          <mat-select formControlName="id">
             <mat-option *ngFor="let role of roles" [value]="role.id">{{role.nom}}</mat-option>
           </mat-select>
         </mat-form-field>
       </mat-expansion-panel>
     </mat-accordion>
+
   </div>
 
+
+  <!-- Modal suppression utilisateur -->
   <ng-template #deleteModal>
     <div class="modal-header">
       <button (click)="modal.hide()" aria-describedby="modal-title" class="close" type="button">
@@ -159,3 +192,6 @@
       <button (click)="deleteUser()" class="btn btn-danger" type="button">Supprimer</button>
     </div>
   </ng-template>
+
+
+</div>

@@ -1,17 +1,17 @@
-import {Component, ElementRef, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Observable} from 'rxjs';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {PreviousRouteBusiness} from '../../../e-commerce-ui-common/business/previous-route.service';
-import {map, startWith} from 'rxjs/operators';
-import {FormControl} from '@angular/forms';
-import {FormEditService} from '../../../e-commerce-ui-common/business/form-edit.service';
 import {UtilisateurService} from '../../../e-commerce-ui-common/business/utilisateur.service';
 import {Utilisateur} from '../../../e-commerce-ui-common/models/Utilisateur';
 import {RoleService} from '../../../e-commerce-ui-common/business/role.service';
 import {Role} from '../../../e-commerce-ui-common/models/Role';
 import {AuthDataService} from '../../business/auth-data.service';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {
+  passwordStrengthValidator,
+  passwordStrengthValidatorOptional,
+  samePasswordAndVerification
+} from '../../../e-commerce-ui-common/directive/password.directive';
 
 @Component({
   selector: 'app-detail-utilisateur',
@@ -19,142 +19,200 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap';
   styleUrls: ['./detail-utilisateur.component.scss']
 })
 export class DetailUtilisateurComponent implements OnInit {
-  @ViewChild('photo') public photo;
-  public selectable = true;
-  public removable = true;
-  public addOnBlur = true;
-  public positionBeforeTooltip = 'before';
-  public positionAfterTooltip = 'after';
-  // Enter, comma
-  public separatorKeysCodes = [ENTER, COMMA];
-  public message: String;
+
+  /**
+   * Indique si les données pour l'affichage de la page sont chargées
+   */
+  public isLoad = false;
+
+  /**
+   * Si on ajoute ou non un utilisateur
+   * Si ce n'est pas un ajout c'est une modification
+   */
   public ajout: boolean;
+
+  /**
+   * L'utilisateur actuel
+   */
   public utilisateur: Utilisateur;
-  public utilisateurModifie: Utilisateur;
+
   /**
-   * Boolean permettant de savoir si le bouton d'annulation dans la toolbar doit être cacher ou non
-   * @type {boolean}
+   * La zone de formulaire des details
    */
-  public cacherBoutonAnnulation = true;
+  public formDetail: FormGroup;
+
   /**
-   * Observable d'un tableau d'objets de role
+   * La zone de formulaire du mot de passe
    */
-  public roleObservable: Observable<Role[]>;
+  public formMdp: FormGroup;
+
+  /**
+   * La zone de formulaire du role
+   */
+  public formRole: FormGroup;
+
   /**
    * Tableau contenant toutes les roles
    */
   public roles: Role[];
+
   /**
-   * Form contrôle permettant de gérer la liste déroulante pour la recherche intelligente
+   * Le message à afficher dans l'alerte
    */
-  public choixRoleFormControl: FormControl = new FormControl();
+  public message: string;
+
   /**
    * Boolean permettant de cacher l'alerte de succès
    * @type {boolean}
    */
-  cacherAlert = true;
+  public cacherSucces = true;
+
   /**
    * Boolean permettant de cacher l'alerte d'erreur
    * @type {boolean}
    */
-  cacherErreur = true;
+  public cacherErreur = true;
+
   /**
-   * indique que la toolbar est en position fixed
+   * Boolean permettant de savoir si le bouton d'annulation dans la toolbar doit être cacher ou non
    * @type {boolean}
    */
-  toolNotFixed = true;
+  public desactiverBtn = true;
+
+  /**
+   * Le type du champ à utiliser pour le mot de passe
+   */
   public typePassword = 'password';
-  public classPassword = 'glyphicon glyphicon-eye-open';
-  @ViewChild('roleInput') roleInput: ElementRef;
-  @ViewChild('toolContainerNotFixed', {read: ElementRef}) toolContainerNotFixed: ElementRef;
+
+  /**
+   * L'icone à utiliser pour le bouton montrer/cacher mot de passe
+   */
+  public iconPassword = 'glyphicon glyphicon-eye-close';
+
+  /**
+   * La reference vers le modal
+   */
   private modal: BsModalRef;
 
   constructor(
     private modalService: BsModalService,
-    private formEditService: FormEditService,
-    private previousRouteBusiness: PreviousRouteBusiness,
-    private route: ActivatedRoute,
     private utilisateurService: UtilisateurService,
     private roleService: RoleService,
+    private route: ActivatedRoute,
     private router: Router,
-    private auth: AuthDataService) {
+    private auth: AuthDataService
+  ) {
   }
 
   ngOnInit() {
-    this.formEditService.clear();
-    this.getUser();
-    window.addEventListener('scroll', this.scroll, true); // third parameter
+    this.ajout = (this.route.snapshot.routeConfig.path === 'admin/utilisateur/ajouter');
+    this.setupUser().then(() => {
+      this.setupForm();
+      this.isLoad = true;
+    });
   }
 
-  async getUser() {
-    // Permets de gérer l'affichage des rôles dans les chips
-    this.roles = await this.roleService.getAll();
-    if (this.roles !== undefined) {
-      // Permets de faire une recherche intelligente sur la liste déroulante selon le(s) caractère(s) écrit.
-      this.roleObservable = this.choixRoleFormControl.valueChanges.pipe(
-        startWith(''),
-        map(val => this.roles.filter(role => role.nom.toLowerCase().indexOf(val) === 0))
-      );
+  /**
+   * Retourne sur la liste des utilisateurs
+   */
+  public goBack(): void {
+    this.router.navigate(['/admin/utilisateur']);
+  }
+
+  /**
+   * Cache/affiche le mot de passe
+   */
+  public hidePassword(): void {
+    if (this.typePassword === 'password') {
+      // Permets de définir le input de type:
+      this.typePassword = 'text';
+      // Permets de changer la classe de l'icone dans l'input
+      this.iconPassword = 'glyphicon glyphicon-eye-open';
+    } else {
+      // Permets de définir le input de type:
+      this.typePassword = 'password';
+      // Permets de changer la classe de l'icone dans l'input
+      this.iconPassword = 'glyphicon glyphicon-eye-close';
     }
-    const url = this.route.snapshot.routeConfig.path;
-    if (url === 'admin/utilisateur/ajouter') {
+  }
+
+  /**
+   * Verifie si les données du formulaire sont valide
+   * et si elle sont différentes de l'utilisateur en cours de modification (si modification)
+   */
+  public dataAreValid(): boolean {
+    if (this.formDetail === undefined || this.formMdp === undefined || this.formRole === undefined) {
+      return false;
+    }
+    if (Utilisateur.equals(this.utilisateur, this.getUserFromForm())) {
+      return false;
+    }
+    return this.formDetail.valid && this.formMdp.valid && this.formRole.valid;
+  }
+
+  /**
+   * Annule les modifications effectuées
+   */
+  public cancelModification(): void {
+    this.setupForm();
+  }
+
+  /**
+   * Sauvegarde l'utilisateur
+   */
+  public saveUser(): void {
+    // Verif info formulaire
+    if (!this.dataAreValid()) {
+      this.message = 'Données du formulaire invalide';
+      this.cacherErreur = false;
+      return;
+    }
+    // Recup info du formulaire
+    const utilisateur = this.getUserFromForm();
+    // Sauvegarde l'utilisateur
+    if (this.ajout) {
+      this.addUser(utilisateur);
+    } else {
+      this.updateUser(utilisateur);
+    }
+  }
+
+
+  /**
+   * Ajoute un utilisateur
+   * @param nouvelUtilisateur
+   */
+  public async addUser(nouvelUtilisateur: Utilisateur) {
+    const retourAPI = await this.utilisateurService.add(nouvelUtilisateur);
+    // Si le retourAPI est un utilisateur
+    if (retourAPI.constructor.name !== 'String') {
       this.ajout = true;
-      this.utilisateurModifie = new Utilisateur(null, null, null, null, null);
-      this.utilisateurModifie.role = this.roles[0];
-      this.utilisateur = new Utilisateur(null, null, null, null, null);
-      this.utilisateur.role = new Role(0, '');
-    } else {
-      this.ajout = false;
-      const idUtilisateur = parseInt(this.route.snapshot.paramMap.get('id'), 10);
-      const retourAPI = await this.utilisateurService.getById(idUtilisateur);
       this.utilisateur = retourAPI;
-      this.utilisateurModifie = JSON.parse(JSON.stringify(this.utilisateur));
-    }
-  }
-
-  // Méthode permettante de comparé l'objet utilisateur avec utilisateurModifier
-  comparedUserWithUserModif() {
-    // Si l'utilisateur modifier est différent de utilisateur
-    if (JSON.stringify(this.utilisateur) !== JSON.stringify(this.utilisateurModifie)) {
-      this.cacherBoutonAnnulation = false;
-      // Permets d'afficher la pop-up "en cours d'édition"
-      this.formEditService.setDirty(true);
+      this.router.navigate(['/admin/utilisateur']);
     } else {
-      this.cacherBoutonAnnulation = true;
-      // Permets d'afficher la pop-up "en cours d'édition"
-      this.formEditService.setDirty(false);
+      this.cacherErreur = false;
+      this.cacherSucces = true;
+      this.message = retourAPI;
     }
   }
 
-  cancelModification() {
-    // Permet de copier la variable utilisateur dans utilisateurModifier
-    this.utilisateurModifie = JSON.parse(JSON.stringify(this.utilisateur));
-    // Permets de cacher le bouton d'annulation des modifications
-    this.cacherBoutonAnnulation = true;
-    //  Permets de désactiver la pop-up "en cours d'édition"
-    this.formEditService.setDirty(false);
-  }
-
-  public saveModification(): void {
-    this.updateUser();
-  }
-
-  public async updateUser() {
+  /**
+   * Met à jour un utilisateur
+   * @param utilisateurModifie
+   */
+  public async updateUser(utilisateurModifie: Utilisateur) {
     // Verification que les champs requis sont présent
-    const retourAPI = await this.utilisateurService.update(this.utilisateurModifie);
+    const retourAPI = await this.utilisateurService.update(utilisateurModifie);
     if (retourAPI != null) {
       // Si le retourAPI est un utilisateur
       if (retourAPI.constructor.name !== 'String') {
         // Mets à jour la variable utilisateur et utilisateur modifiée
         this.utilisateur = retourAPI;
-        this.utilisateurModifie = JSON.parse(JSON.stringify(this.utilisateur));
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.cacherErreur = true;
-        this.cacherAlert = false;
+        this.cacherSucces = false;
         this.message = 'L\'utilisateur a été mis à jour.';
-        this.cacherBoutonAnnulation = true;
-        // Permets gérer la gestion d'alerte en cas de succès ou erreur
-        this.formEditService.setDirty(false);
+        this.desactiverBtn = true;
         // Si c'est l'utilisateur courrant on met à jour ces infos
         if (this.auth.getCurrentUser().id === this.utilisateur.id) {
           this.auth.updateCurrentUserInfo(this.utilisateur);
@@ -162,135 +220,102 @@ export class DetailUtilisateurComponent implements OnInit {
       } else {
         // Permets gérer la gestion d'alerte en cas de succès ou erreur
         this.cacherErreur = false;
-        this.cacherAlert = true;
+        this.cacherSucces = true;
         this.message = retourAPI;
       }
     } else {
       this.cacherErreur = false;
-      this.cacherAlert = true;
+      this.cacherSucces = true;
       this.message = 'Impossible de modifier l\'utilisateur : Erreur serveur';
     }
   }
 
-  // Méthode permettante l'ajout d'une utilisateur
-  public async addUser() {
-    const retourAPI = await this.utilisateurService.add(this.utilisateurModifie);
-    // Si le retourAPI est un utilisateur
-    if (retourAPI.constructor.name !== 'String') {
-      this.ajout = true;
-      this.utilisateur = retourAPI;
-      // Mets à jour la variable utilisateur et utilisateur modifiée
-      if (this.utilisateur != null) {
-        this.utilisateurModifie = retourAPI;
-      }
-      this.router.navigate(['/admin/utilisateur']);
-    } else {
-      this.cacherErreur = false;
-      this.cacherAlert = true;
-      this.message = retourAPI;
-    }
-  }
-
+  /**
+   * Affiche un modal de confirmation
+   * @param content
+   */
   public confirmModal(content: TemplateRef<any>) {
     this.modal = this.modalService.show(content, {class: 'modal-md'});
   }
 
+  /**
+   * Supprime un utilisateur
+   */
   public async deleteUser() {
     this.modal.hide();
     await this.utilisateurService.delete(this.utilisateur);
     this.goBack();
   }
 
-  // Méthode permettante de gérer la supprésion d'utilisateur
-  /*public deleteUser(utilisateur: Utilisateur) {
-    // Pop-up gérant la suppression d'un utilisateur
-    const dialogRef = this.modal.confirm()
-      .size('lg')
-      .isBlocking(true)
-      .showClose(false)
-      .keyboard(27)
-      .title('Suppression de ' + utilisateur.id + ' - ' + utilisateur.email)
-      .body('Comfirmez vous la suppression de ' + utilisateur.id + ' - ' + utilisateur.email + '?')
-      .okBtn('Comfirmer la suppression')
-      .okBtnClass('btn btn-danger')
-      .cancelBtn('Annuler la suppression')
-      .open();
-    dialogRef.result
-      .then(async () => {
-        const supprimer = await this.utilisateurService.delete(this.utilisateur);
-        // Si l'utilisateur a été supprimé, on affiche le message
-        if (supprimer) {
-          this.cacherErreur = false;
-          this.cacherAlert = true;
-          this.message = 'L\'utilisateur a été supprimé.';
-        }
-      })
-      // Pour éviter l'erreur de promise dans console.log
-      .catch(() => null);
-  }*/
-
-  // Supprime une rôle de la liste
-  public deleteRole(role: any): void {
-    this.utilisateurModifie.role = new Role(0, '');
-  }
-
-  // Permet de rajouter un role dans la chips
-  /*
-  public addRole(event: MatAutocompleteSelectedEvent): void {
-    const retourRole = event.option.value;
-    this.roleInput.nativeElement.value = '';
-    this.choixRoleFormControl.setValue(null);
-    const role = this.utilisateurModifie.role;
-    let trouver = false;
-    for (const categorie of role) {
-      if (categorie.id === retourRole.id) {
-        trouver = true;
-        break;
-      }
-    }
-    if (trouver === false) {
-      this.utilisateurModifie.role = retourRole;
-      this.comparedUserWithUserModif();
+  /**
+   * Recupere les infos de l'utlisateur à modifier
+   */
+  private async setupUser() {
+    // Recuperation des roles
+    this.roles = await this.roleService.getAll();
+    // Recupère l'utilisateur
+    if (this.ajout) {
+      // Si c'est un ajout d'utilisateur
+      this.utilisateur = new Utilisateur(0, '', '', '');
+      this.utilisateur.role = this.roles[0];
     } else {
-      this.cacherAlert = true;
-      this.cacherErreur = false;
-      this.message = 'Ce rôle est déjà ajoutée.';
+      // Sinon c'est une modification
+      const idUtilisateur = parseInt(this.route.snapshot.paramMap.get('id'), 10);
+      this.utilisateur = await this.utilisateurService.getById(idUtilisateur);
     }
   }
-  */
 
-  // Méthode de retour à la liste des utilisateurs
-  public goBack(): void {
-    this.router.navigate(['/admin/utilisateur']);
-    this.comparedUserWithUserModif();
-  }
-
-  // Permets de gérer le bouton 'oeil' dans l'input mot de passe
-  public hidePassword(): void {
-    if (this.typePassword === 'password') {
-      // Permets de définir le input de type:
-      this.typePassword = 'text';
-      // Permets de changer la classe de l'icone dans l'input
-      this.classPassword = 'glyphicon glyphicon-eye-open';
+  /**
+   * Création des formulaires
+   */
+  private setupForm(): void {
+    // Formulaire detail
+    this.formDetail = new FormGroup({
+      'email': new FormControl(this.utilisateur.email, [
+        Validators.required
+      ]),
+      'prenom': new FormControl(this.utilisateur.prenom),
+      'nom': new FormControl(this.utilisateur.nom)
+    });
+    // Formulaire MdP (change ne fonction de ajout ou modif)
+    const validator = [];
+    if (this.ajout) {
+      validator.push(Validators.required);
+      validator.push(passwordStrengthValidator);
     } else {
-      // Permets de définir le input de type:
-      this.typePassword = 'password';
-      // Permets de changer la classe de l'icone dans l'input
-      this.classPassword = 'glyphicon glyphicon-eye-close';
+      validator.push(passwordStrengthValidatorOptional);
     }
+    this.formMdp = new FormGroup({
+      'mdp': new FormControl('', validator),
+      'verifMdp': new FormControl('', validator)
+    }, samePasswordAndVerification);
+    // Formulaire role
+    this.formRole = new FormGroup({
+      'id': new FormControl(this.utilisateur.role.id, [
+        Validators.required
+      ])
+    });
   }
 
-  getCurrentOffsetTop(element) {
-    const rect = element.nativeElement.getBoundingClientRect();
-    return rect.top + window.pageYOffset - document.documentElement.clientTop;
+  /**
+   * Création de l'utilisateur correspondant aux valeurs des champs du formulaire
+   */
+  private getUserFromForm(): Utilisateur {
+    const detail = this.formDetail.value;
+    const role = this.formRole.value;
+    const mdp = this.formMdp.value;
+    const utilisateur = new Utilisateur(
+      this.utilisateur.id,
+      detail.email,
+      detail.prenom,
+      detail.nom,
+      mdp.mdp
+    );
+    utilisateur.role = new Role(
+      role.id,
+      this.utilisateur.role.nom
+    );
+    return utilisateur;
   }
 
-  scroll = (): void => {
-    console.log(this.getCurrentOffsetTop(this.toolContainerNotFixed));
-    if (this.getCurrentOffsetTop(this.toolContainerNotFixed) !== 0 && this.toolNotFixed) {
-      this.toolNotFixed = false;
-    } else if (this.getCurrentOffsetTop(this.toolContainerNotFixed) === 0 && !this.toolNotFixed) {
-      this.toolNotFixed = true;
-    }
-  };
 }
