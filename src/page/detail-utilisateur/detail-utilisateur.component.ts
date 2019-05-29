@@ -273,6 +273,7 @@ export class DetailUtilisateurComponent implements OnInit {
     this.formDetail = new FormGroup({
       'email': new FormControl(this.utilisateur.email, [
         Validators.required,
+        Validators.maxLength(250),
         Validators.email
       ]),
       'prenom': new FormControl(this.utilisateur.prenom, [
