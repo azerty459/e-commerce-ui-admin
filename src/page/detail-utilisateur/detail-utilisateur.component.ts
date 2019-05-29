@@ -272,10 +272,19 @@ export class DetailUtilisateurComponent implements OnInit {
     // Formulaire detail
     this.formDetail = new FormGroup({
       'email': new FormControl(this.utilisateur.email, [
-        Validators.required
+        Validators.required,
+        Validators.email
       ]),
-      'prenom': new FormControl(this.utilisateur.prenom),
-      'nom': new FormControl(this.utilisateur.nom)
+      'prenom': new FormControl(this.utilisateur.prenom, [
+        Validators.required,
+        Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Z\\s\'_-]+$')
+      ]),
+      'nom': new FormControl(this.utilisateur.nom, [
+        Validators.required,
+        Validators.maxLength(50),
+        Validators.pattern('^[a-zA-Z\\s\'_-]+$')
+      ])
     });
     // Formulaire MdP (change ne fonction de ajout ou modif)
     const validator = [];
