@@ -19,7 +19,7 @@
         Connectez-vous à votre compte
       </div>
       <div *ngIf="messageAlerte.message" class="messageAlerte">{{messageAlerte.message}}</div>
-      <div class="loginForm">
+      <div (keyup.enter)="signIn()" class="loginForm">
         <mat-form-field>
           <input [(ngModel)]="email" matInput placeholder="Email">
         </mat-form-field>
