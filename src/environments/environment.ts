@@ -11,5 +11,6 @@ export const environment = {
   api_rest_download_url: 'http://localhost:8888/fichier/',
   api_url2: 'http://localhost:8888/utilisateur',
   api_url_product: 'http://localhost:8888/produit',
-  api_url_pagination: 'http://localhost:8888/pagination'
+  api_url_pagination: 'http://localhost:8888/pagination',
+  api_url_categorie: 'http://localhost:8888/categorie'
 };

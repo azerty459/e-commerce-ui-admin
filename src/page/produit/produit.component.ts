@@ -19,6 +19,7 @@ export class ProduitComponent implements OnInit {
   public pageMax: number;
   public pageMin = 1;
   public messagesParPage = 5;
+  public nameOfTri: String = 'Nom';
 
   constructor(private modal: Modal,
               private produitBusiness: ProduitBusiness,
@@ -39,7 +40,7 @@ export class ProduitComponent implements OnInit {
   }
 
   async display() {
-    const page = await this.produitBusiness.getProduitByPagination(this.pageActuelURL, this.messagesParPage);
+    const page = await this.produitBusiness.getProduitByPagination(this.pageActuelURL, this.messagesParPage, this.nameOfTri);
     if (page != null && page !== undefined) {
       this.pageActuelURL = page.pageActuelle;
       this.nombreDeProduit = page.total;
