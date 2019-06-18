@@ -111,7 +111,7 @@
                   </mat-icon>
                 </button>
                 <!--Bouton permettant la suppression -->
-                <button (click)="deleteCategorie(node)" color="warn" mat-icon-button>
+                <button (click)="confirmModal(deleteModal, node)" color="warn" mat-icon-button>
                   <mat-icon class="mat-icon-rtl-mirror">
                     delete
 
@@ -217,6 +217,22 @@
 </div>
 
 
-
+<ng-template #deleteModal>
+  <div class="modal-header">
+    <button (click)="modale.hide()" aria-describedby="modal-title" class="close" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="modal-title">Supprimer
+      la catégorie {{categorieSelected.nomCategorie}} </h4>
+  </div>
+  <div class="modal-body">
+    <p><strong>&Ecirc;tes-vous sur de vouloir vous supprimer cette catégorie ?</strong></p>
+    <p>Attention cette action est irr&eacute;versible.</p>
+  </div>
+  <div class="modal-footer">
+    <button (click)="modale.hide()" class="btn btn-outline-secondary" type="button">Annuler</button>
+    <button (click)="deleteCategorie()" class="btn btn-danger" type="button">Supprimer</button>
+  </div>
+</ng-template>
 
 
