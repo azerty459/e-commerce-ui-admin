@@ -1,13 +1,13 @@
 import {FlatTreeControl} from '@angular/cdk/tree';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import {CategorieNode} from '../../../e-commerce-ui-common/models/CategorieNode';
 import {CategorieFlatNode} from '../../../e-commerce-ui-common/models/CategorieFlatNode';
 import {ArbreService} from '../../../e-commerce-ui-common/business/arbre.service';
 import {Categorie} from '../../../e-commerce-ui-common/models/Categorie';
-import {Modal} from 'ngx-modialog/plugins/bootstrap';
 import {MatSnackBar} from '@angular/material';
 import {AlerteSnackBarComponent} from '../../utilitaires/alerteSnackBar/alerteSnackBar.component';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 
 
 /**
@@ -21,6 +21,8 @@ import {AlerteSnackBarComponent} from '../../utilitaires/alerteSnackBar/alerteSn
 
 
 export class ArbreCategorieComponent implements OnInit {
+  public categorieSelected: CategorieFlatNode;
+  public modale: BsModalRef;
   public snackBarRef: any;
   public opened = false;
   public treeControl: FlatTreeControl<CategorieFlatNode>;
@@ -32,7 +34,7 @@ export class ArbreCategorieComponent implements OnInit {
   // boolean afficher erreur
   nomCategorieIsEmpy = false;
 
-  constructor(private arbreService: ArbreService, private modal: Modal, public snackBar: MatSnackBar) {
+  constructor(private arbreService: ArbreService, public snackBar: MatSnackBar, private modalService: BsModalService) {
     this.treeFlattener = new MatTreeFlattener(arbreService.transformerNodeToFlatNode, arbreService.getLevel,
       arbreService.isExpandable, arbreService.getChildren);
     this.treeControl = new FlatTreeControl<CategorieFlatNode>(arbreService.getLevel, arbreService.isExpandable);
@@ -112,6 +114,10 @@ export class ArbreCategorieComponent implements OnInit {
     node.enableToolNode = true;
   }
 
+  public confirmModal(content: TemplateRef<any>, node: CategorieFlatNode) {
+    this.categorieSelected = node;
+    this.modale = this.modalService.show(content, {class: 'modal-md'});
+  }
 
   /**
    }
@@ -119,46 +125,20 @@ export class ArbreCategorieComponent implements OnInit {
    * @param {CategorieFlatNode} node flat node représentant la categorie a supprimer
    * @return {Promise<void>}
    */
-  async deleteCategorie(node: CategorieFlatNode) {
-    // Modal
-    let bodyString = 'Comfirmez vous la suppression de la categorie ' + node.nomCategorie + ' - id (' + node.id + ')';
-    if (this.arbreService.flatNodeMap.get(node).children !== undefined) {
-      bodyString = bodyString + ' et de ses categories enfants ?';
+  async deleteCategorie() {
+    this.modale.hide();
+    // On appelle la methode supprimerCategorie du service categorieBusiness en passant par arbreService
+    const retourAPI = await this.arbreService.categorieBusiness.supprimerCategorie(
+      new Categorie(this.categorieSelected.id, this.categorieSelected.nomCategorie, null, null)
+    );
+    if (retourAPI) {
+      this.afficherMessageAlerteSupression();
+      this.arbreService.categoriedataBusiness.idLastDeletedCategorie = this.categorieSelected.idParent;
+      // On supprime la categorie visuelement si la suppression dans la base de donnée est un succès
+      this.deleteNode(this.categorieSelected);
     } else {
-      bodyString = bodyString + '?';
+      console.log('pas supprimer');
     }
-    const dialogRef = this.modal.confirm()
-      .size('lg')
-      .isBlocking(true)
-      .showClose(false)
-      .keyboard(27)
-      .title('Suppression de la catégorie ' + node.nomCategorie + ' - id (' + node.id + ')')
-      .body(bodyString)
-      .okBtn('Confirmer la suppression')
-      .okBtnClass('btn btn-danger')
-      .cancelBtn('Annuler la suppression')
-      .open();
-    dialogRef.result
-      .then(async () => {
-        // On appelle la methode supprimerCategorie du service categorieBusiness en passant par arbreService
-        const retourAPI = await this.arbreService.categorieBusiness.supprimerCategorie(
-          new Categorie(node.id, node.nomCategorie, null, null)
-        );
-        if (retourAPI != null && retourAPI !== undefined) {
-          // On met à jour le nom de la categorie afficher dans la node concerné
-          if (retourAPI) {
-            this.afficherMessageAlerteSupression();
-            this.arbreService.categoriedataBusiness.idLastDeletedCategorie = node.idParent;
-            // On supprime la categorie visuelement si la suppression dans la base de donnée est un succès
-            this.deleteNode(node);
-          } else {
-            console.log('pas supprimer');
-          }
-        } else {
-          // TODO Message erreur
-        }
-      }).catch(() => null); // Pour éviter l'erreur de promise dans console.log
-
   }
 
 
