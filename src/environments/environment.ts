@@ -9,8 +9,9 @@ export const environment = {
   api_login_url: 'http://localhost:8888/graphql/login',
   api_rest_upload_url: 'http://localhost:8888/upload',
   api_rest_download_url: 'http://localhost:8888/fichier/',
-  api_url2: 'http://localhost:8888/utilisateur',
+  api_url_utilisateur: 'http://localhost:8888/utilisateur',
   api_url_product: 'http://localhost:8888/produit',
   api_url_pagination: 'http://localhost:8888/pagination',
-  api_url_categorie: 'http://localhost:8888/categorie'
+  api_url_categorie: 'http://localhost:8888/categorie',
+  api_url_avisClient: 'http://localhost:8888/avisClient'
 };
